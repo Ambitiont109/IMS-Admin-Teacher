@@ -1,0 +1,239 @@
+<nb-card>
+    <nb-card-body>
+      <nb-stepper #stepper orientation="horizontal">
+        <nb-step [stepControl]="contactInfoForm" label="Contact Info">
+          <h4 class="step-title">Contact Info</h4>
+          <form [formGroup]="contactInfoForm" (ngSubmit)="onContactInfoSubmit()" class="step-container">
+            <div class="form-group">
+              <input nbInput type="text" placeholder="Student's Name (Last, First) *" fullWidth [status]="isInvalid(contactInfoForm,'name')?'danger':'basic'" formControlName="name">
+            </div>
+
+            <div class="form-group">
+              <input nbInput type="email" placeholder="Student's Email" fullWidth [status]="isInvalid(contactInfoForm,'email')?'danger':'basic'" formControlName="email">
+            </div>
+
+            <div class="form-group">
+              <input nbInput type="text" placeholder="Student's Phone Number" fullWidth [status]="isInvalid(contactInfoForm,'phonenumber')?'danger':'basic'" formControlName="phonenumber">
+            </div>
+
+            <div class="form-group">
+              <input nbInput type="email" placeholder="Student's Mailing Address" fullWidth formControlName="mailAddress">
+            </div>
+
+            <div class="form-group select-control" >
+              <span class="text-hint" >Has the student been contacted? </span>
+              <nb-select [status]="isInvalid(contactInfoForm,'isContracted')?'danger':'basic'"  formControlName="isContracted">
+                <nb-option value="yes">Yes</nb-option>
+                <nb-option value="no">No</nb-option>
+              </nb-select>  
+            </div>
+
+            <div class="form-group">
+              <textarea rows="5" nbInput fullWidth shape="round"  placeholder="Reason for contacting student" formControlName="reason"></textarea>
+            </div>
+
+            <div class="form-group">
+              <input nbInput type="text" placeholder="Staff member's name who contacted student*" fullWidth [status]="isInvalid(contactInfoForm,'staffName')?'danger':'basic'" formControlName="staffName">
+            </div>
+
+            <div class="form-group select-control">
+              <span class="text-hint" >Has the student been engaged? </span>
+              <nb-select [status]="isInvalid(contactInfoForm,'isEngaged')?'danger':'basic'"  formControlName="isEngaged">
+                <nb-option value="yes">Yes</nb-option>
+                <nb-option value="no">No</nb-option>
+              </nb-select>  
+            </div>
+
+            <div class="form-group select-control">
+              <span class="text-hint" >Did the student graduate WJA? </span>
+              <nb-select [status]="isInvalid(contactInfoForm,'isgrduateWJA')?'danger':'basic'"  formControlName="isgrduateWJA">
+                <nb-option value="yes">Yes</nb-option>
+                <nb-option value="no">No</nb-option>
+              </nb-select>  
+            </div>
+            
+            <div class="form-group select-control" *ngIf="isgrduateWJA.value=='yes'">
+              <span class="text-hint" >What year did the student graduate WJA?</span>
+              <nb-select [status]="isInvalid(contactInfoForm,'graduateWJA')?'danger':'basic'"  formControlName="graduateWJA">          
+                <nb-option *ngFor="let year of years" [value]="year">{{year}}</nb-option>
+              </nb-select>  
+            </div>
+
+            <div class="form-group">
+              <input nbInput type="text" placeholder="Sponsor's Name" fullWidth [status]="isInvalid(contactInfoForm,'sponsorName')?'danger':'basic'" formControlName="sponsorName">
+            </div>
+
+            <button nbButton nbStepperNext>next</button>
+          </form>
+        </nb-step>
+
+        <nb-step [stepControl]="highSchoolInfoForm" label="Student High School Info" >
+          <h4 class="step-title">HighSchool Info</h4>
+          <form  [formGroup]="highSchoolInfoForm" (ngSubmit)="onHighSchoolInfoSubmit()" class="step-container second-step">
+
+            <div class="form-group select-control">
+              <span class="text-hint" >Did the student attend high School?</span>
+              <nb-select formControlName="isAttendHighSchool">          
+                <nb-option value="unknown">Unknown</nb-option>
+                <nb-option value="yes">Yes</nb-option>
+                <nb-option value="no">No</nb-option>
+              </nb-select>  
+            </div>
+            <div class="form-group select-control">
+              <span class="text-hint" >What type of high school did the student attend?</span>
+              <nb-select  class="largeWidth" formControlName="typeOfHighSchool">
+                <nb-option *ngFor="let type of typeListOfHighSchool" [value]="type">
+                  <ng-container *ngIf="type!='na';else naTemplate">{{type|titlecase }}</ng-container>
+                  <ng-template #naTemplate>Did not attend highschool</ng-template>
+                </nb-option>
+              </nb-select>  
+            </div>
+            <div class="form-group select-control">
+              <span class="text-hint" >Did the student receive aid for high school?</span>
+              <nb-select  class="largeWidth" formControlName="isReceivedAid">
+                <nb-option *ngFor="let value of valueListOfReceivedAid" [value]="value">
+                  <ng-container *ngIf="value!='na';else naTemplate">{{value|titlecase }}</ng-container>
+                  <ng-template #naTemplate>Did not attend highschool</ng-template>
+                </nb-option>
+              </nb-select>  
+            </div>
+            <div class="form-group select-control">
+              <span class="text-hint" >Did the student graduate high school?</span>
+              <nb-select  class="largeWidth" formControlName="isGraduated">
+                <nb-option *ngFor="let item of valueListOfIsGrudated" [value]="item.key">
+                  {{item.value | titlecase}}
+                </nb-option>
+              </nb-select>  
+            </div>
+            <div class="form-group">
+              <input nbInput type="text" placeholder="Name of high school student attended" fullWidth formControlName="name">
+            </div>
+            <div class="form-group select-control">
+              <span class="text-hint" >Where is the high school located?</span>
+              <nb-select  class="largeWidth" formControlName="location">
+                <nb-option *ngFor="let item of valueListOfLocaion" [value]="item.key">
+                  {{item.value | titlecase}}
+                </nb-option>
+              </nb-select>  
+            </div>
+            <button nbButton nbStepperPrevious>prev</button>
+            <button nbButton nbStepperNext>next</button>
+          </form>
+        </nb-step>
+
+        <nb-step [stepControl]="collegeInfoForm" label="Student College Info">
+          <h4 class="step-title">College Info</h4>
+          <form [formGroup]="collegeInfoForm" (ngSubmit)="onCollegeInfoSubmit()" class="step-container third-step">
+            <div class="form-group select-control">
+              <span class="text-hint" >Did the student attend College?</span>
+              <nb-select  class="largeWidth" formControlName="isAttendCollege">
+                <nb-option value="unknown">Unknown</nb-option>
+                <nb-option value="yes">Yes</nb-option>
+                <nb-option value="no">No</nb-option>                
+              </nb-select>
+            </div>
+            
+            <div class="form-group select-control">
+              <span class="text-hint" >What type of college did the student attend?</span>
+              <nb-select formControlName="typeOfCollege" class="largeWidth">
+                <nb-option *ngFor="let item of typeListOfCollege" [value]="item.key">
+                  {{item.value | titlecase}}
+                </nb-option>
+              </nb-select>
+            </div>
+
+            <div class="form-group select-control">
+              <span class="text-hint" >Did the student receive scholarships?</span>
+              <nb-select formControlName="isReceivedScholarship" class="largeWidth">
+                <nb-option *ngFor="let item of valueListOfScholarship" [value]="item.key">
+                  {{item.value | titlecase}}
+                </nb-option>
+              </nb-select>
+            </div>
+
+            <div class="form-group select-control">
+              <span class="text-hint" >Did the Student graduate College?</span>
+              <nb-select formControlName="isGraduatedCollege" class="largeWidth">
+                <nb-option *ngFor="let item of valueListOfDegree" [value]="item.key">
+                  {{item.value | titlecase}}
+                </nb-option>
+              </nb-select>
+            </div>
+
+            <div class="form-group">
+              <input nbInput type="text" placeholder="Field of Study" fullWidth formControlName="fieldOfStudy">
+            </div>
+
+            <div class="form-group">
+              <input nbInput type="text" placeholder="Name of college student attended" fullWidth formControlName="nameOfCollege">
+            </div>
+
+            <div class="form-group select-control">
+              <span class="text-hint" >Where is the college located?</span>
+              <nb-select formControlName="location" class="largeWidth">
+                <nb-option *ngFor="let item of valueListOfLocaion" [value]="item.key">
+                  {{item.value | titlecase}}
+                </nb-option>
+              </nb-select>
+            </div>
+            <button nbButton nbStepperPrevious>prev</button>
+            <button nbButton nbStepperNext>Next</button>
+          </form>
+        </nb-step>
+
+        <nb-step [stepControl]="militaryInfoForm" label="Student Military Info">
+          <h4 class="step-title">Military Info</h4>
+          <form [formGroup]="militaryInfoForm" (ngSubmit)="onMilitaryInfoSubmit()" class="step-container fourth-step">
+            <div class="form-group select-control">
+              <span class="text-hint" >Did the student enlist in the military?</span>
+              <nb-select  class="largeWidth" formControlName="isEnlistMilitary">
+                <nb-option value="unknown">Unknown</nb-option>
+                <nb-option value="yes">Yes</nb-option>
+                <nb-option value="no">No</nb-option>                
+              </nb-select>
+            </div>
+            
+            <div class="form-group select-control">
+              <span class="text-hint"> Whihch branch of the military?</span>
+              <nb-select formControlName="branchOfMilitary" class="largeWidth">
+                <nb-option *ngFor="let item of valueListOfBranchMilitary" [value]="item.key">
+                  {{item.value | titlecase}}
+                </nb-option>
+              </nb-select>
+            </div>
+
+            <button nbButton nbStepperPrevious>prev</button>
+            <button nbButton nbStepperNext>Next</button>
+          </form>
+        </nb-step>
+       
+        <nb-step [stepControl]="employmentInfoForm" label="Employment Info">
+          <h4 class="step-title">Employment Info</h4>
+          <form [formGroup]="employmentInfoForm" (ngSubmit)="onEmploymentInfoSubmit()" class="step-container fifth-step">
+
+            <div class="form-group select-control">
+              <span class="text-hint" >Is the student employed??</span>
+              <nb-select  class="largeWidth" formControlName="isEmployed">
+                <nb-option value="unknown">Unknown</nb-option>
+                <nb-option value="yes">Yes</nb-option>
+                <nb-option value="no">No</nb-option>                
+              </nb-select>
+            </div>
+            
+            <div class="form-group">
+              <input nbInput type="text" placeholder="Name of company student works for" fullWidth formControlName="nameOfCompany">
+            </div>
+
+            <div class="form-group">
+              <input nbInput type="text" placeholder="Job title" fullWidth formControlName="jobTitle">
+            </div>
+
+            <button nbButton nbStepperPrevious>prev</button>
+            <button nbButton type="button" (click)="SaveStudent()">Confirm</button>
+          </form>
+        </nb-step>
+
+       
+      </nb-stepper>
+    </nb-card-body>
+  </nb-card>

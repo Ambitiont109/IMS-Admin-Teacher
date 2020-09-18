@@ -1,0 +1,50 @@
+<nb-card >
+    <nb-card-body>
+        <ng-container *ngIf="!isReplyMode">
+            <div class="form-group">
+                <label class="label"> From:</label>
+                <input nbInput type="text" fullWidth disabled [ngModel]="fromString">
+            </div>
+            <div class="form-group">
+                <label class="label"> To:</label>              
+                <ngx-tag-input [(ngModel)]="to_contacts" [usertype] = "fromContact.role"></ngx-tag-input>
+            </div>            
+        </ng-container>
+        <textarea nbInput rows="5" fullWidth placeholder="Write your Reply" [(ngModel)]="content"></textarea>
+        <div style="position: relative;" *ngIf="isAttached">
+            <button (click)="isAttached=false" nbButton ghost style="position: absolute;right: 5px; top: 5px;">
+                <nb-icon icon="close-outline" ></nb-icon>
+            </button>
+            
+            <ngx-dropzone (change)="onSelect($event)" [accept]="'image/*'" >
+                <ngx-dropzone-label>Drop or Browse</ngx-dropzone-label>
+            
+                <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let upload of uploads"
+                    (removed)="onRemove(upload)"
+                    [file]="upload.data.raw"
+                    [removable]="true">
+                    <ngx-dropzone-label>
+                        <span class="state">
+                            {{upload.data.state }}
+                            State: {{upload.data.state | stateToString }}
+                        </span>
+            
+                        <!-- add progressbar -->
+                        <ngx-file-upload-ui--progressbar-circle [progress]="upload.data.progress" [parts]="12" >
+                        </ngx-file-upload-ui--progressbar-circle>
+            
+                        <span class="label">
+                            {{ upload.data.name }}
+                        </span>
+                    </ngx-dropzone-label>
+                </ngx-dropzone-image-preview>
+            </ngx-dropzone>
+        </div>
+        
+        <div class="row justify-content-end">
+            <button nbTooltip="AttachPicture"  nbButton ghost (click)="isAttached=!isAttached"> <nb-icon icon="attach-outline"  style="color: white;"></nb-icon> </button>
+            <button nbTooltip="Send" (click)="send()" nbButton ghost > <nb-icon icon="paper-plane-outline"  style="color: white;"></nb-icon> </button>            
+        </div>
+        
+    </nb-card-body>
+</nb-card>

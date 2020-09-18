@@ -1,0 +1,16 @@
+<nb-card *ngIf="!showDetail">
+  <nb-card-header> Student List </nb-card-header>
+  <nb-card-body>
+    <div class="search-box">
+      <div style="display: flex;">
+        <input [(ngModel)]="searchWord" type="text" nbInput fullWidth placeholder="Search by name" (ngModelChange)="onSearchWordChange($event)"/>
+        <button type="button" nbButton status="primary"><nb-icon class="action-icon" icon="search-outline"></nb-icon></button>
+      </div>
+    </div>
+    
+    <ng2-smart-table [settings]="settings" [source]="source" (userRowSelect)="onUserRowSelect($event)">
+    </ng2-smart-table>
+ </nb-card-body>
+</nb-card>
+<ngx-detail [student]="selectedStudent" (onBack)="onBack();" *ngIf="showDetail"></ngx-detail>
+

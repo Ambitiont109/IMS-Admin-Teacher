@@ -1,0 +1,5 @@
+<nb-select >
+    <!-- [status]="isInvalid(contactInfoForm,'isContracted')?'danger':'basic'"  formControlName="isContracted" -->
+    <nb-option value="item.value" *ngFor="let item of selectList">{{item.key}}</nb-option>
+  </nb-select>
+<ngx-file-upload [url]="'http://localhost:3000/upload'" [storage]="storage"></ngx-file-upload>

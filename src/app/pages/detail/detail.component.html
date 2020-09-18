@@ -1,0 +1,109 @@
+
+<nb-flip-card [showToggleButton]="false" [flipped]="isEdit">
+  <nb-card-front>    
+    <nb-card>
+      <nb-card-header> 
+        <div class="d-flex align-items-center">
+          <button nbTooltip="Back"  nbButton ghost (click)="back()"> <nb-icon icon="arrow-back-outline"  style="color: white;">arrow-back-outline</nb-icon> </button>
+          Student Detail 
+          <div class="ml-auto">
+            <button nbTooltip="Edit Student" nbTooltipStatus="primary" nbButton ghost (click)="edit()"> <nb-icon icon="edit"  style="color: white;">arrow-back-outline</nb-icon> </button>
+            <button nbTooltip="Remove Student" nbTooltipStatus="primary"  nbButton ghost (click)="delete()"> <nb-icon icon="person-delete"  style="color: white;">arrow-back-outline</nb-icon> </button>  
+          </div>
+        </div>
+        
+      </nb-card-header>
+      <nb-card-body>        
+        <div class="row">
+          <div class="col-sm-12 col-md-6 col-lg-6 col-xxxl-6">
+            <nb-card>
+              <nb-card-header>
+                Student Contact Info
+              </nb-card-header>
+              <nb-card-body>
+                <nb-list>
+                  <nb-list-item *ngFor="let item of contactInfo" style="flex-wrap: wrap;">
+                    <p style="margin-right: 10px; font-weight: bold;">{{item.title}}:</p>
+                    <p>{{item.value}}</p>
+                  </nb-list-item>              
+                </nb-list>
+              </nb-card-body>        
+            </nb-card>
+          </div>
+    
+          <div class="col-sm-12 col-md-6 col-lg-6 col-xxxl-6">
+            <nb-card>
+              <nb-card-header>
+                High School Info
+              </nb-card-header>
+              <nb-card-body>
+                <nb-list>
+                  <nb-list-item *ngFor="let item of highSchoolInfo" style="flex-wrap: wrap;">
+                    <p style="margin-right: 10px; font-weight: bold;">{{item.title}}:</p>
+                    <p>{{item.value}}</p>
+                  </nb-list-item>              
+                </nb-list>
+              </nb-card-body>        
+            </nb-card>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-6 col-xxxl-6">
+            <nb-card>
+              <nb-card-header>
+                College Info
+              </nb-card-header>
+              <nb-card-body>
+                <nb-list>
+                  <nb-list-item *ngFor="let item of collegeInfo" style="flex-wrap: wrap;">
+                    <p style="margin-right: 10px; font-weight: bold;">{{item.title}}:</p>
+                    <p>{{item.value}}</p>
+                  </nb-list-item>              
+                </nb-list>
+              </nb-card-body>        
+            </nb-card>
+          </div> 
+          <div class="col-sm-12 col-md-6 col-lg-6 col-xxxl-6">
+            <nb-card>
+              <nb-card-header>
+                Military Info
+              </nb-card-header>
+              <nb-card-body>
+                <nb-list>
+                  <nb-list-item *ngFor="let item of militaryInfo" style="flex-wrap: wrap;">
+                    <p style="margin-right: 10px; font-weight: bold;">{{item.title}}:</p>
+                    <p>{{item.value}}</p>
+                  </nb-list-item>              
+                </nb-list>
+              </nb-card-body>        
+            </nb-card>
+            <nb-card>
+              <nb-card-header>
+                Employment Info
+              </nb-card-header>
+              <nb-card-body>
+                <nb-list>
+                  <nb-list-item *ngFor="let item of employmentInfo" style="flex-wrap: wrap;">
+                    <p style="margin-right: 10px; font-weight: bold;">{{item.title}}:</p>
+                    <p>{{item.value}}</p>
+                  </nb-list-item>              
+                </nb-list>
+              </nb-card-body>        
+            </nb-card>
+          </div> 
+        </div>
+      </nb-card-body>
+    </nb-card>    
+  </nb-card-front>
+
+
+  <nb-card-back>
+    <nb-card>
+      <nb-card-header> 
+          <button nbTooltip="Back"  nbButton ghost (click)="back()"> <nb-icon icon="arrow-back-outline"  style="color: white;">arrow-back-outline</nb-icon> </button>
+          Edit Student
+        </nb-card-header>
+        <nb-card-body>
+          <ngx-add [student]="student" (onUpdateDone)="onUpdateDone($event)"></ngx-add>
+        </nb-card-body>
+      </nb-card>    
+  </nb-card-back>
+</nb-flip-card>

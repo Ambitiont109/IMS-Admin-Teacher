@@ -1,0 +1,70 @@
+<nb-card>
+    <nb-card-header>
+      <div class="d-flex align-items-center">
+        <button nbTooltip="Back"  nbButton ghost (click)="back()"> <nb-icon icon="arrow-back-outline"  style="color: white;">arrow-back-outline</nb-icon> </button>
+        
+        Edit Appointment
+      </div>
+      
+    </nb-card-header>
+    <nb-card-body>
+        <form class="row justify-content-center " [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
+            <div class="col-sm-6">
+                <div class="form-group row align-items-center">
+                    <label class="label col-sm-3"> Teacher</label>
+                    <div class="col-sm-9">
+                        <ngx-user-select [users]="teachers" [title]="'Select Teacher'" formControlName="teacher" [disabled]="isEditmode" ></ngx-user-select>
+                        <div *ngIf="isInvalidControl(appointmentForm,'teacher')">
+                            <span class="error-text" *ngIf="appointmentForm.get('teacher').errors.required">required</span>
+                        </div>  
+                    </div>
+                </div>
+                <div class="form-group row align-items-center">
+                    <label class="label col-sm-3"> Parent</label>
+                    <div class="col-sm-9">
+                        <ngx-user-select [users]="parents" [title]="'Select Parent'" formControlName="parent" [disabled]="isEditmode"></ngx-user-select>
+                        <div *ngIf="isInvalidControl(appointmentForm,'parent')">
+                            <span class="error-text" *ngIf="appointmentForm.get('parent').errors.required">required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="label col-sm-3"> Title</label>
+                    <div class="col-sm-9">
+                        <input nbInput type="text"  [status]="isInvalidControl(appointmentForm,'title')?'danger':'basic'" formControlName="title">
+                        <div *ngIf="isInvalidControl(appointmentForm,'title')">
+                            <span class="error-text" *ngIf="appointmentForm.get('title').errors.required">required</span>
+                        </div>    
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="label col-sm-3"> Start Time</label>
+                    <div class="col-sm-9">
+                        <input  nbInput [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [status]="isInvalidControl(appointmentForm,'start')?'danger':'basic'" formControlName="start">
+                        <div *ngIf="isInvalidControl(appointmentForm,'start')">
+                            <span class="error-text" *ngIf="appointmentForm.get('start').errors.required">required</span>
+                        </div> 
+                        <owl-date-time #dt></owl-date-time>              
+                    </div>                
+                </div>                  
+                <div class="form-group row">
+                    <label class="label col-sm-3"> End Time</label>
+                    <div class="col-sm-9">
+                        <input  nbInput [owlDateTimeTrigger]="dt2" [owlDateTime]="dt2" [status]="isInvalidControl(appointmentForm,'end')?'danger':'basic'" formControlName="end">
+                        <div *ngIf="isInvalidControl(appointmentForm,'end')">
+                            <span class="error-text" *ngIf="appointmentForm.get('end').errors.required">required</span>
+                            <span class="error-text" *ngIf="appointmentForm.get('end').errors.mustAfter">End Time is not After Start Time</span>
+                        </div> 
+                        <owl-date-time #dt2></owl-date-time>              
+                    </div>                
+                </div>                
+                <div class="row justify-content-end">
+                    <input nbInput type="submit" value="Save" >
+                </div>
+                
+            </div>
+            
+        </form>
+    </nb-card-body>
+</nb-card>
+

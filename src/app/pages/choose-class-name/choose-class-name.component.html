@@ -1,0 +1,14 @@
+<nb-card>
+    <nb-card-header>
+      <div class="d-flex align-items-center">
+        Choose Classroom
+      </div>      
+    </nb-card-header>
+    <nb-card-body>
+        <div class="row">
+            <div class="col-sm-3" style="height: 100px;" *ngFor="let name of nameList" (click)="selectClass(name)" [ngClass]="{'selected': name==currentClassName}">
+                <h5>{{name|titlecase }}</h5>
+            </div>
+        </div>
+    </nb-card-body>
+</nb-card>

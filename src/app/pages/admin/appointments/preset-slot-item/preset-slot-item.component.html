@@ -1,0 +1,24 @@
+<nb-flip-card [showToggleButton]="false" [flipped]="isflipped">
+    <nb-card-front>
+        <nb-card>
+            <nb-card-body>
+                <button nbButton [disabled]="isConfirmed" status="primary" (click)="isflipped=!isflipped" >
+                    {{formateTime}}
+                </button>
+            </nb-card-body>
+        </nb-card>
+    </nb-card-front>
+    <nb-card-back>
+        <nb-card >
+            <nb-card-body style="position: relative;">
+                <div class="small-text">
+                    {{formateTime}}
+                </div>
+                <button nbButton [disabled]="isConfirmed" status="success" (click)="onConfirm()"  >
+                    Confirm
+                </button>
+            </nb-card-body>
+        </nb-card>
+    </nb-card-back>
+</nb-flip-card>
+
