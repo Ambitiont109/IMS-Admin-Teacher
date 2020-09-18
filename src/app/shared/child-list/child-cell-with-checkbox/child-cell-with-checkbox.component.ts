@@ -12,7 +12,6 @@ export class ChildCellWithCheckboxComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.rowData);
   }
   
   onClick(){

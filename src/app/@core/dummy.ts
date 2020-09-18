@@ -2,7 +2,7 @@ import { User, USERROLE } from "./models/user";
 import { Message,MessageType } from "../@core/models/message";
 import * as moment from 'moment';
 import { CalendarEvent } from "angular-calendar";
-import { COLOR,colors, Appointment, AppointmentType, PresetItem, PresetType, AppointmentStatus, TimeRangeItem, PresetRecord, PresetStatus } from "./models/appointment";
+import { COLOR,colors, Appointment, AppointmentType, PresetItem, PresetType, AppointmentStatus, TimeRangeItem, PresetRecord, PresetStatus, PresetAppointment } from "./models/appointment";
 import { Food, MenuItem } from './models/meal-menu';
 import { WeekNameList,DayNameListForMenu } from "./constants";
 import { Picture } from './models/picture';
@@ -136,26 +136,27 @@ export let events: CalendarEvent[] = [
       draggable: true,
     },
   ];
-  export let timeranges:TimeRangeItem[]=[
+export let timeranges:TimeRangeItem[]=[
     { id:1, startTime:moment().startOf('hour').subtract(2,'hours').toDate(), endTime:moment().startOf('hour').add(2,'hours').toDate(),date:moment().startOf('day').toDate() },
-    { id:2, startTime:moment().startOf('hour').subtract(4,'hours').toDate(), endTime:moment().startOf('hour').add(2,'hours').toDate(),date:moment().startOf('day').toDate() },
-    { id:3, startTime:moment().startOf('hour').add(4,'hours').toDate(), endTime:moment().startOf('hour').add(8,'hours').toDate(),date:moment().startOf('day').toDate() },
-    { id:4, startTime:moment().startOf('hour').add(6,'hours').toDate(), endTime:moment().startOf('hour').add(12,'hours').toDate(),date:moment().startOf('day').toDate() }
+    { id:2, startTime:moment().add(1,'days').startOf('hour').subtract(4,'hours').toDate(), endTime:moment().add(1,'days').startOf('hour').add(2,'hours').toDate(),date:moment().add(1,'days').startOf('day').toDate() },
+    { id:3, startTime:moment().add(2,'days').startOf('hour').add(4,'hours').toDate(), endTime:moment().add(2,'days').startOf('hour').add(8,'hours').toDate(),date:moment().add(2,'days').startOf('day').toDate() },
+    { id:4, startTime:moment().add(3,'days').startOf('hour').add(6,'hours').toDate(), endTime:moment().add(3,'days').startOf('hour').add(12,'hours').toDate(),date:moment().add(3,'days').startOf('day').toDate() }
   ]
-  export let presetItems:PresetItem[]=[
+export let presetItems:PresetItem[]=[
     {id:1, timeranges:timeranges, duration:20, classroom:NameOfClass.Acajou},
     {id:2, timeranges:timeranges, duration:20, classroom:NameOfClass.Bamboo},
     {id:3, timeranges:timeranges, duration:20, classroom:NameOfClass.Baobab},
     {id:4, timeranges:timeranges, duration:20, classroom:NameOfClass.Iroko},
 
   ]
-  export let presetInfos:PresetRecord[] =[{
+export let presetInfos:PresetRecord[] =[{
     id:0,
     presetItems:presetItems,
     closeDateTime:moment().startOf('day').add(7,'days').toDate(),
     status:PresetStatus.BeforeStart
   }
 ]
+export let presetApnts: PresetAppointment[]=[];
 export let foods:Food[]=[
   {
     id:0,

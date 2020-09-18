@@ -1,8 +1,8 @@
 <nb-card>
     <nb-card-header>
       <div class="d-flex align-items-center">
-        <button nbTooltip="Back"  nbButton ghost (click)="back()"> <nb-icon icon="arrow-back-outline"  style="color: white;">arrow-back-outline</nb-icon> </button>
-        {{title}}
+
+        {{title | translate}}
       </div>
       
     </nb-card-header>
@@ -10,47 +10,29 @@
       <div class="form-group row align-items-center">
           <label class="label col-sm-3"> {{'Classroom' | translate}}</label>
           <div class="col-sm-9">
-            <nb-select [(ngModel)]="selectedClassroom" >
+            <nb-select [(ngModel)]="selectedClassroom" (ngModelChange)="onClassroomChange($event)">
               <nb-option *ngFor="let name of classNameList" [value]="name"> {{name |translate |titlecase}} </nb-option>
             </nb-select>
           </div>
+      </div>      
+      <div class="form-group row align-items-center">
+        <label class="label col-sm-3"> Date </label>
+        <nb-select [(ngModel)] = "selectedTimeRange" (ngModelChange)="onTimerangeChange($event)">
+          <nb-option *ngFor="let timerange of dates" [value]="timerange"> {{timerange.date | date}} </nb-option>
+        </nb-select>
+
       </div>
       <div class="form-group row align-items-center">
-          <label class="label col-sm-3"> {{'Child' | translate}}</label>
-          <div class="col-sm-9">
-              <ngx-child-select [childs]="childs" [title]="'Select Child'" [(ngModel)]="selectedChild" (ngModelChange)="onChildChange($event)" [disabled]="isEditmode"></ngx-child-select>
-          </div>
-      </div>
-      <ng-container *ngIf="isParentTeacherSelected">
-        <div class="row">
-          <div class="col-sm-3">
-            <label> Preset Type</label>
-          </div>
-          <div class="col-sm-9">
-            <nb-select [selected]="selectedPresetType" (selectedChange) ="onPresetTypeChange($event)" style="min-width: 214px;">
-              <nb-option [value]="ToddlerType">Toddler</nb-option>
-              <nb-option [value]="KindergartenType">Kindergarten</nb-option>
-            </nb-select>
-          </div>
+        <label class="label col-sm-3"> {{'Child' | translate}}</label>
+        <div class="col-sm-9">
+            <ngx-child-select [childs]="childs" title="{{'Select Child'| translate}}" [(ngModel)]="selectedChild" (ngModelChange)="onChildChange($event)" [disabled]="isEditmode"></ngx-child-select>
         </div>
-        <div class="row mt-4">
-          <div class="col-sm-3">
-            <label>Date</label>
-          </div>
-          <div class="col-sm-9">
-            <input nbInput [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [(ngModel)]="selectedDate" [min]="min" [max]="max" >        
-            <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
-          </div>        
-        </div>
-        
-  
-        <div class="d-flex flex-wrap align-items-center mt-4">
-            <ng-container *ngFor="let slot of slots;">
-              <ngx-preset-slot-item [start]="slot.start" [end]="slot.end" [confirmed]="slot.booked" (confirmClick)="onConfirm($event)"></ngx-preset-slot-item>    
-            </ng-container>
-            
-        </div>
-      </ng-container>
+    </div>
+    <div class="d-flex flex-wrap align-items-center mt-4">
+        <ng-container *ngFor="let slot of slots;">
+          <ngx-preset-slot-item [start]="slot.start" [end]="slot.end" [confirmed]="slot.booked" (confirmClick)="onConfirm($event)"></ngx-preset-slot-item>    
+        </ng-container>            
+    </div>
     </nb-card-body>
 </nb-card>
 

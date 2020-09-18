@@ -27,10 +27,10 @@ export class PresetSlotItemComponent implements OnInit {
 
   ngOnInit(): void {
     
-    if( Math.floor(Math.random()*10)%2 == 0)
-      this.isConfirmed = false;
-    else
-      this.isConfirmed = true;
+    // if( Math.floor(Math.random()*10)%2 == 0)
+    //   this.isConfirmed = false;
+    // else
+    //   this.isConfirmed = true;
   }
   onClick(event){
     if(!this._eref.nativeElement.contains(event.target)){

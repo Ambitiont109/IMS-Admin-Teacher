@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from "../../../environments/environment";
 import { Observable, of, BehaviorSubject } from 'rxjs';
-import { events, appointmentsOfOneUser,presetInfos } from "../dummy";
-import { Appointment, colors, COLOR, AppointmentType, PresetRecord, AppointmentStatus, PresetStatus } from "../models/appointment";
+import { events, appointmentsOfOneUser,presetInfos, presetApnts } from "../dummy";
+import { Appointment, colors, COLOR, AppointmentType, PresetRecord, AppointmentStatus, PresetStatus, PresetAppointment } from "../models/appointment";
+import { NameOfClass } from '../models/child';
 @Injectable({
   providedIn: 'root'
 })
@@ -24,6 +25,16 @@ export class AppointmentService {
       child:undefined,
       type:AppointmentType.FREE
 
+    }
+  }
+  createBlankPresetAppointment():PresetAppointment{
+    return {
+      className:undefined,
+      presetInfo:undefined,
+      child:undefined,
+      start:undefined,
+      timerange:undefined,
+      end:undefined      
     }
   }
   getEventsByUserId(userId):Observable<Appointment[]>{
@@ -61,26 +72,18 @@ export class AppointmentService {
     return of(presetInfos[presetInfos.length-1])
   }
 
-  GetPresetAppointmentsByUserIdList(userIds:any[]):Observable<Appointment[]>{
-    return of([]);
+  GetPresetAppointmentByClassroom(classroom:NameOfClass):Observable<PresetAppointment[]>{
+    // Return PresetAppointments of classroom of current PresetRecord
+    return of(presetApnts);
   }
-
-  GetPresetAppointments(teacherId, userId):Observable<Appointment[]>{
-    return of([]);
-  }
-
-  GetPresetAppointmentsFromAppointment(appointmentId):Observable<Appointment[]>{
-    let ret_dat:Appointment[] = appointmentsOfOneUser.filter((aptm:Appointment)=>{
-      return aptm.type == AppointmentType.PRESET
-    })
-    return of(ret_dat);
-  }
-
+ 
   CloseCurrentPreset(presetId:number):Observable<any>{
     presetInfos[presetId].status = PresetStatus.Closed;
     return of('success');
   }
-
+  updatePresetAppointment(apnt:PresetAppointment):Observable<any>{
+    return of('');
+  }
   UpdateEventById(appointment:Appointment):Observable<any>{
     
     let find = appointmentsOfOneUser.find((apintm:Appointment)=>{
@@ -90,6 +93,12 @@ export class AppointmentService {
       Object.assign(find,appointment);
     }
     return of(find);
+  }
+
+  createPresetAppointment(apnt:PresetAppointment):Observable<any>{
+    apnt.id = presetApnts.length;
+    presetApnts.push(apnt);
+    return of('success');
   }
 
   CreateEvent(appointment:Appointment):Observable<any>{    

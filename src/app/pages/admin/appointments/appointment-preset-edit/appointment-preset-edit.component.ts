@@ -4,7 +4,7 @@ import { YesNoDialogComponent } from '../../../../components/yes-no-dialog/yes-n
 import { NbDialogService } from '@nebular/theme';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { isInvalidControl } from "../../../../@core/utils/form.util";
-import { PresetRecord, PresetType } from "../../../../@core/models/appointment";
+import { PresetAppointment, PresetItem, PresetRecord, PresetType, TimeRangeItem } from "../../../../@core/models/appointment";
 import { AppointmentService } from "../../../../@core/services/appointment.service";
 import { UsersService } from "../../../../@core/services/users.service";
 import { User, USERROLE } from "../../../../@core/models/user";
@@ -15,6 +15,7 @@ import * as moment from "moment";
 import { forkJoin } from 'rxjs';
 import { ChildService } from '../../../../@core/services/child.service';
 import { Child, NameOfClass } from '../../../../@core/models/child';
+import { children } from '../../../../@core/dummy';
 interface SlotInfo{
   start: Date,
   end: Date
@@ -29,22 +30,21 @@ interface SlotInfo{
 export class AppointmentPresetEditComponent implements OnInit {
   @Input('editmode') isEditmode:boolean;
   appointmentId:number;
-  appoinment:Appointment;
+  appoinment:PresetAppointment;
+  apnts:PresetAppointment[];
+  
   ToddlerType:PresetType = PresetType.Toddler;
   KindergartenType:PresetType = PresetType.Kindergarten;
   currentPresetRecord:PresetRecord;
 
   childs:Child[];
   classNameList:NameOfClass[];
+  dates:TimeRangeItem[];
   selectedClassroom:NameOfClass;
   selectedParent:User;
   selectedChild:Child;
   slotsInfo:any;
-  selectedDate: Date;
-  selectedPresetType:PresetType;
-  min:Date;
-  max:Date;
-  isParentTeacherSelected:boolean;
+  selectedTimeRange: TimeRangeItem;
   
   constructor(
     private route:ActivatedRoute,
@@ -58,11 +58,6 @@ export class AppointmentPresetEditComponent implements OnInit {
 
     ) { 
     this.isEditmode = true;
-    this.selectedDate = moment().toDate();
-    this.min = moment().toDate();
-    this.max = moment().toDate();
-    this.selectedPresetType = PresetType.Toddler;
-    this.isParentTeacherSelected = false;
     
   }
 
@@ -70,32 +65,28 @@ export class AppointmentPresetEditComponent implements OnInit {
     this.appointmentService.GetCurrentPresetRecord().subscribe(res=>{this.currentPresetRecord = res;})
     this.classNameList = this.childService.classNameList;
     this.selectedClassroom = this.childService.getCurrentClassName();
+    
     if(this.isEditmode){
       this.route.paramMap.pipe(
         switchMap(
           params => {
             this.appointmentId = Number(params.get('appointment_id'));
+            this.selectedClassroom = params.get('classroom') as NameOfClass;
             return forkJoin({
               currentPreset:this.appointmentService.GetCurrentPresetRecord(),
-              presetAppointments:this.appointmentService.GetPresetAppointmentsFromAppointment(this.appointmentId)
+              children: this.childService.getAllChildren(),
+              presetAppointments:this.appointmentService.GetPresetAppointmentByClassroom(this.selectedClassroom)
             });
             
           }
         )
-      ).subscribe(({currentPreset,presetAppointments}:{currentPreset:PresetRecord,presetAppointments:Appointment[]})=>{
-        console.log(presetAppointments);
-        this.currentPresetRecord = currentPreset;
-        console.log(this.currentPresetRecord);
-        this.appoinment = presetAppointments.find((item)=>{return item.id == this.appointmentId})
-        console.log(this.appoinment);
+      ).subscribe((ret)=>{
+        this.currentPresetRecord = ret.currentPreset;
+        this.appoinment = ret.presetAppointments.find((item)=>{return item.id == this.appointmentId})
         if(this.appoinment){          
-          this.selectedDate = this.appoinment.start;
-          this.selectedPresetType = this.appoinment.presetType;
-          // this.selectedTeacher = this.appoinment.teacher;
-          this.selectedParent = this.appoinment.parent;
-          this.isParentTeacherSelected = true;
-
-          this.GenerateSlotsInfo(presetAppointments)
+          this.selectedTimeRange = this.appoinment.timerange;
+          this.apnts = ret.presetAppointments;
+          this.GenerateSlotsInfo(ret.presetAppointments)
         }
         
       })
@@ -103,57 +94,52 @@ export class AppointmentPresetEditComponent implements OnInit {
     else{
       forkJoin({
         currentPreset:this.appointmentService.GetCurrentPresetRecord(),
-        users: this.childService.getAllChildren()
-      }).subscribe( res => {
+        presetAppointments:this.appointmentService.GetPresetAppointmentByClassroom(this.selectedClassroom),
+        children: this.childService.getAllChildren()
+      }).subscribe( res => {        
         this.currentPresetRecord = res.currentPreset;
-
-        // let users = res.users;
-        // this.teachers=[];
-        // this.parents=[]
-        // users.forEach((user:User)=>{
-        //   if(user.role == USERROLE.Teacher){
-        //     this.teachers.push(user)
-        //   }
-        //   if(user.role == USERROLE.Parent){
-        //     this.parents.push(user)
-        //   }
-        // })
+        this.dates = this.currentPresetRecord.presetItems.find((item:PresetItem)=>{
+          return (item.classroom == this.selectedClassroom)
+        }).timeranges;
+        this.selectedTimeRange = this.dates[0];
+        this.childs = res.children;
+        this.apnts = res.presetAppointments;
+        this.GenerateSlotsInfo(this.apnts);
+        
       })
     }    
   }
-  _generateslotsInfo(appnts:Appointment[], presetType:PresetType){
+  _generateslotsInfo(appnts:PresetAppointment[], classroom:NameOfClass){
     let retSlotData={}
-    let startDay, endDay, startTime:moment.Moment, endTime:moment.Moment, duration;
-    // startDay =moment(this.currentPresetRecord[presetType].selectedMoments[0]).dayOfYear();
-    // endDay = moment(this.currentPresetRecord[presetType].selectedMoments[1]).dayOfYear();
-    // startTime = moment(this.currentPresetRecord[presetType].start);
-    // endTime = moment(this.currentPresetRecord[presetType].end);
-    duration = this.currentPresetRecord[presetType].duration;
-    for(let i = startDay; i<=endDay; i ++){
-      retSlotData[i] = [];
-      for(let j = startTime.clone(); j.isBefore(endTime,'minutes') && j.isSame(endTime,'year');j.add(duration,'minutes')){
+    let presetItem:PresetItem = this.currentPresetRecord.presetItems.find((item:PresetItem)=>{return item.classroom == classroom});
+    let duration = presetItem.duration;
+    if(!presetItem) return {};
+    presetItem.timeranges.forEach((item:TimeRangeItem)=>{
+      retSlotData[item.id] = [];
+      let startTime = moment(item.startTime);
+      let endTime = moment(item.endTime);
+      for(let j = startTime.clone(); j.isBefore(endTime,'minutes');j.add(duration,'minutes')){
         //Check if J time slot is booked or not.
-        let findedItem = appnts.find((item:Appointment)=>{
+        let findedItem = appnts.find((item:PresetAppointment)=>{
           let start = moment(item.start);
-          return (start.dayOfYear() == i && start.isSame(j,'hour') && start.isSame(j,'minute') && item.presetType == presetType)
+          let end = moment(item.end)
+          return (j.isSame(start,'minutes') && j.clone().add(duration,'minutes').isSame(end))
         })
         let data:SlotInfo={
           start: j.toDate(),
           end: j.clone().add(duration,'minutes').toDate(),
           booked: false,
         }
-        retSlotData[i].push(data);
+        retSlotData[item.id].push(data);
         if(findedItem){
-          retSlotData[i].booked = true;
+          retSlotData[item.id].booked = true;
         }
       }
-    }
+    })
     return retSlotData;
   }
-  GenerateSlotsInfo(appnts:Appointment[]){
-    this.slotsInfo = {};
-    this.slotsInfo[this.KindergartenType]=this._generateslotsInfo(appnts, this.KindergartenType);
-    this.slotsInfo[this.ToddlerType]=this._generateslotsInfo(appnts, this.ToddlerType);    
+  GenerateSlotsInfo(appnts:PresetAppointment[]){   
+    this.slotsInfo = this._generateslotsInfo(appnts,this.selectedClassroom)
   }
   back(){
 
@@ -167,68 +153,55 @@ export class AppointmentPresetEditComponent implements OnInit {
       if(ret==true){
         
         if(this.isEditmode){
-          this.appoinment.presetType = this.selectedPresetType;
-          this.appoinment.start = moment(this.selectedDate).hour(start.hour()).minute(start.minute()).toDate();
-          this.appoinment.end = moment(this.selectedDate).hour(end.hour()).minute(end.minute()).toDate();
-          this.appointmentService.UpdateEventById(this.appoinment).subscribe(_=>{
+          this.appoinment.start = moment(this.selectedTimeRange.date).hour(start.hour()).minute(start.minute()).toDate();
+          this.appoinment.end = moment(this.selectedTimeRange.date).hour(end.hour()).minute(end.minute()).toDate();
+          this.appointmentService.updatePresetAppointment(this.appoinment).subscribe(_=>{
             this.toastrService.success('Updated the Appointment',"Success");
-            this.router.navigate([`/appointment/${this.appoinment.parent.id}`]);
           })
         }else{
-          this.appoinment = this.appointmentService.createBlankAppointment();          
+          this.appoinment = this.appointmentService.createBlankPresetAppointment();          
           // this.appoinment.title = `${this.selectedTeacher.first_name} ${this.selectedTeacher.last_name} & ${this.selectedParent.first_name, this.selectedParent.last_name} (PRESET)`;
-          this.appoinment.type = AppointmentType.PRESET;
-          this.appoinment.presetType = this.selectedPresetType;
-          this.appoinment.start = moment(this.selectedDate).hour(start.hour()).minute(start.minute()).toDate();
-          this.appoinment.end = moment(this.selectedDate).hour(end.hour()).minute(end.minute()).toDate();
+          this.appoinment.child = this.selectedChild;
+          this.appoinment.className = this.selectedClassroom;
+          this.appoinment.presetInfo = this.currentPresetRecord;
+          this.appoinment.start = moment(this.selectedTimeRange.date).hour(start.hour()).minute(start.minute()).toDate();
+          this.appoinment.end = moment(this.selectedTimeRange.date).hour(end.hour()).minute(end.minute()).toDate();
 
-          this.appointmentService.CreateEvent(this.appoinment).subscribe(_ => {
-            this.toastrService.success('Registered the New Appointment',"Success");
-            this.router.navigate([`/appointment/${this.appoinment.parent.id}`]);
+          this.appointmentService.createPresetAppointment(this.appoinment).subscribe(_ => {
+            this.toastrService.success('Registered the New Preset Appointment',"Success");
           })
         }
       }
     })
   }
-  onPresetTypeChange($event){    
-    this.selectedPresetType = $event;    
-    console.log(this.currentPresetRecord)
-    // this.min = this.currentPresetRecord[this.selectedPresetType].selectedMoments[0];
-    // this.max = this.currentPresetRecord[this.selectedPresetType].selectedMoments[1];
-    
-  }
-  onTeacherChange(data:User){
-    this._setIsParentTeacherSelected()
-    if(this.isParentTeacherSelected){
-      // this.appointmentService.GetPresetAppointmentsByUserIdList([this.selectedParent.id, this.selectedTeacher.id]).subscribe((apnts:Appointment[])=>{
-      //   this.GenerateSlotsInfo(apnts);
-      // })
-    }
-    
-  }
-  onChildChange(data:Child){
 
+
+  onChildChange(data:Child){
+    
   }
-  onParentChange(data:User){
-    this._setIsParentTeacherSelected()
-    if(this.isParentTeacherSelected){
-      // this.appointmentService.GetPresetAppointmentsByUserIdList([this.selectedParent.id, this.selectedTeacher.id]).subscribe((apnts:Appointment[])=>{
-      //   this.GenerateSlotsInfo(apnts);
-      // })
-    }
+  onClassroomChange(name:NameOfClass){
+    let findedItem:PresetItem =  this.currentPresetRecord.presetItems.find(item=>{return (item.classroom == name)});
+    
+    if(findedItem){
+      this.appointmentService.GetPresetAppointmentByClassroom(name).subscribe(apnts=>{
+        this.dates = findedItem.timeranges;
+        this.selectedTimeRange = this.dates[0];
+        this.GenerateSlotsInfo(this.apnts);
+      })
+      
+    }else this.dates=[]
+    
   }
-  _setIsParentTeacherSelected(){
-    // if(this.selectedTeacher && this.selectedParent)
-    //   this.isParentTeacherSelected = true;
-    // else
-    //   this.isParentTeacherSelected = false;
+  onTimerangeChange(data:TimeRangeItem){
   }
+
+
   get title():string{
     if(this.isEditmode)
       return "Edit Preset Appointment"
     return "Create Preset Appointment"
   }
   get slots():SlotInfo[]{
-    return this.slotsInfo[this.selectedPresetType][moment(this.selectedDate).dayOfYear()]
+    return this.slotsInfo[this.selectedTimeRange.id];
   }
 }

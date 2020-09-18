@@ -67,12 +67,12 @@ export class ChildSelectComponent implements OnInit, ControlValueAccessor {
     this.selectedChilds = [];
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.childs_src = new LocalDataSource(this.childs);    
     
     this.isDisabled = this.disabled;
     if(this.initValue){
-      this.setSelectedUserData(this.initValue);      
+      this.setSelectedChildData(this.initValue);      
     }    
   }
 
@@ -131,7 +131,7 @@ export class ChildSelectComponent implements OnInit, ControlValueAccessor {
     }    
   }  
    
-  setSelectedUserData(data:any){
+  setSelectedChildData(data:any){
     if(this.isMulti)
       this.selectedChilds = data;
     else
@@ -143,7 +143,7 @@ export class ChildSelectComponent implements OnInit, ControlValueAccessor {
   }
   
   writeValue(data: any): void {
-    this.setSelectedUserData(data);
+    this.setSelectedChildData(data);
   }
   registerOnChange(fn: (v: any) => void): void {
     this.onChange = fn;

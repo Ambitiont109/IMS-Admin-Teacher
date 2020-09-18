@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'new/preset',component:AppointmentPresetCreateComponent },
   { path: 'new', component:AppointmentCreateComponent },
   
-  { path:'preset/:appointment_id', component:AppointmentPresetEditComponent},
+  { path:'preset/:appointment_id/:classroom/', component:AppointmentPresetEditComponent},
   { path: ':id', component: AppointmentDetailComponent},
   { path:':id/:appointment_id', component:AppointmentEditComponent},
   
