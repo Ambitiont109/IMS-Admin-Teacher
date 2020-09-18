@@ -107,13 +107,16 @@ export class PresetComponent implements OnInit {
       this.actionText = "START";
   }
   updateSubmit(){
-
+    this.onSubmit();
   }
   onSubmit(){
     this.presetRecordForm.markAllAsTouched();
     if(this.presetRecordForm.valid){
       let presetInfo:PresetRecord = Object.assign({}, this.presetRecordForm.value);
       this.appointmentService.StartNewPreset(presetInfo).subscribe(_=>{});
+      if(this.isStarted){
+        this.appointmentService.UpdatePresetRecord(presetInfo).subscribe(_=>{});
+      }
     }
   }
   addTimeRangeForm(presetItemForm:FormGroup){

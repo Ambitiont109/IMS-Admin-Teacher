@@ -29,7 +29,7 @@ export class ChildService {
     })
     return of(ret)
   }
-  getAllChildren():Observable<Child[]>{
+  getAllChildren():Observable<Child[]>{ // Return All Children without considering current Classroom
     return of(children)
   }
   getChildsOfTeacher(teacher:User):Observable<any>{    

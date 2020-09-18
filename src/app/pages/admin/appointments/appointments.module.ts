@@ -21,6 +21,7 @@ import { PresetComponent } from './preset/preset.component';
 import { PresetSlotItemComponent } from './preset-slot-item/preset-slot-item.component';
 import { AppointmentPresetCreateComponent } from './appointment-preset-create/appointment-preset-create.component';
 import { SharedTranslateModule } from '../../../shared-translate/shared-translate.module';
+import { ChildListModule } from '../../../shared/child-list/child-list.module';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -52,6 +53,7 @@ export function momentAdapterFactory() {
     OwlNativeDateTimeModule,
     SharedModule,
     SharedTranslateModule,
+    ChildListModule,
     Ng2SmartTableModule,
     ReactiveFormsModule,
     FormsModule

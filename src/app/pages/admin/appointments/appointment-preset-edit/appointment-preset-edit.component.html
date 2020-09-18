@@ -8,17 +8,17 @@
     </nb-card-header>
     <nb-card-body>
       <div class="form-group row align-items-center">
-          <label class="label col-sm-3"> Classroom</label>
+          <label class="label col-sm-3"> {{'Classroom' | translate}}</label>
           <div class="col-sm-9">
-              <nb-select [(ngModel)]="selectedClassroom" >
-                <nb-option *ngFor="let value of classNameList" [value]="value"> {{value|titleCase}} </nb-option>
-              </nb-select>
+            <nb-select [(ngModel)]="selectedClassroom" >
+              <nb-option *ngFor="let name of classNameList" [value]="name"> {{name |translate |titlecase}} </nb-option>
+            </nb-select>
           </div>
       </div>
       <div class="form-group row align-items-center">
-          <label class="label col-sm-3"> Parent</label>
+          <label class="label col-sm-3"> {{'Child' | translate}}</label>
           <div class="col-sm-9">
-              <ngx-user-select [users]="parents" [title]="'Select Parent'" [(ngModel)]="selectedParent" (ngModelChange)="onParentChange($event)" [disabled]="isEditmode"></ngx-user-select>
+              <ngx-child-select [childs]="childs" [title]="'Select Child'" [(ngModel)]="selectedChild" (ngModelChange)="onChildChange($event)" [disabled]="isEditmode"></ngx-child-select>
           </div>
       </div>
       <ng-container *ngIf="isParentTeacherSelected">
@@ -51,8 +51,6 @@
             
         </div>
       </ng-container>
-      
-        
     </nb-card-body>
 </nb-card>
 

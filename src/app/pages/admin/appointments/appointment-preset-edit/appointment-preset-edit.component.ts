@@ -14,7 +14,7 @@ import { NbToastrService } from '@nebular/theme';
 import * as moment from "moment";
 import { forkJoin } from 'rxjs';
 import { ChildService } from '../../../../@core/services/child.service';
-import { NameOfClass } from '../../../../@core/models/child';
+import { Child, NameOfClass } from '../../../../@core/models/child';
 interface SlotInfo{
   start: Date,
   end: Date
@@ -33,11 +33,12 @@ export class AppointmentPresetEditComponent implements OnInit {
   ToddlerType:PresetType = PresetType.Toddler;
   KindergartenType:PresetType = PresetType.Kindergarten;
   currentPresetRecord:PresetRecord;
-  parents:User[];
-  teachers:User[];
+
+  childs:Child[];
   classNameList:NameOfClass[];
   selectedClassroom:NameOfClass;
   selectedParent:User;
+  selectedChild:Child;
   slotsInfo:any;
   selectedDate: Date;
   selectedPresetType:PresetType;
@@ -68,6 +69,7 @@ export class AppointmentPresetEditComponent implements OnInit {
   ngOnInit(): void {
     this.appointmentService.GetCurrentPresetRecord().subscribe(res=>{this.currentPresetRecord = res;})
     this.classNameList = this.childService.classNameList;
+    this.selectedClassroom = this.childService.getCurrentClassName();
     if(this.isEditmode){
       this.route.paramMap.pipe(
         switchMap(
@@ -101,21 +103,21 @@ export class AppointmentPresetEditComponent implements OnInit {
     else{
       forkJoin({
         currentPreset:this.appointmentService.GetCurrentPresetRecord(),
-        users: this.userService.getAllUsers()
+        users: this.childService.getAllChildren()
       }).subscribe( res => {
         this.currentPresetRecord = res.currentPreset;
 
-        let users = res.users;
-        this.teachers=[];
-        this.parents=[]
-        users.forEach((user:User)=>{
-          if(user.role == USERROLE.Teacher){
-            this.teachers.push(user)
-          }
-          if(user.role == USERROLE.Parent){
-            this.parents.push(user)
-          }
-        })
+        // let users = res.users;
+        // this.teachers=[];
+        // this.parents=[]
+        // users.forEach((user:User)=>{
+        //   if(user.role == USERROLE.Teacher){
+        //     this.teachers.push(user)
+        //   }
+        //   if(user.role == USERROLE.Parent){
+        //     this.parents.push(user)
+        //   }
+        // })
       })
     }    
   }
@@ -203,6 +205,9 @@ export class AppointmentPresetEditComponent implements OnInit {
       // })
     }
     
+  }
+  onChildChange(data:Child){
+
   }
   onParentChange(data:User){
     this._setIsParentTeacherSelected()

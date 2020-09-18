@@ -40,7 +40,8 @@ import { ChooseClassNameComponent } from './choose-class-name/choose-class-name.
     NbTooltipModule,
     NbIconModule,       
     NbDialogModule, 
-    SharedTranslateModule, AdminModule,
+    SharedTranslateModule, 
+    AdminModule,
     
   ],
   declarations: [
