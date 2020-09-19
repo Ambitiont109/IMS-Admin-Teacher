@@ -22,10 +22,17 @@ export interface AuthPersonContact {
     photo:string,
     phone_number:string
 }
+export interface SiblingChild{
+    id:number;
+    first_name:string;
+    last_name:string;
+    parent:number,
+    photo?:string;
+}
 export interface Child{
     id:number;
-    parent:User,
-    
+    parent:User;
+    siblings:SiblingChild[];
     first_name:string;
     last_name:string;
     birth:string;

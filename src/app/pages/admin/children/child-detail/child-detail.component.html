@@ -1,7 +1,14 @@
 <nb-card>
     <nb-card-header>
-        <button nbTooltip="Back"  nbButton ghost (click)="back()"> <nb-icon icon="arrow-back-outline"  style="color: white;">arrow-back-outline</nb-icon> </button>
-        Child
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <button nbTooltip="Back"  nbButton ghost (click)="back()"> <nb-icon icon="arrow-back-outline"  style="color: white;">arrow-back-outline</nb-icon> </button>
+                {{'Child' | translate}}
+            </div>
+            <button  nbButton ghost (click)="onSetPWDClick()"> Set Password </button>
+            
+        </div>
+        
     </nb-card-header>
     <nb-card-body>
         <div class="row">            
@@ -136,6 +143,29 @@
                             <span class="text-info ml-2">{{child.health_issue | titlecase }}</span>
                         </div>
                     </nb-card-body>
+                </nb-card>
+            </div>
+            <div class="col-md-6">
+                <!-- Siblings -->
+                <nb-card>
+                    <nb-card-header>
+                        Siblings
+                        <button nbTooltip="Add Sibling"  nbButton ghost (click)="onAddSiblingClick()"> <nb-icon icon="plus-outline"  style="color: white;">plus-outline</nb-icon> </button>
+                        <button *ngIf="child.siblings.length > 1" nbTooltip="Remove From Sibling"  nbButton ghost (click)="onRemoveSiblingClick()"> <nb-icon icon="minus-outline"  style="color: white;">minus-outline</nb-icon> </button>
+                    </nb-card-header>
+                    <nb-card-body>
+                        <ng-container *ngIf="child.siblings.length <= 1; else siblings">
+                            Empty
+                        </ng-container>
+                        <ng-template #siblings>
+                            <div class="row">
+                                <div class="mr-2" *ngFor="let sibling of child.siblings" style="cursor: pointer;" (click)="onSiblingClick(sibling)">
+                                    <nb-user [picture]="sibling.photo" [name]="sibling.first_name + ' ' + sibling.last_name "></nb-user>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </nb-card-body>
+
                 </nb-card>
             </div>
 

@@ -13,12 +13,6 @@ export class ChildCellWithCheckboxComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  
-  onClick(){
-    if(this.rowData.checked)
-        this.rowData.checked = !this.rowData.checked;
-    else
-      this.rowData.checked = true;
-  }
+
 
 }

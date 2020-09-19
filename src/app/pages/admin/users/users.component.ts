@@ -44,7 +44,8 @@ export class UsersComponent implements OnInit, OnDestroy {
       }      
     },
   };
-  
+  searchWord:string;
+
 
   constructor(private userService: UsersService) {
     this.teacher_src = new LocalDataSource();
@@ -52,19 +53,33 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
   
   ngOnInit(): void {
-    this.userService.getAllUsers().subscribe((users:User[])=>{
-      users.forEach((user:User)=>{
-        if(user.role == USERROLE.Parent){
-          this.parents.push(user)
-        }
-        if(user.role == USERROLE.Teacher){
-          this.teachers.push(user)
-        }
-      })
+    this.userService.getTeachers().subscribe((teachers:User[])=>{
+      this.teachers = teachers;
       this.teacher_src.load(this.teachers);
-      this.parent_src.load(this.parents);
     })
+
+    // this.userService.getAllUsers().subscribe((users:User[])=>{
+    //   users.forEach((user:User)=>{
+    //     if(user.role == USERROLE.Parent){
+    //       this.parents.push(user)
+    //     }
+    //     if(user.role == USERROLE.Teacher){
+    //       this.teachers.push(user)
+    //     }
+    //   })
+    //   this.teacher_src.load(this.teachers);
+    //   this.parent_src.load(this.parents);
+    // })
     
+  }
+  onSearchWordChange(newWord:string){
+    this.searchWord = newWord;
+    if(this.searchWord){
+
+      this.teacher_src.setFilter([{field:'first_name',search:this.searchWord}, {field:'last_name', search:this.searchWord}], false);    
+    }else{
+      this.teacher_src.setFilter(null);
+    }    
   }
   ngOnDestroy() {    
   }

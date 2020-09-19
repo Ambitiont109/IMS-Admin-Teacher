@@ -16,7 +16,7 @@ import { NbMenuModule,
   NbSelectModule} from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CellAvatarComponent } from './cell-avatar/cell-avatar.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddUserComponent  } from './add-user/add-user.component';
 
 @NgModule({
@@ -35,6 +35,7 @@ import { AddUserComponent  } from './add-user/add-user.component';
     NbInputModule,
     NbSelectModule,
     NbPopoverModule ,
+    FormsModule,
     ReactiveFormsModule
   ]
 })

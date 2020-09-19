@@ -5,6 +5,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { Child } from '../../../@core/models/child';
 import { unknown_picture } from '../../../@core/services/users.service';
 import { ChildCellWithCheckboxComponent } from '../child-cell-with-checkbox/child-cell-with-checkbox.component';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -68,8 +69,7 @@ export class ChildSelectComponent implements OnInit, ControlValueAccessor {
   }
 
   ngOnInit(): void {    
-    this.childs_src = new LocalDataSource(this.childs);    
-    
+    this.childs_src = new LocalDataSource(this.childs);        
     this.isDisabled = this.disabled;
     if(this.initValue){
       this.setSelectedChildData(this.initValue);      
@@ -82,13 +82,22 @@ export class ChildSelectComponent implements OnInit, ControlValueAccessor {
   onRowSelect(event){
     if(this.isMulti)
     {
+      
       let index = this.selectedChilds.findIndex((item:Child)=>{
         return item.id == event.data.id;
       })
       if(index != -1){
+        event.data.checked = false;
+        this.childs_src.update(event.data, event.data);
         this.selectedChilds.splice(index,1);
       }else
+      {
+        event.data.checked = true;
+        this.childs_src.update(event.data, event.data);
+
         this.selectedChilds.push(event.data);
+      }
+      console.log(this.selectedChilds);
       this.onChange(this.selectedChilds);
     } 
     else

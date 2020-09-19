@@ -24,6 +24,7 @@ import { SharedTranslateModule } from '../../shared-translate/shared-translate.m
     NbIconModule,
     NbButtonModule,
     NbUserModule,
+    SharedTranslateModule,
     Ng2SmartTableModule,
   ],
   exports:[

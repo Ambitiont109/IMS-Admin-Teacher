@@ -70,6 +70,11 @@ export class AddUserComponent implements OnInit {
   get picture():string { return this.profileForm.get('picture').value}
 
   get roleList(){
-    return Object.keys(USERROLE).map(value=>{return USERROLE[value]})
+    let ret =[];
+    Object.keys(USERROLE).forEach(value=>{
+      if(USERROLE[value] != USERROLE.Parent)
+        ret.push(USERROLE[value]);
+    })
+    return ret;
   }
 }

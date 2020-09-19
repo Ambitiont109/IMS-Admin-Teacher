@@ -1,4 +1,4 @@
-<div>
+<div style="cursor: pointer;">
   <ng-container *ngIf="selectedChilds?.length>0; else unknown">
     <ng-container *ngIf="!isMulti; else multi">
       <nb-user [ngClass]="{'disabled': isDisabled}" [picture]="selectedChilds[0].photo" [name]="selectedChilds[0].first_name + ' ' + selectedChilds[0].last_name" size="large" (click)="open(dialog)"></nb-user>
@@ -12,12 +12,12 @@
     </ng-template>  
   </ng-container>
   <ng-template #unknown>
-      <nb-user [ngClass]="{'disabled': isDisabled}" [picture]="unknown_picture" [name]="title" size="large" (click)="open(dialog)"></nb-user>    
+      <nb-user [ngClass]="{'disabled': isDisabled}" [picture]="unknown_picture" name="{{title | translate}}" size="large" (click)="open(dialog)"></nb-user>    
   </ng-template>
   <ng-template #dialog let-data let-ref="dialogRef">
       <nb-card>
         <nb-card-header>
-            {{title}}
+            {{title | translate}}
             <button nbTooltip="Back"  nbButton ghost (click)="ref.close()" style="float:right"> <nb-icon icon="close-outline"  style="color: white;">arrow-back-outline</nb-icon> </button>
         </nb-card-header>
         <nb-card-body style="min-height: 300px;">

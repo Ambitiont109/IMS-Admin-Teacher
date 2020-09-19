@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Child, NameOfClass, ChildDailyInformation } from "../models/child";
+import { Child, NameOfClass, ChildDailyInformation, SiblingChild } from "../models/child";
 import { environment } from "../../../environments/environment";
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { User } from '../models/user';
@@ -36,7 +36,7 @@ export class ChildService {
     return of(children);
   }
   getChildById(childId:number):Observable<Child>{
-    return of(children[childId]);
+    return of(children[childId-1]);
   }
   createChildDailyInformation(childDailyInformation:ChildDailyInformation):Observable<any>{
     childDailyInformations.push(childDailyInformation);
@@ -65,5 +65,18 @@ export class ChildService {
     this.currentClassNameSubject.next(this.current_class_name);
   }
 
-
+  AddSiblings(pchild:Child, siblings:Child[]):Observable<any>{
+    siblings.forEach(child=>{ 
+      let item:SiblingChild = {
+        id:child.id, first_name:child.first_name, last_name:child.last_name, parent:child.parent.id, photo:child.photo
+      }
+      console.log(item);
+      pchild.siblings.push(item);
+    })
+    return of('');
+  }
+  RemoveChildFromSibling(child:Child):Observable<any>{  // Have to change sibling Id to the blank sibling id.
+    child.siblings =[];
+    return of('')
+  }
 }

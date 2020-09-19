@@ -9,7 +9,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     home: true,
   },
   {
-    title: 'Teachers/Parents',
+    title: 'Teachers',
     icon: 'people-outline',    
     children:[
       {

@@ -28,12 +28,12 @@ export let authPersons:AuthPersonContact[]=[
 ]
 export let children:Child[]=[
   
-  { id:1, first_name:"Emma", last_name:"Jones", photo: 'assets/images/childs/emma.jpg', birth:'2019',gender:'male',nationality:'', address:'', nameOfClass:NameOfClass.Acajou, parent:users[2]},
-  { id:2, first_name:"Olivia", last_name:"Martinez", photo: 'assets/images/childs/olivia.jpg',birth:'2019',gender:'male',nationality:'', address:'', nameOfClass:NameOfClass.Bamboo, parent:users[4]},
-  { id:3, first_name:"Ava", last_name:"Moor", photo: 'assets/images/childs/ava.jpg',birth:'2019',gender:'male',nationality:'', address:'', nameOfClass:NameOfClass.Baobab, parent:users[2],  emergenyContacts:emgencyContacts, authPersons:authPersons, allgeries:"sfsdfsdf dsfsdf sdfsd",},
-  { id:4, first_name:"Isabella", last_name:"Williams", photo: 'assets/images/childs/isabella.jpg',birth:'2019',gender:'male',nationality:'', address:'', nameOfClass:NameOfClass.Iroko, parent:users[2]},
-  { id:5, first_name:"Sophia", last_name:"Wong", photo: 'assets/images/childs/sophia.jpg',birth:'2019',gender:'male',nationality:'', address:'', nameOfClass:NameOfClass.Acajou, parent:users[4]},
-  { id:6, first_name:"Mia", last_name:"Thompson", photo: 'assets/images/childs/mia.jpg',birth:'2019',gender:'male',nationality:'', address:'', nameOfClass:NameOfClass.Iroko, parent:users[2]}
+  { id:1, first_name:"Emma", last_name:"Jones", photo: 'assets/images/childs/emma.jpg', birth:'2019',gender:'male',nationality:'', address:'', nameOfClass:NameOfClass.Acajou, parent:users[2], siblings:[]},
+  { id:2, first_name:"Olivia", last_name:"Martinez", photo: 'assets/images/childs/olivia.jpg',birth:'2019',gender:'male',nationality:'', address:'', nameOfClass:NameOfClass.Bamboo, parent:users[4], siblings:[]},
+  { id:3, first_name:"Ava", last_name:"Moor", photo: 'assets/images/childs/ava.jpg',birth:'2019',gender:'male',nationality:'', address:'', nameOfClass:NameOfClass.Baobab, parent:users[2],  emergenyContacts:emgencyContacts, authPersons:authPersons, allgeries:"sfsdfsdf dsfsdf sdfsd", siblings:[]},
+  { id:4, first_name:"Isabella", last_name:"Williams", photo: 'assets/images/childs/isabella.jpg',birth:'2019',gender:'male',nationality:'', address:'', nameOfClass:NameOfClass.Iroko, parent:users[2], siblings:[]},
+  { id:5, first_name:"Sophia", last_name:"Wong", photo: 'assets/images/childs/sophia.jpg',birth:'2019',gender:'male',nationality:'', address:'', nameOfClass:NameOfClass.Acajou, parent:users[4], siblings:[]},
+  { id:6, first_name:"Mia", last_name:"Thompson", photo: 'assets/images/childs/mia.jpg',birth:'2019',gender:'male',nationality:'', address:'', nameOfClass:NameOfClass.Iroko, parent:users[2], siblings:[]}
 ]
 
 export let user:User=users[0];
