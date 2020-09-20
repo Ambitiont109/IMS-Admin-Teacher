@@ -8,6 +8,7 @@ import { WeekNameList,DayNameListForMenu } from "./constants";
 import { Picture } from './models/picture';
 import { Child, NameOfClass, ChildDailyInformation, EmergencyContact, AuthPersonContact } from './models/child';
 import { Document, DocumentFor } from './models/document';
+import { MiniClub } from './models/miniclub';
 export let users:User[] = [
     { id:1, username:"nickjones" ,first_name:"Nick", last_name:"Jones", picture: 'assets/images/nick.png', role:USERROLE.Admin, email:'nick@jone.com'},
     { id:2, username:"katemartineze" ,first_name:"Kate", last_name:"Martinez", picture: 'assets/images/eva.png',role:USERROLE.Teacher,email:'kate@martine.com', classNames:[NameOfClass.Acajou, NameOfClass.Bamboo]},
@@ -253,3 +254,11 @@ export let childDailyInformations:ChildDailyInformation[]=[
     id:3, child:children[2],ate:1, ate_comment:'Test Commnet',menu:menuItems[0],comment:"Comment for Menu", nap_start_time:moment().toDate(), nap_end_time:moment().add(2,'hours').toDate(),is_bowel_move:false,bowel_movement_time:2,injures:[],    
   }
 ]
+let sampleComment = "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+export let miniClubs:MiniClub[]=[
+  {id:0, children:[children[0]], title:'Test World', price:10, date:moment().toDate(), limit:10,comment:sampleComment },
+  {id:1, children:[children[1]], title:'Hello World', price:10, date:moment().toDate(), limit:10,comment:sampleComment },
+  {id:2, children:[children[2]], title:'Thank You World', price:10, date:moment().toDate(), limit:10,comment:sampleComment },
+  {id:3, children:[children[3]], title:'Our World', price:10, date:moment().toDate(), limit:10,comment:sampleComment },
+
+];

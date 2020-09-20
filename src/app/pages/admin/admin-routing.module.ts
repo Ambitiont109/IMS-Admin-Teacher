@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'users', loadChildren: () => import('./users/users.module').then(m => m.UsersModule), canActivate:[RoleGuard],data: {role: USERROLE.Admin} },
   { path: 'users/:id', loadChildren: () => import('./user-detail/user-detail.module').then(m => m.UserDetailModule), canActivate:[RoleGuard],data: {role: USERROLE.Admin} },
   { path: 'notification', loadChildren: () => import('./notification/notification.module').then(m => m.NotificationModule), canActivate:[RoleGuard],data: {role: USERROLE.Admin} },
-  
+  { path: 'miniclub', loadChildren: () => import('./miniclub/miniclub.module').then(m => m.MiniclubModule) }
   
 ];
 

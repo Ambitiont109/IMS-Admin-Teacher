@@ -37,7 +37,7 @@ const routes: Routes = [
       {
         path:'add',
         component:AddComponent
-      },
+      },      
       // {
       //   path:'profile',
       //   loadChildren: () => import('./profile/profile.module')
@@ -45,7 +45,7 @@ const routes: Routes = [
       // },
 
     ]
-  }
+  },
 ];
 
 @NgModule({

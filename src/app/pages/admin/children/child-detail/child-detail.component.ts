@@ -37,7 +37,9 @@ export class ChildDetailComponent implements OnInit {
     this.router.navigate([`../${sibling.id}`],{relativeTo:this.route});
   }
   onRemoveSiblingClick(){
-    this.dialogService.open(YesNoDialogComponent).onClose.subscribe(ret=>{
+    this.dialogService.open(YesNoDialogComponent,{context:{
+      title:'This child will be removed from sibling. Are you going to continue?'
+    }}).onClose.subscribe(ret=>{
       if(ret==true)
         this.childService.RemoveChildFromSibling(this.child).subscribe(_=>{
 

@@ -11,7 +11,7 @@
         <form class="row justify-content-center " [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
             <div class="col-sm-6">
                 <div class="form-group row align-items-center">
-                    <label class="label col-sm-3"> Teacher</label>
+                    <label class="label col-sm-3"> {{'Teacher' | translate}}</label>
                     <div class="col-sm-9">
                         <ngx-user-select [users]="teachers" [title]="'Select Teacher'" formControlName="teacher" [disabled]="isEditmode" ></ngx-user-select>
                         <div *ngIf="isInvalidControl(appointmentForm,'teacher')">

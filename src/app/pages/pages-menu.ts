@@ -106,10 +106,14 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title:'Send',
         link:'/notification/send'
-      }
-      
+      }      
     ]
-
+  },
+  {
+    title:'Mini Club',
+    icon:'speaker-outline',
+    link:'/miniclub'
+    
   }
   
   // {
