@@ -1,33 +1,21 @@
 import { Component, OnInit, Inject  } from '@angular/core';
 import { NgxFileUploadStorage, NgxFileUploadFactory, NgxFileUploadOptions, NgxFileUploadRequest } from "@ngx-file-upload/core";
-import { UsersService } from '../../../../@core/services/users.service';
-import { User } from '../../../../@core/models/user';
-import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
-
-// Reference Link
-// https://r-hannuschka.github.io/ngx-fileupload/#/ngx-dropzone
+import { Router, ActivatedRoute, } from '@angular/router';
 
 @Component({
-  selector: 'ngx-add',
-  templateUrl: './add.component.html',
-  styleUrls: ['./add.component.scss']
+  selector: 'ngx-picture-add',
+  templateUrl: './picture-add.component.html',
+  styleUrls: ['./picture-add.component.scss']
 })
-export class AddComponent implements OnInit {
+export class PictureAddComponent implements OnInit {
 
   public uploads: NgxFileUploadRequest[] = [];
 
   public storage: NgxFileUploadStorage;
 
   private uploadOptions: NgxFileUploadOptions;
-  public user:User;
-  public userId:number;
 
-  constructor( @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory, 
-    private router:Router,
-    private userService:UsersService,
-    private route:ActivatedRoute,
-  ) {
+  constructor( @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory, private router:Router, private route:ActivatedRoute) {
     this.storage = new NgxFileUploadStorage({
       concurrentUploads: 2,
       autoStart: false,
@@ -37,14 +25,6 @@ export class AddComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.paramMap.pipe(switchMap(
-      params => {
-        this.userId = Number(params.get('userId'));
-        return this.userService.getUserById(this.userId);
-      }
-    )).subscribe((user:User) => {
-      this.user = user;    
-    })
     this.storage.change()
     .subscribe(uploads => {
       this.uploads = uploads
@@ -52,10 +32,7 @@ export class AddComponent implements OnInit {
       })
     });
   }
-
-  back(){
-    this.router.navigate([`teacher/pictures/detail/${this.userId}`]);
-  }
+  
 
   public onSelect(event) {
     console.log("Select", event)
@@ -72,10 +49,10 @@ export class AddComponent implements OnInit {
   public onRemove(upload: NgxFileUploadRequest) {
     this.storage.remove(upload);
   }
-
+  back(){
+    this.router.navigate(['..'],{relativeTo:this.route})
+  }
   public startUploads() {
     this.storage.startAll();
   }
-
-
 }

@@ -3,25 +3,24 @@ import { CommonModule } from '@angular/common';
 
 import { PicturesRoutingModule } from './pictures-routing.module';
 import { PicturesComponent } from './pictures.component';
-import { AddComponent } from './add/add.component';
-import { NbCardModule, NbButtonModule, NbIconModule, NbUserModule } from '@nebular/theme';
+import { PictureListComponent } from './picture-list/picture-list.component';
 import { NgxDropzoneModule } from "ngx-dropzone";
 import { NgxFileUploadCoreModule } from "@ngx-file-upload/core";
 import { NgxFileUploadUiProgressbarModule, NgxFileUploadUiCommonModule, NgxFileUploadUiToolbarModule } from "@ngx-file-upload/ui";
-import { SharedModule } from '../../../shared/shared.module';
-import { UserListModule } from '../../../shared/user-list/user-list.module';
-import { PictureDetailComponent } from './picture-detail/picture-detail.component';
-
+import { ChildListModule } from '../../../shared/child-list/child-list.module';
+import { NbCardModule, NbButtonModule, NbIconModule, NbTooltipModule, NbUserModule } from '@nebular/theme';
+import { PictureAddComponent } from './picture-add/picture-add.component';
 
 @NgModule({
-  declarations: [PicturesComponent, AddComponent, PictureDetailComponent],
+  declarations: [PicturesComponent, PictureListComponent, PictureAddComponent],
   imports: [
     CommonModule,
     PicturesRoutingModule,
-    SharedModule,
-    UserListModule,
+    NbCardModule,
+    ChildListModule,
     NbButtonModule,
     NbIconModule,
+    NbTooltipModule,
     NbCardModule,
     NbUserModule,
     

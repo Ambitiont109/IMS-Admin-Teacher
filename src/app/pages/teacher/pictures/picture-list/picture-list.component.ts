@@ -1,21 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from "../../../../@core/models/user";
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { map, switchMap } from 'rxjs/operators';
 import { PictureService } from "../../../../@core/services/picture.service";
 import { Lightbox } from 'ngx-lightbox';
 import { NbUser } from '@nebular/auth';
-import { Picture, ChildPicture } from '../../../../@core/models/picture';
-import { Child } from '../../../../@core/models/child';
+
 @Component({
-  selector: 'ngx-picture-detail',
-  templateUrl: './picture-detail.component.html',
-  styleUrls: ['./picture-detail.component.scss']
+  selector: 'ngx-picture-list',
+  templateUrl: './picture-list.component.html',
+  styleUrls: ['./picture-list.component.scss']
 })
-export class PictureDetailComponent implements OnInit {
+export class PictureListComponent implements OnInit {
+
   childId:number;
-  child:Child;
-  pictures:Picture[];
+  pictures:any[];
   _album:any[];
   constructor(private route:ActivatedRoute,
               private router:Router,
@@ -29,18 +27,22 @@ export class PictureDetailComponent implements OnInit {
         this.childId = Number(params.get('childId'));
         return this.pictureService.getPicturesOfChild(this.childId);
       }
-    )).subscribe((data:ChildPicture) => {
-      console.log(data);
+    )).subscribe((data) => {
+      
       this.pictures = data.pictures; 
-      this.child = data.child;
+      
       this._album=[]
-      this.pictures.forEach(item=>{        
+      this.pictures.forEach(item=>{
+        
         this._album.push({src:item.url});
       })     
     })
   }
   add(){
-    this.router.navigate([`teacher/pictures/add/${this.childId}`]);
+    this.router.navigate(['add'],{relativeTo:this.route});
+  }
+  back(){
+    this.router.navigate(['..'],{relativeTo:this.route})
   }
   open(index:number){
     this._lightbox.open(this._album,index, {
@@ -48,7 +50,5 @@ export class PictureDetailComponent implements OnInit {
       fitImageInViewPort: false
     });
   }
-  back(){
-    this.router.navigate(['/teacher/pictures']);
-  }
+
 }

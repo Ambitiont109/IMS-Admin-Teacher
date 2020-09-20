@@ -2,13 +2,14 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { PicturesComponent } from './pictures.component';
-import { AddComponent } from './add/add.component';
-import { PictureDetailComponent } from './picture-detail/picture-detail.component';
+import { PictureListComponent } from './picture-list/picture-list.component';
+import { PictureAddComponent } from './picture-add/picture-add.component';
 
 const routes: Routes = [
   { path: '', component: PicturesComponent },
-  { path:'detail/:childId', component:PictureDetailComponent},
-  { path: 'add/:childId', component: AddComponent },
+  { path:':childId/add', component:PictureAddComponent},
+  { path:':childId', component:PictureListComponent}
+  
 ];
 
 @NgModule({

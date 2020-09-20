@@ -1,12 +1,10 @@
 <nb-card>
     <nb-card-header>
         <div class="d-flex align-items-center justify-content-between">
-            Select Parents            
+            Select Child
         </div>
     </nb-card-header>
     <nb-card-body>
-        <ngx-user-list [data]="parents" (onselect)="onSelect($event)"></ngx-user-list>
+        <ngx-child-list [data]="children" (onselect)="onSelect($event)"></ngx-child-list>
     </nb-card-body>
 </nb-card>
-
-

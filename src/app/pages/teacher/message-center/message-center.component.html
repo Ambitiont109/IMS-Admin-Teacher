@@ -7,13 +7,13 @@
             <nb-list-item *ngFor="let msg of messages" (click)="goToMessageDetail(msg)">
                 <div class="row justify-content-center w-100">
                     <div class="avatar ml-2">                            
-                        <div class="content" [ngStyle]="{'background-image':  'url(' + msg.sender.picture + ')'}">
+                        <div class="content" [ngStyle]="{'background-image':  'url(' + resolveSenderPictureUrl(msg) + ')'}">
                         </div>
                     </div>
                     <div class="ml-3">
                         <div class="text-1">
-                            From: <span >{{resolveUserEmail(msg.sender)}}</span>                            
-                            To: <span >{{resolveUserEmail(msg.receiver)}}</span>
+                            From: <span >{{resolveSenderEmail(msg)}}</span>                            
+                            To: <span >{{resolveReceiverEmail(msg)}}</span>
                             
                         </div>                        
                         <div class="mt-2"> {{msg.subject}} </div>

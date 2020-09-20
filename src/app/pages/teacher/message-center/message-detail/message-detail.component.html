@@ -6,7 +6,7 @@
     <nb-card-body>
         <nb-list style="max-height: 800px;">
             <nb-list-item *ngFor="let msg of messages">
-                <div class="row w-100" *ngIf="msg.reply_to==messages[0].id; else hostContent">
+                <div class="row w-100" *ngIf="msg.sender.id!=messages[0].sender.id; else hostContent">
                     <div class="col-2">
 
                     </div>
@@ -16,15 +16,12 @@
                                 <div class="ml-2 date-text text-right">
                                     {{getFormatDate(msg.created_at)}}                            
                                 </div>
-                                From: <span *ngIf="isUserAdmin(msg.sender)">Admin Center</span>
-                                     <span *ngIf="!isUserAdmin(msg.sender)">{{msg.sender.email}}</span>
-                                To:
-                                <span *ngIf="isUserAdmin(msg.receiver)">Admin Center</span>
-                                <span *ngIf="!isUserAdmin(msg.receiver)">{{msg.receiver.email}}</span>
+                                From: <span >{{resolveSenderEmail(msg) | translate}}</span>
+                                To:<span >{{resolveReceiverEmail(msg) | translate}}</span>
                                 
                             </div>   
                             <div class="avatar ml-2">                            
-                                <div class="content" [ngStyle]="{'background-image':  'url(' + msg.sender.picture + ')'}">
+                                <div class="content" [ngStyle]="{'background-image':  'url(' +resolveSenderPictureUrl(msg) + ')'}">
                                 </div>
                             </div>                  
                         </div>                        
@@ -43,18 +40,15 @@
                         <div class="col-10 w-100 ml-2">
                             <div class="row">                                  
                                 <div class="avatar text-right">                            
-                                    <div class="content" [ngStyle]="{'background-image':  'url(' + msg.sender.picture + ')'}">
+                                    <div class="content" [ngStyle]="{'background-image':  'url(' +resolveSenderPictureUrl(msg) + ')'}">
                                     </div>
                                 </div>       
                                 <div class="text-1 ml-2">
                                     <div class="date-text ">
                                         {{getFormatDate(msg.created_at)}}                            
                                     </div>
-                                    From: <span *ngIf="isUserAdmin(msg.sender)">Admin Center</span>
-                                         <span *ngIf="!isUserAdmin(msg.sender)">{{msg.sender.email}}</span>
-                                    To:
-                                    <span *ngIf="isUserAdmin(msg.receiver)">Admin Center</span>
-                                    <span *ngIf="!isUserAdmin(msg.receiver)">{{msg.receiver.email}}</span>
+                                    From: <span >{{resolveSenderEmail(msg) | translate}}</span>
+                                    To:<span >{{resolveReceiverEmail(msg) | translate}}</span>
                                     
                                 </div>            
                             </div>                        

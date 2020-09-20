@@ -38,7 +38,7 @@ export let children:Child[]=[
   { id:6, first_name:"Mia", last_name:"Thompson", photo: 'assets/images/childs/mia.jpg',birth:'2019',gender:'male',nationality:'', address:'', nameOfClass:NameOfClass.Iroko, parent:users[2], siblings:[]}
 ]
 
-export let user:User=users[0];
+export let user:User=users[1];
 export let pictures:Picture[] =[
     {url:'assets/images/childs/img-sandwitch.png'},
     {url:'assets/images/childs/img-select.png'},

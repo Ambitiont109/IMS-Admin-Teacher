@@ -1,10 +1,7 @@
 <nb-card>
     <nb-card-header>
-        <div class="d-flex align-items-center justify-content-between">
-            <button nbTooltip="Back"  nbButton ghost (click)="back()"> <nb-icon icon="arrow-back-outline"  style="color: white;">arrow-back-outline</nb-icon> </button>        
-            Pictures
-            <nb-user [picture]="child?.photo" [name]="child?.first_name + ' ' + child?.last_name"></nb-user>
-        </div>
+        <button nbTooltip="Back"  nbButton ghost (click)="back()"> <nb-icon icon="arrow-back-outline"  style="color: white;">arrow-back-outline</nb-icon> </button>
+        Pictures
     </nb-card-header>
     <nb-card-body class="row">
         <div class="item col-sm-2 mb-4" (click)="add()">

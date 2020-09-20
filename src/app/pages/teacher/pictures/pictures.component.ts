@@ -1,30 +1,32 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from "../../../@core/models/user";
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { map, switchMap } from 'rxjs/operators';
-import { PictureService } from "../../../@core/services/picture.service";
-import { Lightbox } from 'ngx-lightbox';
-import { NbUser } from '@nebular/auth';
-import { UsersService } from '../../../@core/services/users.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Child, NameOfClass } from '../../../@core/models/child';
+import { ChildService } from '../../../@core/services/child.service';
+
 @Component({
   selector: 'ngx-pictures',
   templateUrl: './pictures.component.html',
   styleUrls: ['./pictures.component.scss']
 })
 export class PicturesComponent implements OnInit {
-  parents:User[] = [];
-  constructor(private route:ActivatedRoute,
-              private router:Router,
-              private userService:UsersService
-             ) { }
+  children:Child[];
+  currentClassName:NameOfClass; 
+  constructor(
+    private childService:ChildService,
+    private router:Router,
+    private route:ActivatedRoute
+    ) {
+  }
 
   ngOnInit(): void {
-    this.userService.getParents().subscribe((users:User[])=>{
-      this.parents = users;
-      console.log(this.parents);
+    
+    this.currentClassName = this.childService.getCurrentClassName();
+    this.childService.getChildrenByClassName(this.currentClassName).subscribe(data=>{
+      this.children = data;
     })
   }
-  onSelect(selectedUser:User){
-    this.router.navigate([`detail/${selectedUser.id}`],{relativeTo:this.route});
+  onSelect(selectedChild:Child){
+    this.router.navigate([selectedChild.id-1],{relativeTo:this.route})
   }
+
 }
