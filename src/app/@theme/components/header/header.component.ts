@@ -32,10 +32,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   
   changeSelectedCountryCode(value: string): void {
     this.selectedCountryCode = value;
+    let lang;
     if(value =='gb')
+    {
       this.translateSerivce.use('en');      
-    else
+      localStorage.setItem('lang','en')
+    } else {
       this.translateSerivce.use(value);
+      localStorage.setItem('lang',value)
+    }
   }
   userMenu = [ 
                {title:'Profile', url:'/profile', icon:{icon:'address-card', pack:'fa'}},
@@ -57,6 +62,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    let lang = localStorage.getItem('lang')
+    if(lang){
+      this.translateSerivce.use(lang);      
+      this.selectedCountryCode = lang;
+      if(lang =='en')
+        this.selectedCountryCode = 'gb';
+    }
+      
     this.classNameSubscription = this.childService.currentClassNameSubject.subscribe(name=>{
       this.currentClassName = name;
     });
@@ -85,10 +98,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // this.userService.getUsers()
     //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((users: any) => this.user = users.nick);
-    if(this.translateSerivce.currentLang == 'en')
-      this.selectedCountryCode = 'gb'
-    else
-      this.selectedCountryCode = this.translateSerivce.currentLang;
+ 
   }
 
   ngOnDestroy() {

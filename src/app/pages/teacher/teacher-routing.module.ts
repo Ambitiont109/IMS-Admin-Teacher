@@ -5,7 +5,7 @@ import { TeacherComponent } from './teacher.component';
 
 const routes: Routes = [
   { path: 'messagecenter', loadChildren: () => import('./message-center/message-center.module').then(m => m.MessageCenterModule) },
-  { path: '', component: TeacherComponent},
+  { path: '', redirectTo:'/children'},
   { path: 'pictures', loadChildren: () => import('./pictures/pictures.module').then(m => m.PicturesModule) },
   { path: 'schooldocuments', loadChildren: () => import('./school-documents/school-documents.module').then(m => m.SchoolDocumentsModule) },
   { path: 'childdailyinformation', loadChildren: () => import('./child-daily-information/child-daily-information.module').then(m => m.ChildDailyInformationModule) },
