@@ -12,7 +12,7 @@ import { ThemeModule } from '../@theme/theme.module';
 import { PagesComponent } from './pages.component';
 import { DashboardModule } from './admin/dashboard/dashboard.module';
 import { PagesRoutingModule } from './pages-routing.module';
-import { ListModule } from './list/list.module';
+
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { SharedTranslateModule } from '../shared-translate/shared-translate.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -29,7 +29,6 @@ import { ChooseClassNameComponent } from './choose-class-name/choose-class-name.
     ThemeModule,
     NbMenuModule,
     DashboardModule,
-    ListModule,
     ReactiveFormsModule,
     FormsModule,
     NbStepperModule,

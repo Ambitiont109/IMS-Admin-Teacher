@@ -3,8 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { PagesComponent } from './pages.component';
 
-import { ListComponent } from "./list/list.component";
-import { AddComponent } from "./add/add.component";
+
 import { RoleGuard } from '../@core/guards/role.guard';
 import { USERROLE } from '../@core/models/user';
 import { NotFoundComponent } from './not-found/not-found.component';
@@ -29,15 +28,7 @@ const routes: Routes = [
       },
       { path: '404', component:NotFoundComponent},
       { path: 'notallowed', component:NotAllowedComponent},
-      { path: 'default', component:DefaultComponent},
-      {
-        path:'list',
-        component: ListComponent
-      },
-      {
-        path:'add',
-        component:AddComponent
-      },      
+      { path: 'default', component:DefaultComponent}    
       // {
       //   path:'profile',
       //   loadChildren: () => import('./profile/profile.module')
