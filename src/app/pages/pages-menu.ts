@@ -112,8 +112,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title:'Mini Club',
     icon:'speaker-outline',
-    link:'/miniclub'
-    
+    link:'/miniclub'    
+  },
+  {
+    title:'Exchange Library',
+    icon:'book-outline',
+    link:'/exchangelibrary'    
   }
   
   // {

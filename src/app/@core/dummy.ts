@@ -9,6 +9,7 @@ import { Picture } from './models/picture';
 import { Child, NameOfClass, ChildDailyInformation, EmergencyContact, AuthPersonContact } from './models/child';
 import { Document, DocumentFor } from './models/document';
 import { MiniClub } from './models/miniclub';
+import { BookStatus, ExchangeLibrary } from './models/exchangelibrary';
 export let users:User[] = [
     { id:1, username:"nickjones" ,first_name:"Nick", last_name:"Jones", picture: 'assets/images/nick.png', role:USERROLE.Admin, email:'nick@jone.com'},
     { id:2, username:"katemartineze" ,first_name:"Kate", last_name:"Martinez", picture: 'assets/images/eva.png',role:USERROLE.Teacher,email:'kate@martine.com', classNames:[NameOfClass.Acajou, NameOfClass.Bamboo]},
@@ -262,3 +263,11 @@ export let miniClubs:MiniClub[]=[
   {id:3, children:[children[3]], title:'Our World', price:10, date:moment().toDate(), limit:10,comment:sampleComment },
 
 ];
+
+export let books:ExchangeLibrary[]=[
+  {id:0, title:'Hello Book', picture:pictures[0].url,status:BookStatus.PRESENT},
+  {id:1, title:'Test Book', picture:pictures[0].url,status:BookStatus.PRESENT},
+  {id:2, title:'Thank You Book', picture:pictures[0].url,status:BookStatus.RENTED, child:children[0]},
+  {id:3, title:'God Book', picture:pictures[0].url,status:BookStatus.PRESENT}
+
+]
