@@ -130,10 +130,11 @@ export class AppointmentPresetEditComponent implements OnInit {
           end: j.clone().add(duration,'minutes').toDate(),
           booked: false,
         }
-        retSlotData[item.id].push(data);
+        
         if(findedItem){
-          retSlotData[item.id].booked = true;
+          data.booked = true;
         }
+        retSlotData[item.id].push(data);
       }
     })
     return retSlotData;
@@ -163,7 +164,7 @@ export class AppointmentPresetEditComponent implements OnInit {
           // this.appoinment.title = `${this.selectedTeacher.first_name} ${this.selectedTeacher.last_name} & ${this.selectedParent.first_name, this.selectedParent.last_name} (PRESET)`;
           this.appoinment.child = this.selectedChild;
           this.appoinment.className = this.selectedClassroom;
-          this.appoinment.presetInfo = this.currentPresetRecord;
+          this.appoinment.presetInfo = this.currentPresetRecord.id;
           this.appoinment.start = moment(this.selectedTimeRange.date).hour(start.hour()).minute(start.minute()).toDate();
           this.appoinment.end = moment(this.selectedTimeRange.date).hour(end.hour()).minute(end.minute()).toDate();
 

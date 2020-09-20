@@ -7,10 +7,11 @@ import { AppointmentCenterComponent } from './appointment-center.component';
 import { FormsModule } from '@angular/forms';
 import { NbCardModule, NbToggleModule, NbButtonModule, NbBadgeModule, NbUserModule, NbInputModule, NbIconModule, NbCheckboxModule } from '@nebular/theme';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { RequestMeetingComponent } from './request-meeting/request-meeting.component';
 
 
 @NgModule({
-  declarations: [AppointmentCenterComponent, ConfirmDialogComponent],
+  declarations: [AppointmentCenterComponent, ConfirmDialogComponent, RequestMeetingComponent],
   imports: [
     CommonModule,
     AppointmentCenterRoutingModule,

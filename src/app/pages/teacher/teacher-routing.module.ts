@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'schooldocuments', loadChildren: () => import('./school-documents/school-documents.module').then(m => m.SchoolDocumentsModule) },
   { path: 'childdailyinformation', loadChildren: () => import('./child-daily-information/child-daily-information.module').then(m => m.ChildDailyInformationModule) },
   { path: 'appointment', loadChildren: () => import('./appointment-center/appointment-center.module').then(m => m.AppointmentCenterModule) },
+  { path: 'preset', loadChildren: () => import('./preset/preset.module').then(m => m.PresetModule) },
   
   ];
 

@@ -213,7 +213,16 @@ export const TEACHER_MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Appointment Center',
     icon: 'calendar-outline',
-    link: '/teacher/appointment',    
+    children:[
+      {
+        title:'List',
+        link:'/teacher/appointment'
+      },
+      {
+        title: 'Preset',
+        link: '/teacher/preset'
+      }
+    ]
   },
   // {
   //   title:'Notifications',
