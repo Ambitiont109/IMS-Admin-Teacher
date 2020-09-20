@@ -3,6 +3,7 @@ import { Child, NameOfClass } from '../../../@core/models/child';
 import { ChildService } from '../../../@core/services/child.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
+
 @Component({
   selector: 'ngx-children',
   templateUrl: './children.component.html',
@@ -11,6 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class ChildrenComponent implements OnInit {
   children:Child[];
   currentClassName:NameOfClass; 
+ 
   constructor(
     private childService:ChildService,
     private router:Router,
@@ -19,7 +21,7 @@ export class ChildrenComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+
     this.currentClassName = this.childService.getCurrentClassName();
     this.childService.getChildrenByClassName(this.currentClassName).subscribe(data=>{
       this.children = data;
@@ -28,5 +30,5 @@ export class ChildrenComponent implements OnInit {
   onSelect(selectedChild:Child){
     this.router.navigate([selectedChild.id],{relativeTo:this.route})
   }
-  
+
 }

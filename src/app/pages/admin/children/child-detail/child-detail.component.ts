@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ChildService } from '../../../../@core/services/child.service';
 import { switchMap } from 'rxjs/operators';
 import { Child } from '../../../../@core/models/child';
+import { UsersService } from '../../../../@core/services/users.service';
+import { User, USERROLE } from '../../../../@core/models/user';
 import { NbDialogService } from '@nebular/theme';
 import { YesNoDialogComponent } from '../../../../components/yes-no-dialog/yes-no-dialog.component';
 
@@ -13,19 +15,23 @@ import { YesNoDialogComponent } from '../../../../components/yes-no-dialog/yes-n
 })
 export class ChildDetailComponent implements OnInit {
   childId:number;
+  currentUser:User;
   child:Child;
   constructor(
     private route:ActivatedRoute,
     private router:Router,
+    private userService:UsersService,
     private childService:ChildService,
     private dialogService:NbDialogService
   ) { 
+    this.userService.getCurrentUser().subscribe((user:User)=>{this.currentUser = user;})
     this.route.paramMap.pipe(switchMap(
       params => {
         this.childId = Number(params.get('childId'));
         return this.childService.getChildById(this.childId);
       }
     )).subscribe((child:Child) => {
+      
       this.child = child;
     })
   }
@@ -55,6 +61,9 @@ export class ChildDetailComponent implements OnInit {
   
   back(){
     this.router.navigate(['/children']);
+  }
+  isTeacher(){
+    return this.currentUser.role == USERROLE.Teacher;
   }
 
 }
