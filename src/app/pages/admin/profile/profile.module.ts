@@ -10,6 +10,7 @@ import { NbMenuModule,
   NbIconModule,
   NbPopoverModule,
   NbButtonModule} from '@nebular/theme';
+import { SharedTranslateModule } from '../../../shared-translate/shared-translate.module';
 
 @NgModule({
   declarations: [ProfileComponent],
@@ -21,6 +22,7 @@ import { NbMenuModule,
     NbIconModule,
     NbButtonModule,
     NbPopoverModule ,
+    SharedTranslateModule,
     ReactiveFormsModule
   ]
 })

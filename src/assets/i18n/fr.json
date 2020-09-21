@@ -21,6 +21,7 @@
     "Preset" : "Préréglé",
     "Notifications" : "Notifications",
     "Send" : "Enviar",
-    "Select Children": "Sélectionnez les enfants"
+    "Select Children": "Sélectionnez les enfants",
+    "success":"Succès"
 
 }

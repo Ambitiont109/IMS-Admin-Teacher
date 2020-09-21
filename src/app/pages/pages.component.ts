@@ -20,6 +20,7 @@ export class PagesComponent {
 
   menu;
   constructor(private translateService: TranslateService, private userService:UsersService) {
+    this.menu=[];
     this.userService.getCurrentUser().subscribe((user:User) => {
       if( user.role === USERROLE.Admin)
         this.menu = MENU_ITEMS;

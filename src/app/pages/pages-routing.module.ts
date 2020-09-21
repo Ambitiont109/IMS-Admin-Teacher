@@ -19,6 +19,7 @@ const routes: Routes = [
       { path: 'choose/classname', component:ChooseClassNameComponent},
       { path: 'children', loadChildren: () => import('./admin/children/children.module').then(m => m.ChildrenModule), canActivate:[ClassRoomGuard] },
       { path: 'profile', loadChildren: () => import('./admin/profile/profile.module').then(m => m.ProfileModule) },
+
       { 
         path: '', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), 
         canActivate:[RoleGuard],data: {role: USERROLE.Admin, ClassRoomGuard} 
@@ -29,11 +30,7 @@ const routes: Routes = [
       { path: '404', component:NotFoundComponent},
       { path: 'notallowed', component:NotAllowedComponent},
       { path: 'default', component:DefaultComponent}    
-      // {
-      //   path:'profile',
-      //   loadChildren: () => import('./profile/profile.module')
-      //     .then(m => m.ProfileModule),
-      // },
+
 
     ]
   },

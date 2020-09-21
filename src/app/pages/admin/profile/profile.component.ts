@@ -4,10 +4,9 @@ import { isInvalidControl } from "../../../@core/utils/form.util";
 import { User } from "../../../@core/models/user";
 import { UsersService } from "../../../@core/services/users.service";
 import { MustMatch } from "../../../@core/utils/validators.util";
-import { ENETDOWN } from 'constants';
 import { generateRandomPassword } from "../../../@core/utils/password.util";
-import { NbToastrService, NbPopoverDirective } from '@nebular/theme';
-import { DIR_DOCUMENT } from '@angular/cdk/bidi';
+import { NbToastrService } from '@nebular/theme';
+import { ToastService } from '../../../@core/services/toast.service';
 
 @Component({
   selector: 'ngx-profile',
@@ -17,20 +16,20 @@ import { DIR_DOCUMENT } from '@angular/cdk/bidi';
 export class ProfileComponent implements OnInit {
   profileForm: FormGroup;
   passwordForm:FormGroup;
+  errors:any;
   user:User;
   genereatedPwd:string;
-  constructor(private fb: FormBuilder, private userService:UsersService, private toastrService:NbToastrService) { }
+  constructor(private fb: FormBuilder, private userService:UsersService, private toastrService:ToastService) { }
 
   ngOnInit(): void {
     this.genereatedPwd = generateRandomPassword(12);
-    console.log(this.genereatedPwd)
-    
     this.profileForm = this.fb.group({
       first_name:['', Validators.required],
       last_name:['', Validators.required],
       email:['', [Validators.email, Validators.required]],
       username:['',Validators.required],
-      picture:['']
+      picture:[''],
+      pictureFile:['']
     });
     this.passwordForm = this.fb.group({
       current_pwd:['', Validators.required],
@@ -49,13 +48,56 @@ export class ProfileComponent implements OnInit {
   onProfileSubmit(){
     this.profileForm.markAllAsTouched();
     if(this.profileForm.valid){
-      alert(this.profileForm.value);
+      if(this.profileForm.value['picture'] == this.user.picture){
+        let data = Object.assign({}, this.profileForm.value)
+        data['picture']=undefined;
+        data['id'] = this.user.id;
+        this.userService.patchUser(data).subscribe(
+          _=>{this.toastrService.success('User Info updated Succesfully','success');},
+          err=>{
+            this.errors = err.error;
+            Object.keys(this.errors).forEach(key=>{
+              if(key!='picture')
+                this.profileForm.get(key).setErrors({hostError:true})
+            })  
+          }
+        )
+      }else{
+        let user:User = Object.assign(this.user, this.profileForm.value);
+        this.userService.updateUser(user, this.profileForm.get('pictureFile').value).subscribe(
+          _=>{
+            this.toastrService.success('User Info updated Succesfully','success');
+          },
+          err=>{
+            this.errors = err.error;
+            Object.keys(this.errors).forEach(key=>{
+              if(key!='picture')
+                this.profileForm.get(key).setErrors({hostError:true})
+            })              
+          }
+        )
+      }
+      
+      
+
     }
   }
   onPasswordSubmit(){
     this.passwordForm.markAllAsTouched();
     if(this.passwordForm.valid){
-      alert(this.passwordForm.value);
+      let new_pwd = this.passwordForm.value['pwd'];
+      let current_pwd = this.passwordForm.value['current_pwd']
+      this.userService.setCurrentUserPassword(new_pwd, current_pwd).subscribe(
+        data=>{
+          this.toastrService.success("Password has been changed successfully","success");
+        },
+        err=> {
+          this.errors = err.error;
+          if('current_pwd' in this.errors){
+            this.passwordForm.get('current_pwd').setErrors({'incorrect':true});
+          }
+        }
+      )
     }
   }
   setPassword(elem){
@@ -72,18 +114,13 @@ export class ProfileComponent implements OnInit {
       let reader = new FileReader();
 
       reader.onload = (event:any) => {
-        this.profileForm.get('picture').setValue(event.target.result);
-        
+        this.profileForm.get('picture').setValue(event.target.result);        
       }
+      this.profileForm.get('pictureFile').setValue(event.target.files[0]);
       reader.readAsDataURL(event.target.files[0]);
     }
   }
   get picture():string { return this.profileForm.get('picture').value}
   isInvalidControl = isInvalidControl;
-  // isInvalidControl(form:FormGroup, field_name:string){
-  //   console.log(form);
-  //   let res = invalid(form,field_name);
-  //   console.log(res);
-  //   return res;
-  // }
+
 }

@@ -29,18 +29,6 @@ export class LoginComponent implements OnInit {
     this.messages = [];    
     let user = this.user;
     this.submitted=true;
-    if(user.email == 'test@teacher.com'){
-      this.userService.setDummyCurrentUser('teacher')
-      localStorage.setItem('access_token', 'test token')
-      this.router.navigate(['/dashboard']);
-      
-    }
-    if(user.email == 'test@admin.com'){
-      this.userService.setDummyCurrentUser('admin')
-      localStorage.setItem('access_token', 'test token')
-      this.router.navigate(['/dashboard']);
-    }
-    return;
     this.service.login(user.email,user.password).subscribe((res:any) => {
       console.log(res);
       localStorage.setItem('access_token', res.token)

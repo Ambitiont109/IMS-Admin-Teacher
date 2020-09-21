@@ -14,7 +14,7 @@ export class AuthService {
   constructor(private httpClient:HttpClient, public router:Router) { }
   login(username,pwd) {
     var reqHeader = new HttpHeaders({ 'No-Auth':'True' });
-    return this.httpClient.post<any>(`${this.api_url}/login/`,{
+    return this.httpClient.post<any>(`${this.api_url}/user/login/`,{
       username:username,
       password:pwd
     }, {headers:reqHeader})
