@@ -7,6 +7,7 @@ import { user as dummy_user, users as dummyUsers, user, users } from "../dummy";
 import { map, tap } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { NbToastrService } from '@nebular/theme';
+import { NameOfClass } from '../models/child';
 
 export const unknown_picture="/assets/images/blank-profile.png";
 @Injectable({
@@ -41,7 +42,9 @@ export class UsersService {
   setCurrentUserPassword(new_pwd:string, old_pwd:string):Observable<any>{
     return this.httpClient.post(`${this.api_url}/user/set_my_password/`, {current_pwd:old_pwd, new_pwd:new_pwd})
   }
-
+  setUserPassword(userId:number, new_pwd:string):Observable<any>{
+    return this.httpClient.post(`${this.api_url}/user/${userId}/set_password/`,{new_pwd:new_pwd});
+  }
   getParents():Observable<User[]>{
     let ret_user = dummyUsers.filter((user:User)=>{
       return user.role == USERROLE.Parent;
@@ -49,10 +52,7 @@ export class UsersService {
     return of(ret_user);
   }
   getTeachers():Observable<User[]>{
-    let ret_user = dummyUsers.filter((user:User)=>{
-      return user.role == USERROLE.Teacher;
-    });
-    return of(ret_user);
+    return this.httpClient.get<User[]>(`${this.api_url}/user/?role=Teacher`);
   }
   getAdmins():Observable<User[]> {
     let ret_user = dummyUsers.filter((user:User)=>{
@@ -61,7 +61,7 @@ export class UsersService {
     return of(ret_user);
   }
   getAllUsers():Observable<User[]>{
-    return of(dummyUsers)
+    return this.httpClient.get<User[]>(`${this.api_url}/user/`);
   }
   updateUser(user:User, file):Observable<any>{
     const formData = new FormData();
@@ -72,16 +72,15 @@ export class UsersService {
     return this.httpClient.put(`${this.api_url}/user/${user.id}/`,formData);
   }
   patchUser(data):Observable<any>
-  {
+  {    
+    if('classNames' in data)
+      data['classnames']=JSON.stringify(data['classNames']);
     return this.httpClient.patch(`${this.api_url}/user/${data.id}/`,data);
   }
   deleteUser(userId:number):Observable<any> {
-    return of('')
+    return this.httpClient.delete(`${this.api_url}/user/${userId}/`);
   }
   getUserById(id:number):Observable<User>{
-    let findeduser = users.find((user:User) =>{
-      return user.id == id
-    })
-    return of(findeduser);
+    return this.httpClient.get<User>(`${this.api_url}/user/${id}/`);
   }
 }

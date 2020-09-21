@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { takeWhile } from 'rxjs/operators';
-import { forkJoin } from 'rxjs';
+import { takeUntil, takeWhile } from 'rxjs/operators';
+import { forkJoin, Subject } from 'rxjs';
 
 import { User, USERROLE } from "../../../@core/models/user";
 import { UsersService } from "../../../@core/services/users.service";
@@ -45,6 +45,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     },
   };
   searchWord:string;
+  private destroy$: Subject<void> = new Subject<void>();
 
 
   constructor(private userService: UsersService) {
@@ -53,24 +54,10 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
   
   ngOnInit(): void {
-    this.userService.getTeachers().subscribe((teachers:User[])=>{
+    this.userService.getTeachers().pipe(takeUntil(this.destroy$)).subscribe((teachers:User[])=>{
       this.teachers = teachers;
       this.teacher_src.load(this.teachers);
-    })
-
-    // this.userService.getAllUsers().subscribe((users:User[])=>{
-    //   users.forEach((user:User)=>{
-    //     if(user.role == USERROLE.Parent){
-    //       this.parents.push(user)
-    //     }
-    //     if(user.role == USERROLE.Teacher){
-    //       this.teachers.push(user)
-    //     }
-    //   })
-    //   this.teacher_src.load(this.teachers);
-    //   this.parent_src.load(this.parents);
-    // })
-    
+    })    
   }
   onSearchWordChange(newWord:string){
     this.searchWord = newWord;
@@ -82,6 +69,8 @@ export class UsersComponent implements OnInit, OnDestroy {
     }    
   }
   ngOnDestroy() {    
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

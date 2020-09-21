@@ -10,7 +10,8 @@ import {
   NbInputModule,
   NbIconModule,
   NbPopoverModule,
-  NbButtonModule} from '@nebular/theme';
+  NbButtonModule, NbCheckboxModule} from '@nebular/theme';
+import { SharedTranslateModule } from '../../../shared-translate/shared-translate.module';
 @NgModule({
   declarations: [UserDetailComponent],
   imports: [
@@ -18,8 +19,10 @@ import {
     UserDetailRoutingModule,
     NbCardModule,
     NbInputModule,
+    NbCheckboxModule,
     NbIconModule,
     NbButtonModule,
+    SharedTranslateModule,
     NbPopoverModule ,
     ReactiveFormsModule
   ]
