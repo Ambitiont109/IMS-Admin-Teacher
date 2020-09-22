@@ -1,7 +1,8 @@
 import { Component, OnInit, Inject  } from '@angular/core';
 import { NgxFileUploadStorage, NgxFileUploadFactory, NgxFileUploadOptions, NgxFileUploadRequest } from "@ngx-file-upload/core";
 import { Router, ActivatedRoute, } from '@angular/router';
-
+import { NgxDropzoneChangeEvent } from 'ngx-dropzone';
+import { environment } from "../../../../../environments/environment";
 @Component({
   selector: 'ngx-picture-add',
   templateUrl: './picture-add.component.html',
@@ -14,17 +15,29 @@ export class PictureAddComponent implements OnInit {
   public storage: NgxFileUploadStorage;
 
   private uploadOptions: NgxFileUploadOptions;
-
+  childId:number;
   constructor( @Inject(NgxFileUploadFactory) private uploadFactory: NgxFileUploadFactory, private router:Router, private route:ActivatedRoute) {
     this.storage = new NgxFileUploadStorage({
       concurrentUploads: 2,
       autoStart: false,
       removeCompleted: 1000 // remove completed after 5 seconds
     });
-    this.uploadOptions = {url: "http://localhost:3000/upload"};
+    this.uploadOptions = {
+      url: `${environment.API_URL}/child/${this.childId}/upload_picture/`,
+      formData: {
+        enabled:true,
+        name:'image'
+      }
+    };
   }
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(
+      params => {
+        this.childId = Number(params.get('childId'));
+        this.uploadOptions.url = `${environment.API_URL}/child/${this.childId}/upload_picture/`;
+      });
+
     this.storage.change()
     .subscribe(uploads => {
       this.uploads = uploads
@@ -48,6 +61,10 @@ export class PictureAddComponent implements OnInit {
 
   public onRemove(upload: NgxFileUploadRequest) {
     this.storage.remove(upload);
+  }
+  public onDropzoneChange(event:NgxDropzoneChangeEvent){
+    console.log(event);
+
   }
   back(){
     this.router.navigate(['..'],{relativeTo:this.route})

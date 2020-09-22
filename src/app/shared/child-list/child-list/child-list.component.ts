@@ -55,7 +55,8 @@ export class ChildListComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes:SimpleChanges){
     if('data' in changes){
-      this.parent_src.load(this.data);
+      if(this.data)
+        this.parent_src.load(this.data);
     }
   }
   onSearchWordChange(newWord:string){

@@ -10,6 +10,7 @@
         
             <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let upload of uploads"
                 (removed)="onRemove(upload)"
+                (change) = "onDropzoneChange($event)"
                 [file]="upload.data.raw"
                 [removable]="true">
                 <ngx-dropzone-label>

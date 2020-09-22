@@ -60,7 +60,8 @@ export class ChildSelectComponent implements OnInit, ControlValueAccessor, OnCha
   };
   ngOnChanges(changes:SimpleChanges){
     if('childs' in changes){
-      this.childs_src.load(this.childs);
+      if(this.childs)
+        this.childs_src.load(this.childs);
     }
   }
   onChange = (data: any) => {};
