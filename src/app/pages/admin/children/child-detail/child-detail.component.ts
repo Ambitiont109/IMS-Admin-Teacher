@@ -7,6 +7,7 @@ import { UsersService } from '../../../../@core/services/users.service';
 import { User, USERROLE } from '../../../../@core/models/user';
 import { NbDialogService } from '@nebular/theme';
 import { YesNoDialogComponent } from '../../../../components/yes-no-dialog/yes-no-dialog.component';
+import { group } from 'console';
 
 @Component({
   selector: 'ngx-child-detail',
@@ -47,8 +48,9 @@ export class ChildDetailComponent implements OnInit {
       title:'This child will be removed from sibling. Are you going to continue?'
     }}).onClose.subscribe(ret=>{
       if(ret==true)
-        this.childService.RemoveChildFromSibling(this.child).subscribe(_=>{
-
+        this.childService.RemoveChildFromSibling(this.child).subscribe( groupId=>{
+          this.child.sibling_group = groupId;
+          this.child.siblings=[];
         })
     })
   }
@@ -70,6 +72,8 @@ export class ChildDetailComponent implements OnInit {
       return this.child.photo? this.child.photo:'';
     return '';
   }
-
+  isAdmin(user:User){
+    return user.role == USERROLE.Admin;
+  }
 
 }

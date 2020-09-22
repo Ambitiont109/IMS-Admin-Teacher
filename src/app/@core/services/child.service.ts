@@ -70,17 +70,11 @@ export class ChildService {
   }
 
   AddSiblings(pchild:Child, siblings:Child[]):Observable<any>{
-    siblings.forEach(child=>{ 
-      let item:SiblingChild = {
-        id:child.id, first_name:child.first_name, last_name:child.last_name, parent:child.parent.id, photo:child.photo
-      }
-      console.log(item);
-      pchild.siblings.push(item);
-    })
-    return of('');
+
+    let children = siblings.map(item=>{return item.id});
+    return this.httpClient.post(`${this.api_url}/child/sibling/${pchild.sibling_group}/add/`,{children:children})
   }
   RemoveChildFromSibling(child:Child):Observable<any>{  // Have to change sibling Id to the blank sibling id.
-    child.siblings =[];
-    return of('')
+    return this.httpClient.post(`${this.api_url}/child/${child.id}/remove_from_sibling/`,{});
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef, forwardRef } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, forwardRef, OnChanges, SimpleChanges } from '@angular/core';
 import { NbDialogRef, NbDialogService } from '@nebular/theme';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { LocalDataSource } from 'ng2-smart-table';
@@ -11,14 +11,14 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'ngx-child-select',
   templateUrl: './child-select.component.html',
-  styleUrls: ['./child-select.component.scss'],
+  styleUrls: ['./child-select.component.scss'],  
   providers: [{
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => ChildSelectComponent),
     multi: true
  }]
 })
-export class ChildSelectComponent implements OnInit, ControlValueAccessor {
+export class ChildSelectComponent implements OnInit, ControlValueAccessor, OnChanges {
 
   @Input() childs: Child[];
   @Input('value') initValue: any;
@@ -58,7 +58,11 @@ export class ChildSelectComponent implements OnInit, ControlValueAccessor {
       },
     },
   };
-
+  ngOnChanges(changes:SimpleChanges){
+    if('childs' in changes){
+      this.childs_src.load(this.childs);
+    }
+  }
   onChange = (data: any) => {};
   onTouched = () => {};
   constructor(private dialogService:NbDialogService) { 
@@ -97,7 +101,6 @@ export class ChildSelectComponent implements OnInit, ControlValueAccessor {
 
         this.selectedChilds.push(event.data);
       }
-      console.log(this.selectedChilds);
       this.onChange(this.selectedChilds);
     } 
     else

@@ -145,7 +145,7 @@
                     </nb-card-body>
                 </nb-card>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" *ngIf="isAdmin(currentUser)">
                 <!-- Siblings -->
                 <nb-card>
                     <nb-card-header>
@@ -154,7 +154,7 @@
                         <button *ngIf="child?.siblings.length > 1  && !isTeacher()" nbTooltip="Remove From Sibling"  nbButton ghost (click)="onRemoveSiblingClick()"> <nb-icon icon="minus-outline"  style="color: white;">minus-outline</nb-icon> </button>
                     </nb-card-header>
                     <nb-card-body>
-                        <ng-container *ngIf="child?.siblings.length <= 1; else siblings">
+                        <ng-container *ngIf="child?.siblings.length == 0; else siblings">
                             Empty
                         </ng-container>
                         <ng-template #siblings>

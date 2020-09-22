@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Child } from "../../../@core/models/child";
 import { LocalDataSource } from 'ng2-smart-table';
 import { ChildCellComponent } from "../child-cell/child-cell.component";
@@ -7,7 +7,7 @@ import { ChildCellComponent } from "../child-cell/child-cell.component";
   templateUrl: './child-list.component.html',
   styleUrls: ['./child-list.component.scss']
 })
-export class ChildListComponent implements OnInit {
+export class ChildListComponent implements OnInit, OnChanges {
 
   @Input() data;
   @Output('onselect') onSelectEvent = new EventEmitter();
@@ -48,10 +48,14 @@ export class ChildListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.data);
     if(this.data){
       this.parents = this.data;
       this.parent_src.load(this.parents);
+    }
+  }
+  ngOnChanges(changes:SimpleChanges){
+    if('data' in changes){
+      this.parent_src.load(this.data);
     }
   }
   onSearchWordChange(newWord:string){
@@ -65,7 +69,6 @@ export class ChildListComponent implements OnInit {
   }
   onRowSelect(event) {
     let selected_user:Child = event.data;
-    console.log(selected_user) 
     this.onSelectEvent.emit(selected_user);
   } 
 

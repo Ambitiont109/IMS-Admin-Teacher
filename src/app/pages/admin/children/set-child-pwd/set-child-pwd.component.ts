@@ -8,7 +8,8 @@ import { ChildService } from '../../../../@core/services/child.service';
 import { MustMatch } from '../../../../@core/utils/validators.util';
 import { generateRandomPassword } from "../../../../@core/utils/password.util";
 import { isInvalidControl } from '../../../../@core/utils/form.util';
-import { NbToastrService } from '@nebular/theme';
+import { ToastService } from '../../../../@core/services/toast.service';
+import { UsersService } from '../../../../@core/services/users.service';
 
 @Component({
   selector: 'ngx-set-child-pwd',
@@ -22,13 +23,15 @@ export class SetChildPWDComponent implements OnInit {
 
   childId:number;
   child:Child;
+  errors:any;
   constructor(
     private fb:FormBuilder,
     private childService:ChildService,
+    private userService:UsersService,
     private route:ActivatedRoute,
     private router:Router,
     private location:Location,
-    private toastrService:NbToastrService
+    private toastrService:ToastService
     ) { 
       this.form = this.fb.group({
         username:['',Validators.required],        
@@ -55,11 +58,31 @@ export class SetChildPWDComponent implements OnInit {
     })
   }
   onFormSubmit(){
-
+    this.form.markAllAsTouched();
+    if(this.form.valid){
+      let data ={}
+      data['id'] = this.child.parent.id;
+      data['username'] = this.form.value['username'];
+      this.userService.patchUser(data).toPromise().then(_=>{
+        this.toastrService.success('Username has been updated succesfully','success');
+      }).catch(err=>{
+        this.form.get('username').setErrors({hostError:true});
+        this.errors = err.error;
+      })
+    }
   }
   onPasswordSubmit(){
     this.passwordForm.markAllAsTouched();
     if(this.passwordForm.valid){
+      let new_pwd = this.passwordForm.value['pwd'];
+      this.userService.setUserPassword(this.child.parent.id, new_pwd).subscribe(
+        data=>{
+          this.toastrService.success("Password has been changed successfully","success");
+        },
+        err=> {
+          this.toastrService.warning(err.error,"Error");
+        }
+      )
       alert(this.passwordForm.value);
     }
   }

@@ -43,7 +43,7 @@ export class AddSiblingComponent implements OnInit {
           }
         
         return newData;
-      }, []);    
+      }, []);
       console.log(this.children)  
     })
   }

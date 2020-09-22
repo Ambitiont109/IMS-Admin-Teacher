@@ -51,6 +51,7 @@ export interface Child{
     allgeries?:string,
     food_restriction?:string,
     health_issue?:string,
+    sibling_group?:number
     
 }
 export interface InjureRecord{

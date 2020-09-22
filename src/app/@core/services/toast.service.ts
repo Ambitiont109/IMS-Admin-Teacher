@@ -41,4 +41,14 @@ export class ToastService {
       this.toastrService.info(data.msg, data.title)
     })
   }
+  warning(message, title){
+    forkJoin(
+      {
+        msg:this.translateService.get(message),
+        title: this.translateService.get(title)
+      }
+    ).subscribe(data=>{
+      this.toastrService.warning(data.msg, data.title)
+    })
+  }
 }
