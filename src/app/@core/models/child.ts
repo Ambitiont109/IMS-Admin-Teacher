@@ -7,10 +7,7 @@ export enum NameOfClass{
     Bamboo = 'Bamboo',
     Acajou = 'Acajou'
 }
-export interface Room {
-    id:number,
-    name:string,
-}
+
 export interface EmergencyContact {
     name:string,
     email:string,
@@ -31,6 +28,7 @@ export interface SiblingChild{
 }
 export interface Child{
     id:number;
+    photo?:string;
     parent:User;
     siblings:SiblingChild[];
     first_name:string;
@@ -53,7 +51,7 @@ export interface Child{
     allgeries?:string,
     food_restriction?:string,
     health_issue?:string,
-    photo?:string;
+    
 }
 export interface InjureRecord{
     id:number,

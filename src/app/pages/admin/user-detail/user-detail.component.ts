@@ -144,18 +144,23 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     }
   }
   classroomChange(checked:boolean, name:NameOfClass){
+    console.log(checked,name);
     if(this.user.role != USERROLE.Teacher) return;
     if(!this.user.classNames) this.user.classNames=[];
     
     if(!this.user.classNames.includes(name))
     {
       if(checked) this.user.classNames.push(name);  
-      else this.user.classNames.reduce((item1:any[], item2)=>{ 
-        if (item2 != name )
-          item1.push(item2)
-        return item1;
-      },[])
+    }else{
+      if(!checked){
+        this.user.classNames= this.user.classNames.reduce((item1:any[], item2)=>{ 
+          if (item2 != name )
+            item1.push(item2)
+          return item1;
+        },[])
+      }
     }
+    console.log(this.user.classNames)
   }
   get picture():string { 
     if(!this.profileForm.get('picture').value)

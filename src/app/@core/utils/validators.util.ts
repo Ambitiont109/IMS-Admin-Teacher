@@ -1,4 +1,4 @@
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 import * as moment from 'moment'
 export function MustMatch(controlName: string, matchingControlName: string) {
     return (formGroup: FormGroup) => {
@@ -39,3 +39,21 @@ export function MustAfter(controlName: string, matchingControlName: string) {
         }
     }
 }
+
+export function AtleastOneValidator(arr:FormArray){
+    let validCount = 0;
+    arr.controls.forEach((form:FormGroup)=>{
+      
+      if(!form.invalid){
+        let isFormBlank = false;
+        Object.keys(form.controls).forEach(key => {
+          if(form.get(key).value == '' && key !='photo' && key !='photoSource'){
+            isFormBlank = true;          
+          }
+        });
+        if(!isFormBlank) validCount++;
+      }
+        
+    })
+    return validCount >= 1 ? {atLeastOne:false} : {atLeastOne:true}
+  }

@@ -5,7 +5,7 @@
         </div>
     </nb-card-header>
     <nb-card-body>
-        <ngx-child-list [data]="children" (onselect)="onSelect($event)"></ngx-child-list>
+        <ngx-child-list [data]="children" (onselect)="onSelect($event)" *ngIf="children?.length >0"></ngx-child-list>
     </nb-card-body>
 </nb-card>
 

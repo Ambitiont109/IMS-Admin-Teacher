@@ -30,6 +30,7 @@ export class ToastService {
       this.toastrService.show(data.msg, data.title)
     })
   }
+  
   info(message, title){
     forkJoin(
       {

@@ -5,6 +5,7 @@ import { Observable, of, BehaviorSubject } from 'rxjs';
 import { User } from '../models/user';
 import { children, childDailyInformations } from "../dummy";
 import { find } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,11 +13,16 @@ export class ChildService {
   api_url = environment.API_URL;
   private current_class_name: NameOfClass;
   public currentClassNameSubject:BehaviorSubject<NameOfClass>;
-  constructor() {
+  constructor(private httpClient:HttpClient) {
     this.currentClassNameSubject = new BehaviorSubject<NameOfClass>(undefined);
    }
   get classNameList():any[]{
     return Object.keys(NameOfClass).map( item => NameOfClass[item]);
+  }
+
+  addNewChild(child:Child):Observable<any>{
+    return of('')
+
   }
   isChildToddler(child:Child):boolean{
     if (child.nameOfClass == NameOfClass.Bamboo || child.nameOfClass == NameOfClass.Iroko)
@@ -24,19 +30,17 @@ export class ChildService {
     return false;
   }
   getChildrenByClassName(className:NameOfClass):Observable<Child[]>{
-    let ret = children.filter((item:Child)=>{
-      return (item.nameOfClass == className)
-    })
-    return of(ret)
+    return this.httpClient.get<Child[]>(`${this.api_url}/child?nameOfClass=${className}`);
   }
   getAllChildren():Observable<Child[]>{ // Return All Children without considering current Classroom
-    return of(children)
+    return this.httpClient.get<Child[]>(`${this.api_url}/child/`);
   }
   getChildsOfTeacher(teacher:User):Observable<any>{    
     return of(children);
   }
-  getChildById(childId:number):Observable<Child>{
-    return of(children[childId-1]);
+  getChildById(childId:number):Observable<Child>{    
+    return this.httpClient.get<Child>(`${this.api_url}/child/${childId}/`);
+    // return of(children[childId-1]);
   }
   createChildDailyInformation(childDailyInformation:ChildDailyInformation):Observable<any>{
     childDailyInformations.push(childDailyInformation);

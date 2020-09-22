@@ -22,7 +22,7 @@ const routes: Routes = [
 
       { 
         path: '', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), 
-        canActivate:[RoleGuard],data: {role: USERROLE.Admin, ClassRoomGuard} 
+        canActivate:[RoleGuard,ClassRoomGuard],data: {role: USERROLE.Admin} 
       },      
       { path: 'teacher', loadChildren: () => import('./teacher/teacher.module').then(m => m.TeacherModule), 
         canActivate:[RoleGuard, ClassRoomGuard],data: {role: USERROLE.Teacher} 

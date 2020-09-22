@@ -65,5 +65,11 @@ export class ChildDetailComponent implements OnInit {
   isTeacher(){
     return this.currentUser.role == USERROLE.Teacher;
   }
+  getPhotoOfChild(){
+    if(this.child)
+      return this.child.photo? this.child.photo:'';
+    return '';
+  }
+
 
 }

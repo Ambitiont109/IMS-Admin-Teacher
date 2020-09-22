@@ -16,7 +16,6 @@ import { AppointmentPresetEditComponent } from './appointment-preset-edit/appoin
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppointmentCreateComponent } from './appointment-create/appointment-create.component';
-import { StartPresetComponent } from './start-preset/start-preset.component';
 import { PresetComponent } from './preset/preset.component';
 import { PresetSlotItemComponent } from './preset-slot-item/preset-slot-item.component';
 import { AppointmentPresetCreateComponent } from './appointment-preset-create/appointment-preset-create.component';
@@ -29,7 +28,7 @@ export function momentAdapterFactory() {
 
 
 @NgModule({
-  declarations: [AppointmentsComponent, AppointmentDetailComponent, CalendarHeaderComponent, AppointmentEditComponent, AppointmentPresetEditComponent, AppointmentCreateComponent, StartPresetComponent, PresetComponent, PresetSlotItemComponent, AppointmentPresetCreateComponent],
+  declarations: [AppointmentsComponent, AppointmentDetailComponent, CalendarHeaderComponent, AppointmentEditComponent, AppointmentPresetEditComponent, AppointmentCreateComponent, PresetComponent, PresetSlotItemComponent, AppointmentPresetCreateComponent],
   imports: [
     CommonModule,
     

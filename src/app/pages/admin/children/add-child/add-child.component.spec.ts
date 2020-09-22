@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StartPresetComponent } from './start-preset.component';
+import { AddChildComponent } from './add-child.component';
 
-describe('StartPresetComponent', () => {
-  let component: StartPresetComponent;
-  let fixture: ComponentFixture<StartPresetComponent>;
+describe('AddChildComponent', () => {
+  let component: AddChildComponent;
+  let fixture: ComponentFixture<AddChildComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StartPresetComponent ]
+      declarations: [ AddChildComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StartPresetComponent);
+    fixture = TestBed.createComponent(AddChildComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
