@@ -5,6 +5,7 @@ import { UsersService } from "../../../../@core/services/users.service";
 import { ViewCell } from 'ng2-smart-table';
 import { User } from '../../../../@core/models/user';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { ToastService } from '../../../../@core/services/toast.service';
 @Component({
   selector: 'ngx-cell-avatar',
   templateUrl: './cell-avatar.component.html',
@@ -17,6 +18,7 @@ export class CellAvatarComponent implements ViewCell, OnInit {
   
   constructor(private dialogService: NbDialogService, 
               private userSerivce:UsersService,
+              private toastService:ToastService,
               private router:Router) { }
 
   ngOnInit(): void {
@@ -30,7 +32,10 @@ export class CellAvatarComponent implements ViewCell, OnInit {
     }}).onClose.subscribe(ret=>{
       if(ret==true){
         this.userSerivce.deleteUser(this.rowData.id).subscribe(res=>{
-          console.log("Delete", res);
+          if(this.userSerivce.localSource){
+            this.userSerivce.localSource.remove(this.rowData);
+          }
+          this.toastService.info("User has been deleted", "success");
         })
       }
     })

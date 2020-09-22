@@ -26,6 +26,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   user: User;
   currentClassName:NameOfClass;
   private classNameSubscription:Subscription;
+  private currentUserSubscription:Subscription;
   selectedCountryCode = 'gb';
   countryCodes = ['gb', 'fr'];
   
@@ -72,6 +73,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.classNameSubscription = this.childService.currentClassNameSubject.subscribe(name=>{
       this.currentClassName = name;
     });
+    this.currentUserSubscription = this.userService.currentUserSubject.subscribe(user=>{
+      this.user = user;
+    })
     this.currentClassName = this.childService.getCurrentClassName();
     this.userService.getCurrentUser().subscribe((user:User)=>{
       if(user.role == USERROLE.Admin)
@@ -104,6 +108,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
     this.classNameSubscription.unsubscribe();
+    this.currentUserSubscription.unsubscribe();
   }
 
   navigateToChooseName(){

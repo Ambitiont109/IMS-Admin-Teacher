@@ -8,6 +8,7 @@ import { NbToastrService } from '@nebular/theme';
 import { User, USERROLE } from '../../../../@core/models/user';
 import { MustMatch } from '../../../../@core/utils/validators.util';
 import { generateRandomPassword } from '../../../../@core/utils/password.util';
+import { ToastService } from '../../../../@core/services/toast.service';
 
 @Component({
   selector: 'ngx-add-user',
@@ -20,7 +21,8 @@ export class AddUserComponent implements OnInit {
   user:User;
   profileForm: FormGroup;
   genereatedPwd:string;
-  constructor(private route:ActivatedRoute,private fb: FormBuilder, private userService:UsersService, private toastrService:NbToastrService) { 
+  errors;
+  constructor(private route:ActivatedRoute,private fb: FormBuilder, private userService:UsersService, private toastrService:ToastService) { 
     this.genereatedPwd = generateRandomPassword(12);
     this.profileForm = this.fb.group({
       first_name:['', Validators.required],
@@ -28,7 +30,8 @@ export class AddUserComponent implements OnInit {
       email:['', [Validators.email, Validators.required]],
       username:['',Validators.required],
       role:['', Validators.required],
-      picture:[''],
+      picture:[undefined],
+      pictureFile:[undefined],
       pwd:['', Validators.required],
       confirm_pwd:['']
     },{ validators:[MustMatch('pwd', 'confirm_pwd')] });
@@ -53,21 +56,35 @@ export class AddUserComponent implements OnInit {
       let reader = new FileReader();
 
       reader.onload = (event:any) => {
-        this.profileForm.get('picture').setValue(event.target.result);
-        
+        this.profileForm.get('picture').setValue(event.target.result);        
       }
+      this.profileForm.get('pictureFile').setValue(event.tareget.files[0]);
       reader.readAsDataURL(event.target.files[0]);
     }
   }
   onFormSubmit(){
     this.profileForm.markAllAsTouched();
     if(this.profileForm.valid){
-      this.userService.AddUser(this.profileForm.value).subscribe(_=>{
-        this.toastrService.success('New User Added','Success');
-      })
+      let data =this.profileForm.value;
+      data['password'] = this.profileForm.value['pwd'];
+      this.userService.AddUser(data).subscribe(
+        _=>{
+          this.toastrService.success('New User Added','Success');
+        },
+        err=>{
+          this.errors = err.error;
+          Object.keys(this.errors).forEach(key=>{
+            this.profileForm.get(key).setErrors({hostError:true});
+          })
+        }
+      )
     }
   }
-  get picture():string { return this.profileForm.get('picture').value}
+  get picture():string { 
+    if(!this.profileForm.get('picture').value)
+      return '';
+    return this.profileForm.get('picture').value;
+  }
 
   get roleList(){
     let ret =[];

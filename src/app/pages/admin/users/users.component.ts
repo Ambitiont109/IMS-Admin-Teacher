@@ -51,12 +51,14 @@ export class UsersComponent implements OnInit, OnDestroy {
   constructor(private userService: UsersService) {
     this.teacher_src = new LocalDataSource();
     this.parent_src = new LocalDataSource();
+    
   }
   
   ngOnInit(): void {
     this.userService.getTeachers().pipe(takeUntil(this.destroy$)).subscribe((teachers:User[])=>{
       this.teachers = teachers;
       this.teacher_src.load(this.teachers);
+      this.userService.localSource = this.teacher_src;
     })    
   }
   onSearchWordChange(newWord:string){
@@ -69,6 +71,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     }    
   }
   ngOnDestroy() {    
+    this.userService.localSource = undefined;
     this.destroy$.next();
     this.destroy$.complete();
   }

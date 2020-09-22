@@ -39,6 +39,7 @@
                         <div *ngIf="isInvalidControl(profileForm,'email')">
                             <span class="error-text" *ngIf="profileForm.get('email').errors.required">required</span>
                             <span class="error-text" *ngIf="profileForm.get('email').errors.email">Incorrect Email Address</span>
+                            <span class="error-text" *ngIf="profileForm.get('email').errors.hostError">{{errors['email'][0] | translate}}</span>
                         </div>
                       </div>
 
@@ -48,6 +49,7 @@
                         <input nbInput type="text" placeholder="UserID" [status]="isInvalidControl(profileForm,'username')?'danger':'basic'" fullWidth formControlName="username">
                         <div *ngIf="isInvalidControl(profileForm,'username')">
                             <span class="error-text" *ngIf="profileForm.get('username').errors.required">required</span>
+                            <span class="error-text" *ngIf="profileForm.get('username').errors.hostError">{{errors['username'][0] | translate}}</span>
                         </div>
                       </div>
                       <div class="form-group">
@@ -70,8 +72,8 @@
                         <ng-template #card>
                             <button nbButton ghost style="min-width:300px; text-transform: none;" (click)="setPassword(input_copy)"> 
                                 <span style="margin-right: auto;">{{genereatedPwd}} </span> <span>Suggested </span>
-                                <input type="text" disabled style="opacity: 0; position: absolute;" value="{{genereatedPwd}}" #input_copy>
-                            </button>                            
+                                <input type="text" style="opacity: 0;left: 0; top: 0; position: absolute;" value="{{genereatedPwd}}" #input_copy>
+                            </button>
                           </ng-template>
 
                         <ng-template #templateRef>                            

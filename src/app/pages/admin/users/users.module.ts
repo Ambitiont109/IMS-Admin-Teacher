@@ -18,6 +18,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CellAvatarComponent } from './cell-avatar/cell-avatar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddUserComponent  } from './add-user/add-user.component';
+import { SharedTranslateModule } from '../../../shared-translate/shared-translate.module';
 
 @NgModule({
   declarations: [UsersComponent, CellAvatarComponent,AddUserComponent],
@@ -36,6 +37,7 @@ import { AddUserComponent  } from './add-user/add-user.component';
     NbSelectModule,
     NbPopoverModule ,
     FormsModule,
+    SharedTranslateModule,
     ReactiveFormsModule
   ]
 })

@@ -5,9 +5,7 @@ import { environment } from "../../../environments/environment";
 import { Observable, of, BehaviorSubject, forkJoin } from 'rxjs';
 import { user as dummy_user, users as dummyUsers, user, users } from "../dummy";
 import { map, tap } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
-import { NbToastrService } from '@nebular/theme';
-import { NameOfClass } from '../models/child';
+import { LocalDataSource } from 'ng2-smart-table';
 
 export const unknown_picture="/assets/images/blank-profile.png";
 @Injectable({
@@ -16,6 +14,8 @@ export const unknown_picture="/assets/images/blank-profile.png";
 export class UsersService {
   api_url = environment.API_URL;  
   public current_user: User;
+  public currentUserSubject:BehaviorSubject<User> = new BehaviorSubject<User>(undefined);
+  public localSource:LocalDataSource;
   constructor(private httpClient:HttpClient) { 
   }
   setDummyCurrentUser(type){
@@ -35,7 +35,7 @@ export class UsersService {
       return of(this.current_user)
     } else{
       return this.httpClient.get(`${this.api_url}/user/current_user`).pipe(        
-        map((user:User)=> {this.current_user = user; return user;})
+        map((user:User)=> {this.current_user = user; this.currentUserSubject.next(this.current_user); return user;})
       )
     }
   }
@@ -69,13 +69,21 @@ export class UsersService {
       formData.append(key, user[key]);
     })
     formData.set('picture', file);
-    return this.httpClient.put(`${this.api_url}/user/${user.id}/`,formData);
+    return this.httpClient.put(`${this.api_url}/user/${user.id}/`,formData).pipe(tap((data:User)=>{
+      if(this.current_user.id == data.id)
+        this.current_user = data;
+        this.currentUserSubject.next(this.current_user);
+    }));
   }
   patchUser(data):Observable<any>
   {    
     if('classNames' in data)
       data['classnames']=JSON.stringify(data['classNames']);
-    return this.httpClient.patch(`${this.api_url}/user/${data.id}/`,data);
+    return this.httpClient.patch(`${this.api_url}/user/${data.id}/`,data).pipe(tap((data:User)=>{
+      if(this.current_user.id == data.id)
+        this.current_user = data;
+        this.currentUserSubject.next(this.current_user);
+    }));
   }
   deleteUser(userId:number):Observable<any> {
     return this.httpClient.delete(`${this.api_url}/user/${userId}/`);

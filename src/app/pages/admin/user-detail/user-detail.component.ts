@@ -157,7 +157,11 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       },[])
     }
   }
-  get picture():string { return this.profileForm.get('picture').value}
+  get picture():string { 
+    if(!this.profileForm.get('picture').value)
+      return '';
+    return this.profileForm.get('picture').value
+  }
   isInvalidControl = isInvalidControl;
   ngOnDestroy() {    
     this.destroy$.next();
