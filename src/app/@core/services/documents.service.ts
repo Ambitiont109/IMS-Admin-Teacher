@@ -13,6 +13,9 @@ export class DocumentsService {
   }
 
   getDocuments():Observable<Document[]>{
-    return of(documents)
+    return this.httpClient.get<Document[]>(`${this.api_url}/schooldocuments/`);
+  }
+  deleteDocument(documentId):Observable<any>{
+    return this.httpClient.delete(`${this.api_url}/schooldocuments/${documentId}`);
   }
 }

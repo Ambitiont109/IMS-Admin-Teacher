@@ -10,6 +10,7 @@ import { NgxFileUploadUiProgressbarModule, NgxFileUploadUiCommonModule, NgxFileU
 import { ChildListModule } from '../../../shared/child-list/child-list.module';
 import { NbCardModule, NbButtonModule, NbIconModule, NbTooltipModule, NbUserModule } from '@nebular/theme';
 import { PictureAddComponent } from './picture-add/picture-add.component';
+import { SharedTranslateModule } from '../../../shared-translate/shared-translate.module';
 
 @NgModule({
   declarations: [PicturesComponent, PictureListComponent, PictureAddComponent],
@@ -23,7 +24,7 @@ import { PictureAddComponent } from './picture-add/picture-add.component';
     NbTooltipModule,
     NbCardModule,
     NbUserModule,
-    
+    SharedTranslateModule,
     NgxDropzoneModule,
     /**
      * !notice required import of NgxFileUploadCoreModule only in root of app

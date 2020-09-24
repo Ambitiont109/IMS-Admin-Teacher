@@ -5,7 +5,7 @@
         <nb-card>
             <nb-card-header>
                 <div class="d-flex align-items-center">
-                    School Documents 
+                    {{'School Documents ' | translate}}
                     <div class="ml-4">
                         <button nbTooltip="Add Documents" nbTooltipStatus="primary" nbButton ghost (click)="isAdd=true">
                             <nb-icon icon="file-add"  style="color: #aebcd8;"></nb-icon>
@@ -23,7 +23,7 @@
                                 <nb-list>
                                     <nb-list-item class="contact" *ngFor="let d of forClassroomDocuments">
                                         <a href="{{d.url}}" target="_blank"> {{d.name}}</a>   
-                                        <button nbTooltip="Remove Documents" nbTooltipStatus="primary" nbButton ghost>
+                                        <button nbTooltip="{{'Remove Documents' | translate}}" (click)="removeDocument(d)" nbTooltipStatus="primary" nbButton ghost>
                                             <nb-icon icon="file-remove"  style="color: #aebcd8;"></nb-icon>
                                         </button>           
                                     </nb-list-item>  
@@ -38,7 +38,7 @@
                                 <nb-list>
                                     <nb-list-item class="contact" *ngFor="let d of forAllDocuments">
                                         <a href="{{d.url}}" target="_blank"> {{d.name}}</a>   
-                                        <button nbTooltip="Remove Documents" nbTooltipStatus="primary" nbButton ghost>
+                                        <button nbTooltip="{{'Remove Documents' | translate}}" (click)="removeDocument(d)" nbTooltipStatus="primary" nbButton ghost>
                                             <nb-icon icon="file-remove"  style="color: #aebcd8;"></nb-icon>
                                         </button>           
                                     </nb-list-item>  
@@ -56,12 +56,12 @@
             <nb-card-header>
                 <div class="d-flex align-items-center">
                     <button nbTooltip="Back"  nbButton ghost (click)="isAdd=false"> <nb-icon icon="arrow-back-outline"  style="color: white;">arrow-back-outline</nb-icon> </button>
-                    Add School Documents 
+                    {{'Add School Documents' | translate}}
 
                 </div>
             </nb-card-header>
             <nb-card-body >
-                <ngx-add-document></ngx-add-document>
+                <ngx-add-document (onUploaded)="onUploaded($event)"></ngx-add-document>
             </nb-card-body>
         </nb-card> 
         

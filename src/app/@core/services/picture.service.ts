@@ -15,16 +15,17 @@ export class PictureService {
   constructor(private httpClient:HttpClient) { 
   }
 
-  getPicturesOfChild(childId:number):Observable<any>{
-    let data:ChildPicture={
-      child:undefined,
-      pictures:[]
-    };
+  getPicturesOfChild(childId:number):Observable<ChildPicture>{
+    return this.httpClient.get<ChildPicture>(`${this.api_url}/child/${childId}/pictures/`);
+    // let data:ChildPicture={
+    //   child:undefined,
+    //   pictures:[]
+    // };
     
-    data.child = children.find((child:Child) =>{
-      return child.id == childId;
-    })
-    data.pictures = pictures;
-    return of(data);
+    // data.child = children.find((child:Child) =>{
+    //   return child.id == childId;
+    // })
+    // data.pictures = pictures;
+    // return of(data);
   }
 }

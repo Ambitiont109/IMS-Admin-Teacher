@@ -1,10 +1,11 @@
 export enum DocumentFor {
-    Classroom='classroom',
-    All = 'all'
+    Classroom='Classroom',
+    All = 'All'
 
 }
 export interface Document{
+    id:number,
     name:string,
     url:string,
-    for:DocumentFor
+    documentfor:DocumentFor
 }

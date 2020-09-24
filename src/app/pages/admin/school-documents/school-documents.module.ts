@@ -8,6 +8,8 @@ import { AddDocumentComponent } from './add-document/add-document.component';
 import { NgxFileUploadUiProgressbarModule, NgxFileUploadUiCommonModule, NgxFileUploadUiFileBrowserModule, NgxFileUploadUiModule } from '@ngx-file-upload/ui';
 import { NgxFileUploadCoreModule } from '@ngx-file-upload/core';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { FormsModule } from '@angular/forms';
+import { SharedTranslateModule } from '../../../shared-translate/shared-translate.module';
 
 
 @NgModule({
@@ -27,8 +29,8 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     NgxFileUploadUiFileBrowserModule,
     NgxFileUploadCoreModule,
     NgxDropzoneModule,
-    NgxFileUploadUiModule
-    
+    NgxFileUploadUiModule,
+    SharedTranslateModule,
   ]
 })
 export class SchoolDocumentsModule { }

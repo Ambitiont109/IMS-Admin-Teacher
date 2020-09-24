@@ -34,7 +34,7 @@ export class PictureListComponent implements OnInit {
       this._album=[]
       this.pictures.forEach(item=>{
         
-        this._album.push({src:item.url});
+        this._album.push({src:item.image});
       })     
     })
   }

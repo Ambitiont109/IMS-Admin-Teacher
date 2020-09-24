@@ -2,7 +2,7 @@ import { User } from './user';
 import { Child } from './child';
 
 export interface Picture{
-    url:string;
+    image:string;
 }
 export interface ChildPicture{
     child:Child;

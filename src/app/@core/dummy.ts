@@ -40,20 +40,20 @@ export let children:Child[]=[
 
 export let user:User=users[1];
 export let pictures:Picture[] =[
-    {url:'assets/images/childs/img-sandwitch.png'},
-    {url:'assets/images/childs/img-select.png'},
-    {url:'assets/images/childs/img-select2.png'},
-    {url:'assets/images/childs/img-select3.png'},
-    {url:'assets/images/childs/img-select4.png'},
-    {url:'assets/images/childs/img-mangojuice.png'}
+    {image:'assets/images/childs/img-sandwitch.png'},
+    {image:'assets/images/childs/img-select.png'},
+    {image:'assets/images/childs/img-select2.png'},
+    {image:'assets/images/childs/img-select3.png'},
+    {image:'assets/images/childs/img-select4.png'},
+    {image:'assets/images/childs/img-mangojuice.png'}
 ]
 export let documents:Document[] =[
-    {name:'School Calendar', url:"https://www.google.com", for:DocumentFor.All},
-    {name:'Routine of the Day', url:"https://www.google.com", for:DocumentFor.Classroom},    
-    {name:'School Menu', url:"https://www.google.com", for:DocumentFor.All},
-    {name:'Routine supplies to buy', url:"https://www.google.com", for:DocumentFor.Classroom},    
-    {name:'Rule Book', url:"https://www.google.com", for:DocumentFor.Classroom},
-    {name:'Our Documents', url:"https://www.google.com", for:DocumentFor.All}
+    { id:0, name:'School Calendar', url:"https://www.google.com", documentfor:DocumentFor.All},
+    { id:1, name:'Routine of the Day', url:"https://www.google.com", documentfor:DocumentFor.Classroom},    
+    { id:2, name:'School Menu', url:"https://www.google.com", documentfor:DocumentFor.All},
+    { id:3, name:'Routine supplies to buy', url:"https://www.google.com", documentfor:DocumentFor.Classroom},    
+    { id:4, name:'Rule Book', url:"https://www.google.com", documentfor:DocumentFor.Classroom},
+    { id:5, name:'Our Documents', url:"https://www.google.com", documentfor:DocumentFor.All}
 ]
 export let messages:Message[] = [
     {   
@@ -265,9 +265,9 @@ export let miniClubs:MiniClub[]=[
 ];
 
 export let books:ExchangeLibrary[]=[
-  {id:0, title:'Hello Book', picture:pictures[0].url,status:BookStatus.PRESENT},
-  {id:1, title:'Test Book', picture:pictures[0].url,status:BookStatus.PRESENT},
-  {id:2, title:'Thank You Book', picture:pictures[0].url,status:BookStatus.RENTED, child:children[0]},
-  {id:3, title:'God Book', picture:pictures[0].url,status:BookStatus.PRESENT}
+  {id:0, title:'Hello Book', picture:pictures[0].image,status:BookStatus.PRESENT},
+  {id:1, title:'Test Book', picture:pictures[0].image,status:BookStatus.PRESENT},
+  {id:2, title:'Thank You Book', picture:pictures[0].image,status:BookStatus.RENTED, child:children[0]},
+  {id:3, title:'God Book', picture:pictures[0].image,status:BookStatus.PRESENT}
 
 ]
