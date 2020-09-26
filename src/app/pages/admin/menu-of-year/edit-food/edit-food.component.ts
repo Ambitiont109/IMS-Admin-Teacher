@@ -39,7 +39,7 @@ export class EditFoodComponent implements OnInit {
   onFoodSubmit($event){
     console.log($event);
     $event.id = this.foodId;
-    this.mealMenuService.updateFood($event).subscribe( _ =>{
+    this.mealMenuService.updateFood($event,$event.pictureFile).subscribe( _ =>{
       this.toastrService.success('Food has been Updated',"Success");
       this.back();
     });

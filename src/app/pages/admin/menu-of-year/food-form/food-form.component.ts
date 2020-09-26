@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import {EventEmitter} from '@angular/core';
@@ -10,7 +10,7 @@ import { isInvalidControl } from '../../../../@core/utils/form.util';
   templateUrl: './food-form.component.html',
   styleUrls: ['./food-form.component.scss']
 })
-export class FoodFormComponent implements OnInit {
+export class FoodFormComponent implements OnInit, OnChanges{
   @Input() data:any;
   @Input() init:Food;
   @Output('onFoodSubmit') foodSubmitEvent = new EventEmitter<any>();
@@ -21,6 +21,7 @@ export class FoodFormComponent implements OnInit {
   ) { 
     this.foodForm = this.fb.group({
       picture:['', Validators.required],
+      pictureFile:[undefined],
       name: ['', Validators.required],
       description:['',Validators.nullValidator]
     })
@@ -29,6 +30,11 @@ export class FoodFormComponent implements OnInit {
   ngOnInit(): void {
     if(this.init){
       this.foodForm.reset(this.init)
+    }
+  }
+  ngOnChanges(changes: SimpleChanges):void{
+    if('init' in changes){
+      this.foodForm.reset(this.init);
     }
   }
   onSubmit(){
@@ -42,15 +48,16 @@ export class FoodFormComponent implements OnInit {
       let reader = new FileReader();
 
       reader.onload = (event:any) => {
-        this.foodForm.get('picture').setValue(event.target.result);
-        
+        this.foodForm.get('picture').setValue(event.target.result);        
       }
+      this.foodForm.get('pictureFile').setValue(event.target.files[0]);
       reader.readAsDataURL(event.target.files[0]);
     }
   }
 
   isInvalidControl = isInvalidControl;
   get picture():string{
-    return this.foodForm.get('picture').value;
+    let srcImg = this.foodForm.get('picture').value;    
+    return srcImg? srcImg : '';
   }
 }

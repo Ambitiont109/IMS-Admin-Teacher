@@ -25,9 +25,12 @@ export class AddFoodComponent implements OnInit {
   }
   onFoodSubmit($event){
     console.log($event);
-    this.mealMenuService.addFood($event).subscribe( _ =>{
-      this.toastrService.success('New Food Added',"Success");
-      this.back();
+    this.mealMenuService.addFood($event,$event.pictureFile).subscribe( data =>{
+      if(data!='Error')
+      {
+        this.toastrService.success('New Food Added',"Success");
+        this.back();  
+      }
     });
   }
 }

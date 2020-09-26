@@ -164,13 +164,13 @@ export let foods:Food[]=[
     id:0,
     picture:"https://eu2prddennyscdnstr.blob.core.windows.net/cms/menu/product/berry-vanilla-crepe-breakfast_imagesmall_2019-10-28-21-29-03.jpg",
     name:"Berry Vanilla Crepe Breakfast",
-    description:""
+    description:"SDFSDF"
   },
   {
     id:1,
     picture:"https://eu2prddennyscdnstr.blob.core.windows.net/cms/menu/product/banana-chocolate-hazelnut-crepe-breakfast_imagesmall_2019-09-23-13-07-11.jpg",
     name:"Banana Chocolate Hazelnut Crepe Breakfast",
-    description:""
+    description:"sdfsdf"
   },
   {
     id:2,

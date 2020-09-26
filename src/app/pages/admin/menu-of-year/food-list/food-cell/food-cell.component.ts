@@ -12,7 +12,6 @@ export class FoodCellComponent implements ViewCell, OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.rowData);
   }
   onClick(){
     if(this.rowData.checked)
