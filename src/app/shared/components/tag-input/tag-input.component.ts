@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, ViewChild, OnInit, ElementRef, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, OnInit, ElementRef, Input, forwardRef } from '@angular/core';
 import { Observable, of, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UsersService } from "../../../@core/services/users.service";
 import { User, USERROLE } from "../../../@core/models/user";
-import { ControlValueAccessor } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Child } from '../../../@core/models/child';
 import { ChildService } from '../../../@core/services/child.service';
 
@@ -15,7 +15,12 @@ export interface TagInputItem{
 @Component({
   selector: 'ngx-tag-input',
   templateUrl: './tag-input.component.html',
-  styleUrls: ['./tag-input.component.scss']
+  styleUrls: ['./tag-input.component.scss'],
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => TagInputComponent),
+    multi: true
+ }],
 })
 export class TagInputComponent implements OnInit, ControlValueAccessor {
   @Input() multi:boolean;
@@ -126,9 +131,8 @@ export class TagInputComponent implements OnInit, ControlValueAccessor {
     let index =this.selectedData.findIndex((item:TagInputItem)=>{
       return item.id == user.id
     })
-    console.log(this.selectedData)
-    console.log(index);
     this.selectedData.splice(index, 1);
+    this.emitChanges(this.selectedData);
   }
   
   writeValue(obj: any): void {
@@ -165,6 +169,7 @@ export class TagInputComponent implements OnInit, ControlValueAccessor {
       return "Child";
     if(item.user.role == USERROLE.Admin)
       return "Admin"
+      
     if(item.user.role == USERROLE.Teacher)
       return "Teacher"
   }

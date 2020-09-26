@@ -10,6 +10,7 @@ import { TagInputComponent } from './components/tag-input/tag-input.component';
 import { UserSelectComponent } from './components/user-select/user-select.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CellAvatarWithCheckBoxComponent } from './components/user-select/cell-avatar-with-check-box/cell-avatar-with-check-box.component';
+import { SharedTranslateModule } from '../shared-translate/shared-translate.module';
 @NgModule({
   declarations: [ReplyComponent, TagInputComponent, UserSelectComponent, CellAvatarWithCheckBoxComponent],
   imports: [
@@ -27,6 +28,7 @@ import { CellAvatarWithCheckBoxComponent } from './components/user-select/cell-a
     NgxFileUploadUiCommonModule,
     NgxFileUploadUiProgressbarModule,
     TagInputModule,
+    SharedTranslateModule,
     Ng2SmartTableModule,
     FormsModule,
     NbDialogModule.forChild()

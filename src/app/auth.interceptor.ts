@@ -22,9 +22,6 @@ export class AuthInterceptor implements HttpInterceptor {
                 // // console.log(authReq);
                 return next.handle(authReq).pipe(
                     map((event: HttpEvent<any>) => {
-                        if (event instanceof HttpResponse) {
-                            console.log('event--->>>', event);
-                        }
                         return event;
                     }),
                     catchError((error: HttpErrorResponse) => {

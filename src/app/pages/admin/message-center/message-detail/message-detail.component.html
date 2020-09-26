@@ -29,7 +29,7 @@
                             <div class="mt-2 mb-2 text-right"> {{msg.content}} </div>
                             <div class="row attached-content justify-content-end">
                                 <ng-container *ngFor="let img of msg.attachedFiles">
-                                    <img class="attached-img mr-2 mt-2" [src]="img">
+                                    <img class="attached-img mr-2 mt-2" [src]="img.file">
                                 </ng-container>                            
                             </div>
                         </div>                       
@@ -56,7 +56,7 @@
                                 <div class="mt-2 mb-2"> {{msg.content}} </div>
                                 <div class="row attached-content">
                                     <ng-container *ngFor="let img of msg.attachedFiles">
-                                        <img class="attached-img mr-2 mt-2" [src]="img">
+                                        <img class="attached-img mr-2 mt-2" [src]="img.file">
                                     </ng-container>                            
                                 </div>
                             </div>
@@ -75,7 +75,7 @@
             <button (click)="isReplyMode=false" nbButton ghost style="position: absolute;right: 0px; top: 0px;z-index:99;">
                 <nb-icon icon="close-outline" ></nb-icon>
             </button>
-            <ngx-reply [isReplyMode]="true"></ngx-reply>
+            <ngx-reply [isReplyMode]="true" [fromContact]="currentUser" (onsend)="onSend($event)"></ngx-reply>
         </div>
         
     </nb-card-body>

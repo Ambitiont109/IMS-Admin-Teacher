@@ -59,39 +59,39 @@ export let messages:Message[] = [
     {   
         id:1, subject:"Hello World!", child:children[0], sender:users[1], receiver:users[2],
         content:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.", 
-        type:MessageType.Normal, attachedFiles:pictures, created_at:"2019-08-06 00:30:33",headerMessageId:-1
+        msgType:MessageType.Normal, attachedFiles:pictures, created_at:"2019-08-06 00:30:33",headerMessage:-1
     },
     {   
         id:2, subject:"Hello World!", child:children[1], sender:users[3], receiver:users[2],
         content:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.", 
-        type:MessageType.Normal, attachedFiles:pictures, created_at:"2019-08-06 22:30:33",headerMessageId:1
+        msgType:MessageType.Normal, attachedFiles:pictures, created_at:"2019-08-06 22:30:33",headerMessage:1
     },
     {   
         id:3, subject:"Hello World!", child:children[2], sender:users[2], receiver:users[3],
         content:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.", 
-        type:MessageType.Normal, attachedFiles:pictures, created_at:"2019-08-06 21:30:33",headerMessageId:1
+        msgType:MessageType.Normal, attachedFiles:pictures, created_at:"2019-08-06 21:30:33",headerMessage:1
     }
 ]
 export let deepMessages:Message[]=[
   {   
     id:1, subject:"Hello World!", child:children[0], sender:users[1], receiver:users[2],
     content:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.", 
-    type:MessageType.Normal, attachedFiles:pictures, created_at:"2019-08-06 00:30:33",headerMessageId:-1
+    msgType:MessageType.Normal, attachedFiles:pictures, created_at:"2019-08-06 00:30:33",headerMessage:-1
   },
   {   
     id:2, subject:"Hello World!",child:children[0],  sender:users[2], receiver:users[1],
     content:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.", 
-    type:MessageType.Normal, attachedFiles:pictures, created_at:"2019-08-06 22:30:33",headerMessageId:1
+    msgType:MessageType.Normal, attachedFiles:pictures, created_at:"2019-08-06 22:30:33",headerMessage:1
   },
   {   
     id:3, subject:"Hello World!", child:children[0], sender:users[2], receiver:users[1],
     content:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.", 
-    type:MessageType.Normal, attachedFiles:pictures, created_at:"2019-08-06 21:30:33",headerMessageId:1
+    msgType:MessageType.Normal, attachedFiles:pictures, created_at:"2019-08-06 21:30:33",headerMessage:1
   },
   {   
     id:4, subject:"Hello World!", child:children[0], sender:users[1], receiver:users[2],
     content:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.", 
-    type:MessageType.Normal, attachedFiles:pictures, created_at:"2019-08-06 21:30:33",headerMessageId:1
+    msgType:MessageType.Normal, attachedFiles:pictures, created_at:"2019-08-06 21:30:33",headerMessage:1
   }
 ]
 export let appointmentsOfOneUser: Appointment[]=[

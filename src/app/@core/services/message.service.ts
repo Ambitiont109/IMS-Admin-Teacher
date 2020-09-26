@@ -3,25 +3,51 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from "../../../environments/environment";
 import { messages, deepMessages } from "../dummy";
 import { Observable, of } from 'rxjs';
-import { Message } from '../models/message';
+import { Message, MessageType } from '../models/message';
 import { User, USERROLE } from '../models/user';
+import { DateAdapter } from '@angular/material/core';
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
+  api_url = environment.API_URL;
 
-  constructor() { }
-  
+  constructor(private httpClient:HttpClient) { 
+  }
+
+  newMessage():Message{
+    return {
+      id:undefined,
+      subject:undefined,
+      sender:undefined,
+      receiver:undefined,
+      content:undefined,
+      attachedFiles:undefined,
+      headerMessage:undefined,
+      msgType: MessageType.Normal,
+      created_at:undefined
+    }
+  }
   getAdminHeaderMessage():Observable<Message[]>{
-    return of(messages);
+    return this._getHeaderMessages();
+    
+  }
+  _getHeaderMessages():Observable<Message[]>{
+    return this.httpClient.get<Message[]>(`${this.api_url}/messages/getHeaderMessages/`);
   }
   getMessagesByUser(user:User):Observable<Message[]>{
     return of(messages);
   }
   getMessageLinked(msgId:number):Observable<Message[]>{
-    return of(deepMessages);
+    return this.httpClient.get<Message[]>(`${this.api_url}/messages/${msgId}/linkedMessage/`);
   }
-  sendMessage(from:User, to:User[], messageData){
+  sendMessage(msg:Message):Observable<Message>{
+    let data:any =msg;
+    data.receiver = msg.receiver.id;
+    data.sender = msg.sender.id;
+    if(data.child)
+      data.child = data.child.id;
+    return this.httpClient.post<Message>(`${this.api_url}/messages/`, data);
     
   }
 

@@ -12,7 +12,7 @@ export interface Message{
     receiver:User,
     content:string,
     attachedFiles:any[]
-    type:MessageType,
-    headerMessageId:number,    // -1:HeaderMessage, other: Sequent Message of HeaderMessage
+    msgType:MessageType,
+    headerMessage:number,    // -1:HeaderMessage, other: Sequent Message of HeaderMessage
     created_at:string
 }

@@ -36,7 +36,10 @@ export class MessageCenterComponent implements OnInit {
     return '';
   }
   goToMessageDetail(msg:Message){
-    this.router.navigate([msg.id],{relativeTo:this.route})
+    if(msg.headerMessage)
+      this.router.navigate([msg.headerMessage],{relativeTo:this.route})
+    else
+      this.router.navigate([msg.id],{relativeTo:this.route})
   }
   getSenderName = this.messageSerivce.getSenderName;
   getReceiverName = this.messageSerivce.getReceiverName;
