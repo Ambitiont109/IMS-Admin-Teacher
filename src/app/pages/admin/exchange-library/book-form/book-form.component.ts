@@ -23,6 +23,7 @@ export class BookFormComponent implements OnInit {
     this.bookForm = this.fb.group({
       title:['', Validators.required],
       picture:['', Validators.required],
+      pictureFile:undefined,
       comment:['', Validators.nullValidator],
       status:[BookStatus.PRESENT, Validators.nullValidator]
     })
@@ -45,9 +46,9 @@ export class BookFormComponent implements OnInit {
       let reader = new FileReader();
 
       reader.onload = (event:any) => {
-        this.bookForm.get('picture').setValue(event.target.result);
-        
+        this.bookForm.get('picture').setValue(event.target.result);        
       }
+      this.bookForm.get('pictureFile').setValue(event.target.files[0]);
       reader.readAsDataURL(event.target.files[0]);
     }
   }

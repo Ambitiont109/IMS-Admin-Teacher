@@ -9,7 +9,9 @@ import { SharedTranslateModule } from '../../../shared-translate/shared-translat
 import { NewClubComponent } from './new-club/new-club.component';
 import { ClubFormComponent } from './club-form/club-form.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
-
+import localeFr from '@angular/common/locales/fr';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [MiniclubComponent, NewClubComponent, ClubFormComponent],

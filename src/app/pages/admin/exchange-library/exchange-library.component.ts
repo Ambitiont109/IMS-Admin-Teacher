@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
 import { BookStatus, ExchangeLibrary } from '../../../@core/models/exchangelibrary';
 import { ExchangeLibraryService } from '../../../@core/services/exchange-library.service';
+import { ToastService } from '../../../@core/services/toast.service';
 import { YesNoDialogComponent } from '../../../components/yes-no-dialog/yes-no-dialog.component';
 
 @Component({
@@ -20,6 +21,7 @@ export class ExchangeLibraryComponent implements OnInit {
     private router:Router,
     private route:ActivatedRoute,
     private dialogService:NbDialogService,
+    private toastService:ToastService,
   ) { }
 
   ngOnInit(): void {
@@ -36,7 +38,15 @@ export class ExchangeLibraryComponent implements OnInit {
       title:'Are you sure?'
     }}).onClose.subscribe(ret=>{
       if(ret==true){
-        this.exchangeLibraryService.deleteBook(book).subscribe(_=>{})
+        this.exchangeLibraryService.deleteBook(book).subscribe(_=>{
+          this.books = this.books.reduce((retArr, item) =>{
+            if(item.id != book.id)
+              retArr.push(item);
+            return retArr;
+          },[])
+          this.filteredbooks=this.books;
+          this.toastService.success('Book has been deleted','success');
+        })
       }
     })
   }

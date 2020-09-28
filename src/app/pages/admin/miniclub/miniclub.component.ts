@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
 import { MiniClub } from '../../../@core/models/miniclub';
 import { MiniClubService } from '../../../@core/services/mini-club.service';
+import { ToastService } from '../../../@core/services/toast.service';
 import { YesNoDialogComponent } from '../../../components/yes-no-dialog/yes-no-dialog.component';
 
 @Component({
@@ -18,6 +19,7 @@ export class MiniclubComponent implements OnInit {
     private miniClubService:MiniClubService,
     private router:Router,
     private route:ActivatedRoute,
+    private toastrService:ToastService,
     private dialogService:NbDialogService,
   ) { }
 
@@ -35,7 +37,15 @@ export class MiniclubComponent implements OnInit {
       title:'Are you sure?'
     }}).onClose.subscribe(ret=>{
       if(ret==true){
-        this.miniClubService.removeMiniClub(clubInfo).subscribe(_=>{})
+        this.miniClubService.removeMiniClub(clubInfo).subscribe(_=>{
+          this.clubInfos = this.clubInfos.reduce((retArr, item) =>{
+            if(item.id != clubInfo.id)
+              retArr.push(item);
+            return retArr;
+          },[])
+          this.filteredInfos=this.clubInfos;
+          this.toastrService.info('Mini Club has been deleted.','success')
+        })
       }
     })
 

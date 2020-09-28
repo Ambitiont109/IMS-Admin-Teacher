@@ -31,8 +31,7 @@ export function momentAdapterFactory() {
 @NgModule({
   declarations: [AppointmentsComponent, AppointmentDetailComponent, CalendarHeaderComponent, AppointmentEditComponent, AppointmentPresetEditComponent, AppointmentCreateComponent, PresetComponent, PresetSlotItemComponent, AppointmentPresetCreateComponent],
   imports: [
-    CommonModule,
-    
+    CommonModule,    
     SharedModule,
     AppointmentsRoutingModule,
     CalendarModule.forRoot({
@@ -50,7 +49,6 @@ export function momentAdapterFactory() {
     NbTooltipModule,
     NbSelectModule,
     NbToggleModule,    
-    SharedModule,
     SharedTranslateModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,

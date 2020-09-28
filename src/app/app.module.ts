@@ -18,8 +18,8 @@ import {TranslateLoader, TranslateModule, TranslatePipe} from '@ngx-translate/co
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
-
 registerLocaleData(localeFr)
+
 import {
   NbChatModule,
   NbDatepickerModule,

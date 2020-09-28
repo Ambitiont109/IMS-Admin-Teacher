@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { MiniClub } from '../../../../@core/models/miniclub';
 import { isInvalidControl } from "../../../../@core/utils/form.util";
-
+import { DateTimeAdapter } from "@danielmoncada/angular-datetime-picker";
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'ngx-club-form',
   templateUrl: './club-form.component.html',
@@ -15,7 +16,9 @@ export class ClubFormComponent implements OnInit {
   clubForm:FormGroup;
   club:MiniClub;
   constructor(
-    private fb:FormBuilder
+    private fb:FormBuilder,
+    private dateAdapter:DateTimeAdapter<any>,
+    private translateService:TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -26,6 +29,8 @@ export class ClubFormComponent implements OnInit {
       limit:[10, [Validators.required, Validators.min(1)]],
       comment:['', Validators.nullValidator]
     })
+    this.dateAdapter.setLocale(this.translateService.currentLang)
+    this.translateService.onLangChange.subscribe((lang:LangChangeEvent)=>{this.dateAdapter.setLocale(lang.lang)});
     if(!this.initdata)
     {
       this.initdata = {

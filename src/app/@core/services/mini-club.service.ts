@@ -16,14 +16,12 @@ export class MiniClubService {
 
   }
   getAllMiniClub():Observable<MiniClub[]>{    
-    return of(miniClubs)
+    return this.httpClient.get<MiniClub[]>(`${this.api_url}/miniclubs/`);
   }
   addNewMiniClub(data:MiniClub):Observable<any>{
-    data.id = miniClubs.length;
-    miniClubs.push(data);
-    return of('')
+    return this.httpClient.post(`${this.api_url}/miniclubs/`, data);
   }
   removeMiniClub(data:MiniClub):Observable<any>{
-    return of('');
+    return this.httpClient.delete(`${this.api_url}/miniclubs/${data.id}/`);
   }
 }

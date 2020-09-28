@@ -14,15 +14,20 @@ export class ExchangeLibraryService {
   }
 
   getAllBooks():Observable<ExchangeLibrary[]>{
-    return of(books)
+    return this.httpClient.get<ExchangeLibrary[]>(`${this.api_url}/exchangelibraries/`);
   }
+
   addBook(book:ExchangeLibrary):Observable<any>{
-    book.id = books.length;
-    books.push(book);
-    return of('')
+    let data:any = book;
+    const formData = new FormData();
+    Object.keys(book).forEach((key)=>{
+      formData.append(key, book[key]);
+    })    
+    if(data.pictureFile) formData.set('picture', data.pictureFile);
+    return this.httpClient.post(`${this.api_url}/exchangelibraries/`, formData);    
   }
   deleteBook(book:ExchangeLibrary):Observable<any>{
-    return of('')
+    return this.httpClient.delete(`${this.api_url}/exchangelibraries/${book.id}/`);    
   }
   
 }

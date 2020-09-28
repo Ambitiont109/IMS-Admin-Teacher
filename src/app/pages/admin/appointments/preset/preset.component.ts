@@ -46,8 +46,8 @@ export class PresetComponent implements OnInit {
       presetItems:this.fb.array(this.childService.classNameList.map(classname=>this._buildPresetItemForm(classname)))
     })
     console.log(this.presetRecordForm);
+    this.dateAdapter.setLocale(this.translateService.currentLang);
     this.translateService.onLangChange.subscribe((event:LangChangeEvent)=>{
-      console.log(this.dateAdapter);
       this.dateAdapter.setLocale(event.lang)
     })
     this.appointmentService.GetCurrentPresetRecord().subscribe((res:PresetRecord) => {
