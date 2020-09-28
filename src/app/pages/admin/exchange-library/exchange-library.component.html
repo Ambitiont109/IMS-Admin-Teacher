@@ -29,7 +29,7 @@
                             </div>
                         </div>
                         <div class="ml-auto" >
-                            <button nbButton ghost (click)="onDeleteClick(book)"> DELETE</button>
+                            <button nbButton ghost (click)="onDeleteClick(book)"> {{'DELETE' | translate}}</button>
                             <nb-badge text="Booked" status="danger" position="top left" *ngIf="isBooked(book)"></nb-badge>
                         </div>
                     </div>

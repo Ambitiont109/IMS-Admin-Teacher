@@ -68,7 +68,7 @@
             </nb-list-item>
         </nb-list>
         <div class="d-flex justify-content-end">
-            <button nbButton class="" *ngIf="!isReplyMode" (click)="isReplyMode=true">Reply</button>
+            <button nbButton class="" *ngIf="!isReplyMode" (click)="isReplyMode=true">{{'Reply' | translate}}</button>
         </div>
         
         <div style="position: relative;" *ngIf="isReplyMode">

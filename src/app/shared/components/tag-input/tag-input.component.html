@@ -16,7 +16,7 @@
         <nb-option *ngFor="let option of filteredOptions$ | async" [value]="option">
             <nb-user size="medium"
             [name]="getItemName(option)"
-            [title]="getItemTitle(option)"
+            title="{{getItemTitle(option) | translate}}"
             [picture]="getItemPicture(option)"></nb-user>
         </nb-option>
     

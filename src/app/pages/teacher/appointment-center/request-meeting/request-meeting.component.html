@@ -8,7 +8,7 @@
         <div class="mb-4">
             <ngx-child-select  [childs]="children" [title]="'Select Children'" [(ngModel)]="selectedChildren" [multi]="true" ></ngx-child-select>
         </div>        
-        <button (click)="onSubmit()" nbButton [disabled]="selectedChildren.length == 0"> Send Request</button>
+        <button (click)="onSubmit()" nbButton [disabled]="selectedChildren.length == 0"> {{'Send Request' | translate}}</button>
         
         
     </nb-card-body>

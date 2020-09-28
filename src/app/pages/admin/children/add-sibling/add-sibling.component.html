@@ -12,6 +12,6 @@
         <div class="mb-4">
             <ngx-child-select  [childs]="children" [title]="'Select Children'" [(ngModel)]="selectedChildren" [multi]="true" ></ngx-child-select>
         </div>        
-        <button (click)="onSubmit()" nbButton [disabled]="selectedChildren.length == 0"> Add Siblings</button>
+        <button (click)="onSubmit()" nbButton [disabled]="selectedChildren.length == 0"> {{'Add Siblings' |translate}}</button>
     </nb-card-body>
 </nb-card>

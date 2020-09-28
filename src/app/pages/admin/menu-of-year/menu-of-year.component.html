@@ -12,7 +12,7 @@
         <nb-select (selectedChange) ="onDayChange($event)" [selected]="selectedDay">
             <nb-option *ngFor="let dayname of dayNameList" [value]="dayname">{{dayname}}</nb-option>
         </nb-select>
-        <button nbButton style="float:right" nbTooltip="Add Food to this Menu" (click)="onAddFood()"> Add Food </button>
+        <button nbButton style="float:right" nbTooltip="Add Food to this Menu" (click)="onAddFood()"> {{'Add Food' | translate}} </button>
         <div class="mt-1" >
             <div *ngFor="let food of selectedFoods;" style="position: relative;">
                 <ngx-food  [food]="food">

@@ -43,19 +43,7 @@ export class DailyDetailComponent implements OnInit {
     ) { 
       this.weekNameList = WeekNameList;
       this.dayNameList = DayNameListForMenu
-      this.formGroup = fb.group({
-        ate:[0,Validators.nullValidator],
-        ate_comment:['', Validators.nullValidator],
-        week: [this.weekNameList[0].key, Validators.nullValidator],
-        day: [this.dayNameList[0], Validators.nullValidator],
-        comment:['', Validators.nullValidator],
-        nap_start_time:[moment().toDate(),Validators.nullValidator],
-        nap_end_time :[moment().toDate(), Validators.nullValidator],
-        is_bowel_move:[false, Validators.nullValidator],
-        bowel_movement_time:[1, Validators.nullValidator],
-        injureForms:fb.array([1].map(x=>this.buildInjureForm(x))),
-        injureComment:['', Validators.nullValidator],
-      },{validators:[MustAfter('nap_start_time','nap_end_time')]})
+      this.formGroup = this._buildBlankForm();
     }
 
   ngOnInit(): void {
@@ -81,13 +69,33 @@ export class DailyDetailComponent implements OnInit {
       }
     })
   }
+  _buildBlankForm(){
+    let formGroup:FormGroup = this.fb.group({
+      ate:[0,Validators.nullValidator],
+      ate_comment:['', Validators.nullValidator],
+      week: [this.weekNameList[0].key, Validators.nullValidator],
+      day: [this.dayNameList[0], Validators.nullValidator],
+      comment:['', Validators.nullValidator],
+      nap_start_time:[moment().toDate(),Validators.nullValidator],
+      nap_end_time :[moment().toDate(), Validators.nullValidator],
+      is_bowel_move:[false, Validators.nullValidator],
+      bowel_movement_time:[1, Validators.nullValidator],
+      injureForms:this.fb.array([1].map(x=>this.buildInjureForm(x))),
+      injureComment:['', Validators.nullValidator],
+    },{validators:[MustAfter('nap_start_time','nap_end_time')]})
+    return formGroup
+  }
   InitForm(data:ChildDailyInformation){
+    console.log(data);
     if(data){
       this.formGroup.reset(data);
       this.formGroup.get('week').setValue(data.menu.weekName);
       this.formGroup.get('day').setValue(data.menu.dayName);
       if(data.injures.length >0){
-        this.formGroup.get('injureForms').setValue(data.injures.map((x:InjureRecord)=>{return this.buildInjureForm(x)}))    
+        // this.formGroup.get('injureForms').setValue(data.injures.map((x:InjureRecord)=>{return this.buildInjureForm(x)}))    
+        let formArray:FormArray = this.formGroup.get('injureForms') as FormArray;
+        formArray.clear();
+        formArray.reset(data.injures)
         this.formGroup.get('injureComment').setValue(data.injures[0].comment);
       }  
     }
@@ -155,23 +163,28 @@ export class DailyDetailComponent implements OnInit {
         
         this.childDailyInformation = Object.assign(this.childDailyInformation, this.formGroup.value);
         this.childDailyInformation.menu = this.selectedMenu;
-        // this.childDailyInformation.injures = this.formGroup.get('injureForms').value;
-        if(today.isAfter(latest_date,'days')){
-          this.childService.createChildDailyInformation(this.childDailyInformation).subscribe(_ => {
+        this.childDailyInformation.child = this.child;
+        this.childDailyInformation.injures = this.formGroup.get('injureForms').value;
+        if(today.isAfter(latest_date,'days') || !this.childDailyInformation.id){
+          this.childService.createChildDailyInformation(this.childDailyInformation).subscribe(data => {
+            this.childDailyInformation = data;
             this.toastrService.success("Submitted First Today's Daily Information",'success')
           })
         }else{
-          this.childService.updateChildDailyInformation(this.childDailyInformation).subscribe(_ =>{
+          this.childService.updateChildDailyInformation(this.childDailyInformation).subscribe(data =>{
+            this.childDailyInformation = data;
             this.toastrService.success("Updated Today's Daily Information",'success')
           });
         }
         
       }else{
         this.childDailyInformation = Object.assign({}, this.formGroup.value);
+        this.childDailyInformation.child = this.child;
         this.childDailyInformation.menu = this.selectedMenu;
         this.childDailyInformation.injures = this.formGroup.get('injureForms').value;
-        this.childService.createChildDailyInformation(this.childDailyInformation).subscribe(_ => {
-          this.toastrService.success("Updated Today's Daily Information",'success')
+        this.childService.createChildDailyInformation(this.childDailyInformation).subscribe(data => {
+          this.childDailyInformation = data;
+          this.toastrService.success("Submitted First Today's Daily Information",'success')
         })
       }
     }
@@ -182,6 +195,7 @@ export class DailyDetailComponent implements OnInit {
   isInvalidControl = isInvalidControl
   get buttonText(){
     if(!this.childDailyInformation) return 'Submit';
+    if(!this.childDailyInformation.id) return 'Submit';
     let latest_date= moment(this.childDailyInformation.updated_at)
     let today = moment();
     if(today.isAfter(latest_date,'days')) return 'Submit';

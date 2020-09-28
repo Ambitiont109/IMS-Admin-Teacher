@@ -5,7 +5,7 @@
                 <button nbTooltip="{{'Back' | translate}}"  nbButton ghost (click)="back()"> <nb-icon icon="arrow-back-outline"  style="color: white;">arrow-back-outline</nb-icon> </button>
                 {{'Child' | translate}}
             </div>
-            <button  nbButton ghost (click)="onSetPWDClick()" *ngIf="!isTeacher()"> Set Password </button>
+            <button  nbButton ghost (click)="onSetPWDClick()" *ngIf="!isTeacher()"> {{'Set Password' | translate}} </button>
             
         </div>
         

@@ -44,14 +44,18 @@ export class ChildService {
   }
   createChildDailyInformation(childDailyInformation:ChildDailyInformation):Observable<any>{
     let data:any = childDailyInformation;
-    data.menu = childDailyInformation.menu.id;
-    data.child = childDailyInformation.child.id;
+    if(childDailyInformation.menu)
+      data.menu = childDailyInformation.menu.id;
+    if(childDailyInformation.child)
+      data.child = childDailyInformation.child.id;
     return this.httpClient.post(`${this.api_url}/dailyinformations/`, data);
   }
   updateChildDailyInformation(childDailyInformation:ChildDailyInformation):Observable<any>{
     let data:any = childDailyInformation;
-    data.menu = childDailyInformation.menu.id;
-    data.child = childDailyInformation.child.id;
+    if(childDailyInformation.menu)
+      data.menu = childDailyInformation.menu.id;
+    if(childDailyInformation.child)
+      data.child = childDailyInformation.child.id;
     return this.httpClient.put(`${this.api_url}/dailyinformations/`, data);
   }
   getLatestChildDailyInformation(childId:number):Observable<ChildDailyInformation>{

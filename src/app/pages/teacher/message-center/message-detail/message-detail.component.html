@@ -16,8 +16,8 @@
                                 <div class="ml-2 date-text text-right">
                                     {{getFormatDate(msg.created_at)}}                            
                                 </div>
-                                From: <span >{{resolveSenderEmail(msg)}}</span>
-                                To:<span >{{resolveReceiverEmail(msg)}}</span>
+                                {{'From' | translate}}: <span >{{resolveSenderEmail(msg)}}</span>
+                                {{'To' | translate}}:<span >{{resolveReceiverEmail(msg)}}</span>
                                 
                             </div>   
                             <div class="avatar ml-2">                            
@@ -47,8 +47,8 @@
                                     <div class="date-text ">
                                         {{getFormatDate(msg.created_at)}}                            
                                     </div>
-                                    From: <span >{{resolveSenderEmail(msg)}}</span>
-                                    To:<span >{{resolveReceiverEmail(msg)}}</span>
+                                    {{'From' | translate}}: <span >{{resolveSenderEmail(msg)}}</span>
+                                    {{'To' | translate}}:<span >{{resolveReceiverEmail(msg)}}</span>
                                     
                                 </div>            
                             </div>                        
@@ -68,7 +68,7 @@
             </nb-list-item>
         </nb-list>
         <div class="d-flex justify-content-end">
-            <button nbButton class="" *ngIf="!isReplyMode" (click)="isReplyMode=true">Reply</button>
+            <button nbButton class="" *ngIf="!isReplyMode" (click)="isReplyMode=true">{{'Reply' | translate}}</button>
         </div>
         
         <div style="position: relative;" *ngIf="isReplyMode">

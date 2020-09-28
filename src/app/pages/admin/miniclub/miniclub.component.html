@@ -27,7 +27,7 @@
                             </div>
                         </div>
                         <div class="ml-auto" >
-                            <button nbButton ghost (click)="onDeleteClick(clubinfo)"> DELETE</button>
+                            <button nbButton ghost (click)="onDeleteClick(clubinfo)"> {{'DELETE' | translate}}</button>
                             <nb-badge text="Fullfiled" status="danger" position="top left" *ngIf="clubinfo.limit == clubinfo.children.length"></nb-badge>
                         </div>
                     </div>
