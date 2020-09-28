@@ -22,15 +22,15 @@ export class MessageCenterComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.getCurrentUser().subscribe((user:User)=>{
-      this.user = user;
-      this.messageSerivce.getMessagesByUser(this.user).subscribe((msgs)=>{      
-        this.messages = msgs;
-        this.messages.sort((a:Message,b:Message)=>{
-          let ma = moment(a.created_at);
-          let mb = moment(b.created_at);
-          if(ma.isAfter(mb)) return 1;
-          return 0;
-        })
+      this.user = user;      
+    })
+    this.messageSerivce.getHeaderMessagesOfCurrentUser().subscribe((msgs)=>{
+      this.messages = msgs;
+      this.messages.sort((a:Message,b:Message)=>{
+        let ma = moment(a.created_at);
+        let mb = moment(b.created_at);
+        if(ma.isAfter(mb)) return 1;
+        return 0;
       })
     })
   }
@@ -65,12 +65,15 @@ export class MessageCenterComponent implements OnInit {
     return msg.sender.picture;
   }
   getFormatDate(date:string){
-    let md = moment(date);
+    let md = moment(date);    
     if(md.isValid)
       return md.format('LT');
     return '';
   }
   goToMessageDetail(msg:Message){
-    this.router.navigate([msg.id],{relativeTo:this.route})
+    if(msg.headerMessage)
+      this.router.navigate([msg.headerMessage],{relativeTo:this.route})
+    else
+      this.router.navigate([msg.id],{relativeTo:this.route})
   }
 }

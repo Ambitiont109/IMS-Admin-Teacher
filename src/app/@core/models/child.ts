@@ -59,7 +59,8 @@ export interface InjureRecord{
     place:string,
     taken_time:Date,
     comment:string
-}
+};
+
 export interface ChildDailyInformation{
     id:number;
     child: Child,
@@ -71,5 +72,6 @@ export interface ChildDailyInformation{
     nap_end_time:Date,
     is_bowel_move:boolean,
     bowel_movement_time:number,
-    injures: InjureRecord[]
-}
+    injures: InjureRecord[],
+    updated_at?: Date,
+};

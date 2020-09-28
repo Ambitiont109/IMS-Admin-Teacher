@@ -13,6 +13,8 @@ import { ChildService } from '../../../@core/services/child.service';
 import { NameOfClass } from '../../../@core/models/child';
 import { Router } from '@angular/router';
 import { DateTimeAdapter } from "@danielmoncada/angular-datetime-picker";
+import * as moment from 'moment';
+
 @Component({
   selector: 'ngx-header',
   styleUrls: ['./header.component.scss'],
@@ -55,7 +57,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     let lang = localStorage.getItem('lang')
     if(lang){
-      this.translateSerivce.use(lang);      
+      this.translateSerivce.use(lang);
+      moment.locale(lang);
       this.selectedCountryCode = lang;
       if(lang =='en')
         this.selectedCountryCode = 'gb';
@@ -101,11 +104,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     if(value =='gb')
     {
       this.translateSerivce.use('en');      
+      moment.locale('en')
       localStorage.setItem('lang','en')
     } else {
       this.translateSerivce.use(value);
+      moment.locale(value);
       localStorage.setItem('lang',value)
     }
+    
     
   }
   ngOnDestroy() {
@@ -115,8 +121,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.currentUserSubscription.unsubscribe();
   }
 
-  navigateToChooseName(){
-    
+  navigateToChooseName(){    
     this.router.navigate(['/choose/classname']);
   }
   toggleSidebar(): boolean {

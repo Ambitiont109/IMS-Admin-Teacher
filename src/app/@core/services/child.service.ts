@@ -32,7 +32,7 @@ export class ChildService {
   getChildrenByClassName(className:NameOfClass):Observable<Child[]>{
     return this.httpClient.get<Child[]>(`${this.api_url}/child?nameOfClass=${className}`);
   }
-  getAllChildren():Observable<Child[]>{ // Return All Children without considering current Classroom
+  getAllChildren():Observable<Child[]>{ // Return All Children without considering current Classroom of loggedin user
     return this.httpClient.get<Child[]>(`${this.api_url}/child/`);
   }
   getChildsOfTeacher(teacher:User):Observable<any>{    
@@ -43,18 +43,19 @@ export class ChildService {
     // return of(children[childId-1]);
   }
   createChildDailyInformation(childDailyInformation:ChildDailyInformation):Observable<any>{
-    childDailyInformations.push(childDailyInformation);
-    return of('')
+    let data:any = childDailyInformation;
+    data.menu = childDailyInformation.menu.id;
+    data.child = childDailyInformation.child.id;
+    return this.httpClient.post(`${this.api_url}/dailyinformations/`, data);
   }
   updateChildDailyInformation(childDailyInformation:ChildDailyInformation):Observable<any>{
-    let findedItem:ChildDailyInformation =  childDailyInformations.find((x:ChildDailyInformation)=>{
-      return x.id == childDailyInformation.id
-    });
-    findedItem = Object.assign(findedItem, childDailyInformation);
-    return of('')
+    let data:any = childDailyInformation;
+    data.menu = childDailyInformation.menu.id;
+    data.child = childDailyInformation.child.id;
+    return this.httpClient.put(`${this.api_url}/dailyinformations/`, data);
   }
-  getChildDailyInformation(childId:number):Observable<ChildDailyInformation>{
-    return of(childDailyInformations[childId-1]);
+  getLatestChildDailyInformation(childId:number):Observable<ChildDailyInformation>{
+    return this.httpClient.get<ChildDailyInformation>(`${this.api_url}/child/${childId}/latest_dailyinfo/`)
   }
 
   getCurrentClassName(){

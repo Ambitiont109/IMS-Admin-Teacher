@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { UsersService } from "../../../@core/services/users.service";
 import { User, USERROLE } from "../../../@core/models/user";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Child } from '../../../@core/models/child';
+import { Child, NameOfClass } from '../../../@core/models/child';
 import { ChildService } from '../../../@core/services/child.service';
 
 export interface TagInputItem{
@@ -60,7 +60,7 @@ export class TagInputComponent implements OnInit, ControlValueAccessor {
         this.filteredOptions$ = of(data);
       })      
     }
-    if(this.usertype == USERROLE.Teacher){
+    if(this.usertype == USERROLE.Teacher){  
       forkJoin({
         admins:this.userService.getAdmins(),
         children:this.childSerivce.getAllChildren()

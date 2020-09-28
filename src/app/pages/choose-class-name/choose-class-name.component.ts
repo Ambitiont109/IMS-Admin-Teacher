@@ -25,6 +25,7 @@ export class ChooseClassNameComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    this.nameList =[];
     this.userService.getCurrentUser().subscribe(item=>{
       this.current_user = item
       if(this.current_user.role == USERROLE.Teacher)
@@ -32,6 +33,10 @@ export class ChooseClassNameComponent implements OnInit {
       if(this.current_user.role == USERROLE.Admin)
         this.nameList = this.childService.classNameList;
     });
+  }
+  isTeacher(){
+    if (!this.current_user) return false;
+    return this.current_user.role == USERROLE.Teacher
   }
   selectClass(name){
     this.childService.setCurrentClassName(name);

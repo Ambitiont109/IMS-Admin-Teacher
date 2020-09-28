@@ -13,6 +13,9 @@ import { MenuItem } from '../../../../@core/models/meal-menu';
 import { NbMenuService, NbToastrService } from '@nebular/theme';
 import { MealMenuService } from '../../../../@core/services/meal-menu.service';
 import { forkJoin } from 'rxjs';
+import { DateTimeAdapter } from "@danielmoncada/angular-datetime-picker";
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { ToastService } from '../../../../@core/services/toast.service';
 @Component({
   selector: 'ngx-daily-detail',
   templateUrl: './daily-detail.component.html',
@@ -33,7 +36,9 @@ export class DailyDetailComponent implements OnInit {
     private mealMenuService:MealMenuService,
     private childService:ChildService,
     private route:ActivatedRoute, 
-    private toastrService:NbToastrService,
+    private toastrService:ToastService,
+    private translateService:TranslateService,
+    private dateAdapter:DateTimeAdapter<any>,
     private fb:FormBuilder
     ) { 
       this.weekNameList = WeekNameList;
@@ -54,22 +59,26 @@ export class DailyDetailComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    this.dateAdapter.setLocale(this.translateService.currentLang);
+    this.translateService.onLangChange.subscribe((langEvent:LangChangeEvent)=>{this.dateAdapter.setLocale(langEvent.lang)});
     this.route.paramMap.pipe(switchMap(
       params => {
         this.childId = Number(params.get('childId'));
         return forkJoin(
           {
-            data:this.childService.getChildDailyInformation(this.childId),
+            data:this.childService.getLatestChildDailyInformation(this.childId),
             allmenu: this.mealMenuService.getAllMenuInformation()
           }
         )
       }
-    )).subscribe(({data,allmenu}:{data:ChildDailyInformation, allmenu:MenuItem[]}) => {
-      this.child = data.child;    
-      this.childDailyInformation = data;  
+    )).subscribe(({data,allmenu}:{data:any, allmenu:MenuItem[]}) => {
+      this.child = data.child
       this.allmenus = allmenu;
       this.findSelectedMenu();
-      this.InitForm(data);
+      if(data.dailyInfo.id){
+        this.childDailyInformation = data.dailyInfo;  
+        this.InitForm(data.dailyInfo);
+      }
     })
   }
   InitForm(data:ChildDailyInformation){
@@ -101,6 +110,7 @@ export class DailyDetailComponent implements OnInit {
   }
 
   get isToddler():boolean{
+    if(!this.child) return false;
     return this.childService.isChildToddler(this.child);
   }
 
@@ -140,18 +150,28 @@ export class DailyDetailComponent implements OnInit {
     this.formGroup.markAllAsTouched();
     if(this.formGroup.valid){
       if(this.childDailyInformation){
+        let latest_date= moment(this.childDailyInformation.updated_at)
+        let today = moment();
+        
         this.childDailyInformation = Object.assign(this.childDailyInformation, this.formGroup.value);
         this.childDailyInformation.menu = this.selectedMenu;
-        this.childDailyInformation.injures = this.formGroup.get('injureForms').value;
-        this.childService.updateChildDailyInformation(this.childDailyInformation).subscribe(_ =>{
-          this._submitSuccess()
-        });
+        // this.childDailyInformation.injures = this.formGroup.get('injureForms').value;
+        if(today.isAfter(latest_date,'days')){
+          this.childService.createChildDailyInformation(this.childDailyInformation).subscribe(_ => {
+            this.toastrService.success("Submitted First Today's Daily Information",'success')
+          })
+        }else{
+          this.childService.updateChildDailyInformation(this.childDailyInformation).subscribe(_ =>{
+            this.toastrService.success("Updated Today's Daily Information",'success')
+          });
+        }
+        
       }else{
         this.childDailyInformation = Object.assign({}, this.formGroup.value);
         this.childDailyInformation.menu = this.selectedMenu;
         this.childDailyInformation.injures = this.formGroup.get('injureForms').value;
         this.childService.createChildDailyInformation(this.childDailyInformation).subscribe(_ => {
-          this._submitSuccess();
+          this.toastrService.success("Updated Today's Daily Information",'success')
         })
       }
     }
@@ -160,4 +180,12 @@ export class DailyDetailComponent implements OnInit {
     this.toastrService.success("Updated Child Daily Information", "success");
   }
   isInvalidControl = isInvalidControl
+  get buttonText(){
+    if(!this.childDailyInformation) return 'Submit';
+    let latest_date= moment(this.childDailyInformation.updated_at)
+    let today = moment();
+    if(today.isAfter(latest_date,'days')) return 'Submit';
+    return 'Update'
+        
+  }
 }

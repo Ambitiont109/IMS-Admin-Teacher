@@ -5,7 +5,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angul
 import { AppointmentCenterRoutingModule } from './appointment-center-routing.module';
 import { AppointmentCenterComponent } from './appointment-center.component';
 import { FormsModule } from '@angular/forms';
-import { NbCardModule, NbToggleModule, NbButtonModule, NbBadgeModule, NbUserModule, NbInputModule, NbIconModule, NbCheckboxModule, NbStepperModule } from '@nebular/theme';
+import { NbCardModule, NbToggleModule, NbButtonModule, NbBadgeModule, NbUserModule, NbInputModule, NbIconModule, NbCheckboxModule, NbStepperModule, NbTooltipModule } from '@nebular/theme';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { RequestMeetingComponent } from './request-meeting/request-meeting.component';
 import { SharedTranslateModule } from '../../../shared-translate/shared-translate.module';
@@ -19,6 +19,7 @@ import { ChildListModule } from '../../../shared/child-list/child-list.module';
     AppointmentCenterRoutingModule,
     NbCardModule,
     NbCheckboxModule,
+    NbTooltipModule,
     NbButtonModule,
     NbBadgeModule,
     NbUserModule,

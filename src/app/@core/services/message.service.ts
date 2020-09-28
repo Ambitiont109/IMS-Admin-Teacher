@@ -35,8 +35,8 @@ export class MessageService {
   _getHeaderMessages():Observable<Message[]>{
     return this.httpClient.get<Message[]>(`${this.api_url}/messages/getHeaderMessages/`);
   }
-  getMessagesByUser(user:User):Observable<Message[]>{
-    return of(messages);
+  getHeaderMessagesOfCurrentUser():Observable<Message[]>{
+    return this._getHeaderMessages();
   }
   getMessageLinked(msgId:number):Observable<Message[]>{
     return this.httpClient.get<Message[]>(`${this.api_url}/messages/${msgId}/linkedMessage/`);

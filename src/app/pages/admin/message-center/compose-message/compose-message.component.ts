@@ -46,7 +46,6 @@ export class ComposeMessageComponent implements OnInit {
         this.toastService.success('Message has been sent successfully', 'success');
       })
     }
-    //this.messageSerivce.sendMessage()
   }
 
 }

@@ -22,11 +22,11 @@ export class ChildDailyInformationComponent implements OnInit {
 
   ngOnInit(): void {
     this.usersService.getCurrentUser().subscribe((user:User)=>{
-      this.teacher = user;
-      this.childService.getChildsOfTeacher(this.teacher).subscribe((children=>{
-        this.children = children;
-      }))
+      this.teacher = user;      
     })
+    this.childService.getAllChildren().subscribe((children=>{
+      this.children = children;
+    }))
     
   }
   onSelect(selectedChild:Child){

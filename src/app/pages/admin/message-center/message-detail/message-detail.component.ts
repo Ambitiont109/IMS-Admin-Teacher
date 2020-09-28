@@ -6,7 +6,6 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {Location} from '@angular/common';
 import * as moment from 'moment';
 import { switchMap } from 'rxjs/operators';
-import { UserService } from '../../../../@core/mock/users.service';
 import { UsersService } from '../../../../@core/services/users.service';
 import { ReplyData } from '../../../../shared/components/reply/reply.component';
 import { TagInputItem } from '../../../../shared/components/tag-input/tag-input.component';
