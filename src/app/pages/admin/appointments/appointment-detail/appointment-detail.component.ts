@@ -4,7 +4,7 @@ import { CalendarEvent, CalendarView, CalendarEventAction } from "angular-calend
 import { DOCUMENT } from '@angular/common';
 import { AppointmentService } from "../../../../@core/services/appointment.service";
 import { UsersService } from "../../../../@core/services/users.service";
-import { User } from "../../../../@core/models/user";
+import { User, USERROLE } from "../../../../@core/models/user";
 import { Appointment, AppointmentType } from "../../../../@core/models/appointment";
 import { calendarEventFromAppointment } from "../../../../@core/utils/calendar.util";
 
@@ -71,8 +71,7 @@ export class AppointmentDetailComponent implements OnInit, OnDestroy {
         }
       ),
       map(( {user,appointments}:{user:User, appointments:Appointment[]} )=>{        
-        this.user= user;
-        
+        this.user= user;        
         return appointments.map(item=>{                    
           return calendarEventFromAppointment(item, this.actions);
         })
@@ -123,5 +122,17 @@ export class AppointmentDetailComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.document.body.classList.remove(this.darkThemeClass);
+  }
+  getName(user:User){
+    if (!user) return ''
+    if(user.role == USERROLE.Parent)
+      if(user.child) return user.child.first_name +' '+ user.child.last_name;
+    return user.first_name + ' ' + user.last_name
+  }
+  getPicture(user:User){
+    if (!user) return '';
+    if(user.role == USERROLE.Parent)
+      if(user.child) return user.child.photo
+    return user.picture
   }
 }

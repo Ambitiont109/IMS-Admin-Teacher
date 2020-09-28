@@ -82,7 +82,7 @@ export interface PresetAppointment{ // This is only for meeting for Preset.
   id?:number;
   className:NameOfClass;
   presetInfo:number;
-  timerange:TimeRangeItem;
+  timerange:TimeRangeItem;         // Timerange of PresetItem to represent where appointment is included
   child:Child;
   start: Date;
   end: Date;

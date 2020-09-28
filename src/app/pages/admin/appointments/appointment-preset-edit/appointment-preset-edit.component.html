@@ -16,7 +16,7 @@
           </div>
       </div>      
       <div class="form-group row align-items-center">
-        <label class="label col-sm-3"> Date </label>
+        <label class="label col-sm-3"> {{'Date' | translate}} </label>
         <nb-select [(ngModel)] = "selectedTimeRange" (ngModelChange)="onTimerangeChange($event)">
           <nb-option *ngFor="let timerange of dates" [value]="timerange"> {{timerange.date | date}} </nb-option>
         </nb-select>
@@ -30,7 +30,7 @@
     </div>
     <div class="d-flex flex-wrap align-items-center mt-4">
         <ng-container *ngFor="let slot of slots;">
-          <ngx-preset-slot-item [start]="slot.start" [end]="slot.end" [confirmed]="slot.booked" (confirmClick)="onConfirm($event)"></ngx-preset-slot-item>    
+          <ngx-preset-slot-item [start]="slot.start" [end]="slot.end" [confirmed]="slot.booked" (confirmClick)="onConfirm($event)" [isCurrentChild]="isSameChild(slot.child, selectedChild)" ></ngx-preset-slot-item>    
         </ng-container>            
     </div>
     </nb-card-body>

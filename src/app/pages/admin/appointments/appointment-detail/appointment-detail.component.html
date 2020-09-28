@@ -1,13 +1,13 @@
 <nb-card>
     <nb-card-header>
       <div class="d-flex align-items-center">
-        <button nbTooltip="Back"  nbButton ghost (click)="back()"> <nb-icon icon="arrow-back-outline"  style="color: white;">arrow-back-outline</nb-icon> </button>
+        <button nbTooltip="{{'Back' | translate}}"  nbButton ghost (click)="back()"> <nb-icon icon="arrow-back-outline"  style="color: white;">arrow-back-outline</nb-icon> </button>
         <nb-user 
                [onlyPicture]="true"
-               [name]="user?.first_name +' '+ user?.last_name"
-               [picture]="user?.picture">
+               [name]="getName(user)"
+               [picture]="getPicture(user)">
       </nb-user>
-        {{user.first_name}} {{user.last_name}}
+        {{getName(user)}}
         
       </div>
       

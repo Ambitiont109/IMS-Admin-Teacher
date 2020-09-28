@@ -3,7 +3,7 @@
       <div class="d-flex align-items-center">
         <button nbTooltip="Back"  nbButton ghost (click)="back()"> <nb-icon icon="arrow-back-outline"  style="color: white;">arrow-back-outline</nb-icon> </button>
         
-        Edit Appointment
+        {{'Edit Appointment' | translate}}
       </div>
       
     </nb-card-header>
@@ -13,18 +13,18 @@
                 <div class="form-group row align-items-center">
                     <label class="label col-sm-3"> {{'Teacher' | translate}}</label>
                     <div class="col-sm-9">
-                        <ngx-user-select [users]="teachers" [title]="'Select Teacher'" formControlName="teacher" [disabled]="isEditmode" ></ngx-user-select>
+                        <ngx-user-select [users]="teachers" [title]="'Select Teacher'" formControlName="teacher" ></ngx-user-select>
                         <div *ngIf="isInvalidControl(appointmentForm,'teacher')">
                             <span class="error-text" *ngIf="appointmentForm.get('teacher').errors.required">required</span>
                         </div>  
                     </div>
                 </div>
                 <div class="form-group row align-items-center">
-                    <label class="label col-sm-3"> Parent</label>
+                    <label class="label col-sm-3"> {{'Child' | translate}}</label>
                     <div class="col-sm-9">
-                        <ngx-user-select [users]="parents" [title]="'Select Parent'" formControlName="parent" [disabled]="isEditmode"></ngx-user-select>
-                        <div *ngIf="isInvalidControl(appointmentForm,'parent')">
-                            <span class="error-text" *ngIf="appointmentForm.get('parent').errors.required">required</span>
+                        <ngx-child-select [childs]="children" formControlName="child" ></ngx-child-select>
+                        <div *ngIf="isInvalidControl(appointmentForm,'child')">
+                            <span class="error-text" *ngIf="appointmentForm.get('child').errors.required || appointmentForm.get('child').errors.minLength">required</span>
                         </div>
                     </div>
                 </div>

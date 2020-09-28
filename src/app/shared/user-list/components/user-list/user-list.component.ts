@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, OnChanges, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import { User, USERROLE } from "../../../../@core/models/user";
@@ -10,7 +10,7 @@ import { CellAvatarComponent } from '../../../../pages/admin/parent-list/cell-av
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss']
 })
-export class UserListComponent implements OnInit {
+export class UserListComponent implements OnInit, OnChanges {
   @Input() data;
   @Output('onselect') onSelectEvent = new EventEmitter();
   searchWord:string;
@@ -56,6 +56,12 @@ export class UserListComponent implements OnInit {
     if(this.data){
       this.parents = this.data;
       this.parent_src.load(this.parents);
+    }
+  }
+  ngOnChanges(changes:SimpleChanges){
+    if('data' in changes){
+      if(this.data)
+        this.parent_src.load(this.data);
     }
   }
   onSearchWordChange(newWord:string){

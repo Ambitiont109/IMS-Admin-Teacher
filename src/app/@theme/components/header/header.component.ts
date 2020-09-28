@@ -12,12 +12,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { ChildService } from '../../../@core/services/child.service';
 import { NameOfClass } from '../../../@core/models/child';
 import { Router } from '@angular/router';
+import { DateTimeAdapter } from "@danielmoncada/angular-datetime-picker";
 @Component({
   selector: 'ngx-header',
   styleUrls: ['./header.component.scss'],
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  
 
   private destroy$: Subject<void> = new Subject<void>();
   public readonly materialTheme$: Observable<boolean>;
@@ -30,18 +32,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   selectedCountryCode = 'gb';
   countryCodes = ['gb', 'fr'];
   
-  changeSelectedCountryCode(value: string): void {
-    this.selectedCountryCode = value;
-    let lang;
-    if(value =='gb')
-    {
-      this.translateSerivce.use('en');      
-      localStorage.setItem('lang','en')
-    } else {
-      this.translateSerivce.use(value);
-      localStorage.setItem('lang',value)
-    }
-  }
+
   userMenu = [ 
                {title:'Profile', url:'/profile', icon:{icon:'address-card', pack:'fa'}},
                { title: 'Log out', icon:'log-out-outline' }
@@ -103,7 +94,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
     //   .subscribe((users: any) => this.user = users.nick);
  
   }
-
+  changeSelectedCountryCode(value: string): void {
+    this.selectedCountryCode = value;
+    let lang;
+    console.log("Hello");
+    if(value =='gb')
+    {
+      this.translateSerivce.use('en');      
+      localStorage.setItem('lang','en')
+    } else {
+      this.translateSerivce.use(value);
+      localStorage.setItem('lang',value)
+    }
+    
+  }
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();

@@ -13,5 +13,6 @@ export interface User{
     email:string,
     role:USERROLE,
     classNames?:NameOfClass[],
-    picture:string
+    picture:string,
+    child?:any;
 }

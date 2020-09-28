@@ -1,19 +1,17 @@
 <nb-tabset fullWidth>  
 
-    <nb-tab tabTitle="Teachers">
+    <nb-tab tabTitle="{{'Teachers' | translate}}">
         <nb-card>
             <nb-card-body>
-                <ng2-smart-table [settings]="settings" [source]="teacher_src" (userRowSelect)="onRowSelect($event)">
-                </ng2-smart-table>
+                <ngx-user-list [data]="this.teachers" (onselect)="onTeacherSelect($event)"></ngx-user-list>
             </nb-card-body>
         </nb-card>         
     </nb-tab>
 
-    <nb-tab tabTitle="Parents">
+    <nb-tab tabTitle="{{'Children' | translate}}">
         <nb-card>
             <nb-card-body>
-                <ng2-smart-table [settings]="settings" [source]="parent_src" (userRowSelect)="onRowSelect($event)">
-                </ng2-smart-table>
+                <ngx-child-list [data]="this.children" (onselect)="onChildSelect($event)"></ngx-child-list>
             </nb-card-body>
         </nb-card> 
         

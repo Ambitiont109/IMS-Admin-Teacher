@@ -9,6 +9,9 @@ import { AppointmentService } from "../../../../@core/services/appointment.servi
 import * as moment from "moment";
 import { NameOfClass } from '../../../../@core/models/child';
 import { ChildService } from '../../../../@core/services/child.service';
+import { ToastService } from '../../../../@core/services/toast.service';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { DateTimeAdapter } from '@danielmoncada/angular-datetime-picker';
 @Component({
   selector: 'ngx-preset',
   templateUrl: './preset.component.html',
@@ -25,7 +28,10 @@ export class PresetComponent implements OnInit {
   constructor(
     private dialogService: NbDialogService,
     private childService:ChildService,
+    private toastService:ToastService,
     private appointmentService: AppointmentService,
+    private translateService: TranslateService,
+    private dateAdapter:DateTimeAdapter<any>,
     private fb: FormBuilder ) {
     this.isStarted = false;
     this.isFinished = false;
@@ -35,19 +41,37 @@ export class PresetComponent implements OnInit {
   
   ngOnInit(): void {
     this.presetRecordForm = this.fb.group({
+      id:[undefined],
       closeDateTime:['', Validators.required],
       presetItems:this.fb.array(this.childService.classNameList.map(classname=>this._buildPresetItemForm(classname)))
     })
     console.log(this.presetRecordForm);
-
+    this.translateService.onLangChange.subscribe((event:LangChangeEvent)=>{
+      console.log(this.dateAdapter);
+      this.dateAdapter.setLocale(event.lang)
+    })
     this.appointmentService.GetCurrentPresetRecord().subscribe((res:PresetRecord) => {
-      console.log(res);
-      this.currentPresetRecord = res;
-      this.presetRecordForm.reset(res)
-      if(res.status == PresetStatus.Started)
-        this.isStarted = true;
-      if(res.status == PresetStatus.Closed)
-        this.isFinished = true;
+      this.isFinished = true;
+      this.isStarted = false;
+      console.log(res)
+      if(res){
+        this.currentPresetRecord = res;
+        this.presetRecordForm = this._buildPresetFormFromData(res)
+        if(res.status == PresetStatus.Started)
+        {
+          this.isStarted = true;
+          this.isFinished = false;
+        }
+          
+        if(res.status == PresetStatus.Closed)
+        {
+          this.isStarted = false;
+          this.isFinished = true;
+        }
+          
+      }
+      
+      
       this._setActionText();
     })
     console.log(this.presetRecordForm);
@@ -57,8 +81,8 @@ export class PresetComponent implements OnInit {
     if($event == true){
       this.onSubmit();
       if(this.presetRecordForm.invalid){        
-        setTimeout(_=>{this.isStarted = false}, 100);
-      }        
+        setTimeout(_=>{this.isStarted = false; this._setActionText()}, 100);
+      }
     }
     if($event==false){
       this.dialogService.open(YesNoDialogComponent,{context:{
@@ -70,28 +94,48 @@ export class PresetComponent implements OnInit {
         }else{
           this.appointmentService.CloseCurrentPreset(this.currentPresetRecord.id).subscribe(_=>{
             this.isFinished = true;  
-          })
-          
+          })          
         }
       })
     }
     this._setActionText();
   }
-  _buildPresetItemForm(classroom:NameOfClass, data?:PresetItem):FormGroup{
-    let formGroup:FormGroup =  this.fb.group({
-      classroom:[classroom],
-      timeranges:this.fb.array([1,1,1].map(item=>this._buildTimeRangeForm()),Validators.minLength(3)),
-      duration:[20,Validators.required]
+  _buildPresetFormFromData(record:PresetRecord){
+    let formGroup:FormGroup = this.fb.group({
+      id:[record.id],
+      closeDateTime:[record.closeDateTime, Validators.required],
+      presetItems:this.fb.array(record.presetItems.map(presetItem=>this._buildPresetItemForm(presetItem.classroom, presetItem)))
     })
+    return formGroup;
+  }
+  _buildPresetItemForm(classroom:NameOfClass, data?:PresetItem):FormGroup{
+    let formGroup:FormGroup
     if(data)
-      formGroup.reset(data);
+    {
+      formGroup = this.fb.group({
+        id:data.id,
+        classroom:[classroom],
+        timeranges:this.fb.array(data.timeranges.map(item=>this._buildTimeRangeForm(item)),Validators.minLength(3)),
+        duration:[data.duration,Validators.required]
+      })      
+    }else{
+      formGroup =  this.fb.group({
+        id:undefined,
+        classroom:[classroom],
+        timeranges:this.fb.array([1,1,1].map(item=>this._buildTimeRangeForm()),Validators.minLength(3)),
+        duration:[20,Validators.required]
+      })
+    }
+      
+
     return formGroup;
   }
   _buildTimeRangeForm(data?:TimeRangeItem){
     let formGroup:FormGroup =  this.fb.group({
-      startTime:['', Validators.required],
-      endTime:['', Validators.required],
-      date:['',Validators.required]
+      id:undefined,
+      startTime:[moment().startOf('hours').toDate(), Validators.required],
+      endTime:[moment().startOf('hours').add(4,'hours').toDate(), Validators.required],
+      date:[moment().startOf('days').toDate(),Validators.required]
     }, {validators:[MustAfter('startTime','endTime')]})
     if(data)
       formGroup.reset(data);
@@ -111,12 +155,23 @@ export class PresetComponent implements OnInit {
   }
   onSubmit(){
     this.presetRecordForm.markAllAsTouched();
+    console.log(this.presetRecordForm);
     if(this.presetRecordForm.valid){
-      let presetInfo:PresetRecord = Object.assign({}, this.presetRecordForm.value);
-      this.appointmentService.StartNewPreset(presetInfo).subscribe(_=>{});
-      if(this.isStarted){
-        this.appointmentService.UpdatePresetRecord(presetInfo).subscribe(_=>{});
+      // let presetInfo:PresetRecord = Object.assign({}, this.presetRecordForm.value);      
+      let presetInfo = Object.assign(this.currentPresetRecord,this.presetRecordForm.value);
+      if(this.isNewStarted){
+        this.appointmentService.StartNewPreset(presetInfo).subscribe(_=>{
+            this.toastService.success('New PresetAppointment has been started', 'success')
+          },
+          error=>{
+            this.isStarted = false
+          }
+        );
+      } else if(this.isStarted){        
+        console.log(presetInfo);
+        // this.appointmentService.UpdatePresetRecord(presetInfo).subscribe(_=>{});
       }
+
     }
   }
   addTimeRangeForm(presetItemForm:FormGroup){

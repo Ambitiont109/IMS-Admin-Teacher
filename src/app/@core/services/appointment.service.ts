@@ -11,7 +11,7 @@ import { NameOfClass } from '../models/child';
 export class AppointmentService {
   api_url = environment.API_URL;
 
-  constructor() { }
+  constructor(private httpClient:HttpClient) { }
   createBlankAppointment():Appointment{
     return {
       id:-1,
@@ -38,7 +38,7 @@ export class AppointmentService {
     }
   }
   getEventsByUserId(userId):Observable<Appointment[]>{
-    return of(appointmentsOfOneUser);
+    return this.httpClient.get<Appointment[]>(`${this.api_url}/appointments/user/${userId}/`);
   }
   getEventsOfCurrentUser():Observable<Appointment[]>{
     return of(appointmentsOfOneUser);
@@ -48,7 +48,7 @@ export class AppointmentService {
     return of('')
   }
   getEventById(eventId):Observable<Appointment>{
-    return of(appointmentsOfOneUser[eventId]);
+    return this.httpClient.get<Appointment>(`${this.api_url}/appointments/${eventId}/`);
   }
   deleteEventById(eventId):Observable<any>{
     appointmentsOfOneUser.splice(eventId,1);
@@ -56,49 +56,48 @@ export class AppointmentService {
   }
   
   
-  StartNewPreset(presetRecord:PresetRecord):Observable<any>{
-    presetRecord.id = presetInfos.length;
+  StartNewPreset(presetRecord:PresetRecord):Observable<any>{    
     presetRecord.status = PresetStatus.Started;
-    presetInfos.push(presetRecord);
-    return of('success');
+    return this.httpClient.post(`${this.api_url}/appointments/preset_record/`,presetRecord);   
   }
   UpdatePresetRecord(presetRecord:PresetRecord):Observable<any>{
-    presetInfos[presetRecord.id] = presetRecord;
+    return this.httpClient.patch(`${this.api_url}/appointments/preset_record/${presetRecord.id}/`,presetRecord);   
+    // presetInfos[presetRecord.id] = presetRecord;
     return of('success')
   }
 
   GetCurrentPresetRecord():Observable<PresetRecord>{    
-    console.log(presetInfos)
-    return of(presetInfos[presetInfos.length-1])
+    return this.httpClient.get<PresetRecord>(`${this.api_url}/appointments/preset_record/current/`);
   }
 
   GetPresetAppointmentByClassroom(classroom:NameOfClass):Observable<PresetAppointment[]>{
     // Return PresetAppointments of classroom of current PresetRecord
-    return of(presetApnts);
+    return this.httpClient.get<PresetAppointment[]>(`${this.api_url}/appointments/preset_appointments?current_preset=true&className=${classroom}`);
   }
  
   CloseCurrentPreset(presetId:number):Observable<any>{
-    presetInfos[presetId].status = PresetStatus.Closed;
-    return of('success');
+    return this.httpClient.patch(`${this.api_url}/appointments/preset_record/${presetId}/`,{status:PresetStatus.Closed});
   }
   updatePresetAppointment(apnt:PresetAppointment):Observable<any>{
-    return of('');
+    let data:any=Object.assign({},apnt);
+    data.child = apnt.child.id;
+    data.timerange = apnt.timerange.id;    
+    return this.httpClient.patch(`${this.api_url}/appointments/preset_appointments/${apnt.id}/`,data);
   }
   UpdateEventById(appointment:Appointment):Observable<any>{
-    
-    let find = appointmentsOfOneUser.find((apintm:Appointment)=>{
-      return apintm.id == appointment.id
-    })
-    if(find){
-      Object.assign(find,appointment);
+    let data ={
+      title:appointment.title,
+      start:appointment.start,
+      end:appointment.end
     }
-    return of(find);
+    return this.httpClient.patch(`${this.api_url}/appointments/${appointment.id}/`, data);
   }
 
   createPresetAppointment(apnt:PresetAppointment):Observable<any>{
-    apnt.id = presetApnts.length;
-    presetApnts.push(apnt);
-    return of('success');
+    let data:any=Object.assign({},apnt);
+    data.child = apnt.child.id;
+    data.timerange = apnt.timerange.id;    
+    return this.httpClient.post(`${this.api_url}/appointments/preset_appointments/`,data);
   }
 
   CreateEvent(appointment:Appointment):Observable<any>{    
@@ -114,9 +113,11 @@ export class AppointmentService {
       }
       appointment.color =  colorList[Math.floor(Math.random() * colorList.length)];
     }
-    appointment.id = appointmentsOfOneUser.length;
-    appointmentsOfOneUser.push(appointment);
-
-    return of('success');
+    let data:any;
+    data = appointment;
+    data.child = appointment.child.id;
+    data.parent = appointment.parent.id;
+    data.teacher = appointment.teacher.id;
+    return this.httpClient.post(`${this.api_url}/appointments/`, appointment);
   }
 }

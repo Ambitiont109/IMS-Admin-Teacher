@@ -13,6 +13,7 @@ import * as moment from "moment";
 export class PresetSlotItemComponent implements OnInit {
   @Input() start:Date;
   @Input() end:Date
+  @Input() isCurrentChild:boolean;
   @Input('confirmed') isConfirmed:boolean;
   @Output() confirmClick = new EventEmitter();
   moment = moment;

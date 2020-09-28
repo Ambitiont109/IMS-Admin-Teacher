@@ -16,7 +16,10 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 // import ngx-translate and the http loader
 import {TranslateLoader, TranslateModule, TranslatePipe} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
 
+registerLocaleData(localeFr)
 import {
   NbChatModule,
   NbDatepickerModule,
@@ -38,7 +41,6 @@ import { LightboxModule } from 'ngx-lightbox';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/moment';
 import * as moment from 'moment';
-import { SharedTranslateModule } from './shared-translate/shared-translate.module';
 
 export function momentAdapterFactory() {
   return adapterFactory(moment);
@@ -66,6 +68,8 @@ export function momentAdapterFactory() {
     NbCardModule,    
     NbButtonModule,
     NbInputModule,
+    // OwlDateTimeModule,
+    // OwlNativeDateTimeModule,
     CoreModule.forRoot(),
     LightboxModule,
     TranslateModule.forRoot({

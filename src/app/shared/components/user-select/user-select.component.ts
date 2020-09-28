@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, TemplateRef, forwardRef, Output } from '@angular/core';
+import { Component, OnInit, Input, TemplateRef, forwardRef, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { User } from "../../../@core/models/user";
 import { unknown_picture } from "../../../@core/services/users.service";
 import { LocalDataSource } from 'ng2-smart-table';
@@ -18,7 +18,7 @@ import { CellAvatarWithCheckBoxComponent } from './cell-avatar-with-check-box/ce
     multi: true
  }]
 })
-export class UserSelectComponent implements OnInit, ControlValueAccessor {
+export class UserSelectComponent implements OnInit, ControlValueAccessor, OnChanges {
   @Input() users: User[];
   @Input('value') initValue: any;
   @Input() title:string;
@@ -74,6 +74,14 @@ export class UserSelectComponent implements OnInit, ControlValueAccessor {
     if(this.initValue){
       this.setSelectedUserData(this.initValue);      
     }    
+  }
+
+  ngOnChanges(changes:SimpleChanges){
+    if('users' in changes){
+      if(this.users){
+        this.users_src = new LocalDataSource(this.users);
+      }
+    }
   }
 
   onUserClick(){

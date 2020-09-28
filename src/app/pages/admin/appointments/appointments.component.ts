@@ -4,6 +4,9 @@ import { User, USERROLE } from '../../../@core/models/user';
 import { CellAvatarComponent } from "../parent-list/cell-avatar/cell-avatar.component";
 import { UsersService } from '../../../@core/services/users.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { forkJoin } from 'rxjs';
+import { ChildService } from '../../../@core/services/child.service';
+import { Child } from '../../../@core/models/child';
 @Component({
   selector: 'ngx-appointments',
   templateUrl: './appointments.component.html',
@@ -12,6 +15,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class AppointmentsComponent implements OnInit {
   parents: User[] = [];
   teachers: User[] = [];
+  children: Child[] = [];
   teacher_src: LocalDataSource;
   parent_src: LocalDataSource;
   
@@ -45,29 +49,31 @@ export class AppointmentsComponent implements OnInit {
   };
   
 
-  constructor(private userService: UsersService, private router:Router,private route:ActivatedRoute) {
+  constructor(private userService: UsersService, 
+    private childService:ChildService,
+    private router:Router,
+    private route:ActivatedRoute) {
     this.teacher_src = new LocalDataSource();
     this.parent_src = new LocalDataSource();
   }
   
   ngOnInit(): void {
-    this.userService.getAllUsers().subscribe((users:User[])=>{
-      users.forEach((user:User)=>{
-        if(user.role == USERROLE.Parent){
-          this.parents.push(user)
-        }
-        if(user.role == USERROLE.Teacher){
-          this.teachers.push(user)
-        }
-      })
-      this.teacher_src.load(this.teachers);
-      this.parent_src.load(this.parents);
-    })    
+    forkJoin({
+      teachers:this.userService.getTeachers(),
+      children:this.childService.getAllChildren(),
+    }).subscribe(ret=>{
+      this.teachers = ret.teachers;
+      this.children = ret.children;
+    })
   }
 
-  onRowSelect(event){
-    let selected_user:User = event.data;
+  onTeacherSelect(event){
+    let selected_user:User = event;
     this.router.navigate([selected_user.id],{relativeTo:this.route});
+  }
+  onChildSelect(event){
+    let selectedChild:Child = event;
+    this.router.navigate([selectedChild.parent.id],{relativeTo:this.route});
   }
 
 }

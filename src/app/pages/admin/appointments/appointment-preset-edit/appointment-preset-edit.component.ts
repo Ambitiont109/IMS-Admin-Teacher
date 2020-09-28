@@ -9,7 +9,7 @@ import { AppointmentService } from "../../../../@core/services/appointment.servi
 import { UsersService } from "../../../../@core/services/users.service";
 import { User, USERROLE } from "../../../../@core/models/user";
 import { Appointment, AppointmentType } from "../../../../@core/models/appointment";
-import { switchMap } from 'rxjs/operators';
+import { find, switchMap } from 'rxjs/operators';
 import { NbToastrService } from '@nebular/theme';
 import * as moment from "moment";
 import { forkJoin } from 'rxjs';
@@ -18,7 +18,8 @@ import { Child, NameOfClass } from '../../../../@core/models/child';
 import { children } from '../../../../@core/dummy';
 interface SlotInfo{
   start: Date,
-  end: Date
+  end: Date,
+  child:Child,
   booked: boolean,  
 }
 
@@ -38,6 +39,7 @@ export class AppointmentPresetEditComponent implements OnInit {
   currentPresetRecord:PresetRecord;
 
   childs:Child[];
+  allChildren:Child[];
   classNameList:NameOfClass[];
   dates:TimeRangeItem[];
   selectedClassroom:NameOfClass;
@@ -86,6 +88,7 @@ export class AppointmentPresetEditComponent implements OnInit {
         if(this.appoinment){          
           this.selectedTimeRange = this.appoinment.timerange;
           this.apnts = ret.presetAppointments;
+          this.allChildren = children;
           this.GenerateSlotsInfo(ret.presetAppointments)
         }
         
@@ -102,7 +105,7 @@ export class AppointmentPresetEditComponent implements OnInit {
           return (item.classroom == this.selectedClassroom)
         }).timeranges;
         this.selectedTimeRange = this.dates[0];
-        this.childs = res.children;
+        this.allChildren = res.children;        
         this.apnts = res.presetAppointments;
         this.GenerateSlotsInfo(this.apnts);
         
@@ -128,10 +131,12 @@ export class AppointmentPresetEditComponent implements OnInit {
         let data:SlotInfo={
           start: j.toDate(),
           end: j.clone().add(duration,'minutes').toDate(),
+          child:undefined,
           booked: false,
         }
         
         if(findedItem){
+          data.child = findedItem.child;
           data.booked = true;
         }
         retSlotData[item.id].push(data);
@@ -139,11 +144,21 @@ export class AppointmentPresetEditComponent implements OnInit {
     })
     return retSlotData;
   }
-  GenerateSlotsInfo(appnts:PresetAppointment[]){   
+  GenerateSlotsInfo(appnts:PresetAppointment[]){
+    this.childs = this.allChildren.filter((child:Child)=>{
+      return child.nameOfClass == this.selectedClassroom;
+    })   
     this.slotsInfo = this._generateslotsInfo(appnts,this.selectedClassroom)
   }
   back(){
 
+  }
+  isSameChild(child1, child2){
+    if (!child1) return false;
+    if (!child2) return false;
+    if (!child1.id) return false;
+    if (!child2.id) return false;
+    return child1.id == child2.id;
   }
   onConfirm($event){
     let start:moment.Moment = moment($event.start);
@@ -156,21 +171,36 @@ export class AppointmentPresetEditComponent implements OnInit {
         if(this.isEditmode){
           this.appoinment.start = moment(this.selectedTimeRange.date).hour(start.hour()).minute(start.minute()).toDate();
           this.appoinment.end = moment(this.selectedTimeRange.date).hour(end.hour()).minute(end.minute()).toDate();
+          this.appoinment.timerange = this.selectedTimeRange;
           this.appointmentService.updatePresetAppointment(this.appoinment).subscribe(_=>{
             this.toastrService.success('Updated the Appointment',"Success");
           })
         }else{
-          this.appoinment = this.appointmentService.createBlankPresetAppointment();          
-          // this.appoinment.title = `${this.selectedTeacher.first_name} ${this.selectedTeacher.last_name} & ${this.selectedParent.first_name, this.selectedParent.last_name} (PRESET)`;
-          this.appoinment.child = this.selectedChild;
-          this.appoinment.className = this.selectedClassroom;
-          this.appoinment.presetInfo = this.currentPresetRecord.id;
-          this.appoinment.start = moment(this.selectedTimeRange.date).hour(start.hour()).minute(start.minute()).toDate();
-          this.appoinment.end = moment(this.selectedTimeRange.date).hour(end.hour()).minute(end.minute()).toDate();
+          let findedSlots = this.slots.find((item)=>{return this.isSameChild(item.child, this.selectedChild)});
+          if(findedSlots){
+            let child = findedSlots.child;
+            let apnt = this.apnts.find((apnt)=>{return apnt.child.id == child.id});
+            apnt.start = moment(this.selectedTimeRange.date).hour(start.hour()).minute(start.minute()).toDate();
+            apnt.end = moment(this.selectedTimeRange.date).hour(end.hour()).minute(end.minute()).toDate();
+            apnt.timerange = this.selectedTimeRange;
+            this.appointmentService.updatePresetAppointment(apnt).subscribe(_=>{
+              this.toastrService.success('Updated the Appointment',"Success");
+            })
 
-          this.appointmentService.createPresetAppointment(this.appoinment).subscribe(_ => {
-            this.toastrService.success('Registered the New Preset Appointment',"Success");
-          })
+          }else{
+            this.appoinment = this.appointmentService.createBlankPresetAppointment();          
+            // this.appoinment.title = `${this.selectedTeacher.first_name} ${this.selectedTeacher.last_name} & ${this.selectedParent.first_name, this.selectedParent.last_name} (PRESET)`;
+            this.appoinment.child = this.selectedChild;
+            this.appoinment.className = this.selectedClassroom;
+            this.appoinment.presetInfo = this.currentPresetRecord.id;
+            this.appoinment.start = moment(this.selectedTimeRange.date).hour(start.hour()).minute(start.minute()).toDate();
+            this.appoinment.end = moment(this.selectedTimeRange.date).hour(end.hour()).minute(end.minute()).toDate();
+            this.appoinment.timerange = this.selectedTimeRange;
+            this.appointmentService.createPresetAppointment(this.appoinment).subscribe(_ => {
+              this.toastrService.success('Registered the New Preset Appointment',"Success");
+            })
+          }
+          
         }
       }
     })
@@ -188,9 +218,14 @@ export class AppointmentPresetEditComponent implements OnInit {
         this.dates = findedItem.timeranges;
         this.selectedTimeRange = this.dates[0];
         this.GenerateSlotsInfo(this.apnts);
-      })
-      
-    }else this.dates=[]
+      })      
+    }else 
+    {
+      this.GenerateSlotsInfo([])
+      this.dates=[]
+    }
+    
+    
     
   }
   onTimerangeChange(data:TimeRangeItem){
@@ -203,6 +238,8 @@ export class AppointmentPresetEditComponent implements OnInit {
     return "Create Preset Appointment"
   }
   get slots():SlotInfo[]{
-    return this.slotsInfo[this.selectedTimeRange.id];
+    if(this.slotsInfo)
+      return this.slotsInfo[this.selectedTimeRange.id];
+    return []
   }
 }

@@ -1,9 +1,9 @@
 <nb-card>
     <nb-card-header>
       <div class="d-flex align-items-center" style="position: relative;">
-        Preset
-        <button class="ml-2" *ngIf="isFinished" type="button"  nbTooltip="Start New"  nbButton ghost (click)="startNew()"> New </button>
-        <nb-badge text="Finished" status="danger" position="top right" *ngIf="isFinished"></nb-badge>
+        {{'Preset' | translate}}
+        <button class="ml-2" *ngIf="isFinished" type="button"  nbTooltip="Start New"  nbButton ghost (click)="startNew()"> {{'New' | translate}} </button>
+        <nb-badge text="{{'Finished' | translate}}" status="danger" position="top right" *ngIf="isFinished && currentPresetRecord"></nb-badge>
         <nb-toggle *ngIf="!isFinished" class="ml-auto" status="basic" labelPosition="start" [(checked)]="isStarted" (checkedChange)="onToogleChange($event)">{{actionText}}</nb-toggle>
       </div>
       
@@ -12,10 +12,10 @@
         <div class="disable-form" *ngIf="isFinished">  </div>
         <form [formGroup] = "presetRecordForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
-                <label class="label mr-4"> Close Date </label>
+                <label class="label mr-4"> {{'Close Date' | translate}} </label>
                 <input style="width: 120px;" nbInput [owlDateTimeTrigger]="closedate" [owlDateTime]="closedate" formControlName="closeDateTime" >
                     <div *ngIf="isInvalidControl(presetRecordForm,'closeDateTime')">
-                        <span class="error-text">required</span>
+                        <span class="error-text">{{'required' | translate}}</span>
                     </div> 
                     <owl-date-time [pickerType]="'calendar'" #closedate></owl-date-time>
             </div>
@@ -41,22 +41,21 @@
                                             </div>                            
                                         </div>
                                         <div class="form-group">
-                                            <label class="label"> Start Time</label>
+                                            <label class="label"> {{'Start Time' | translate}}</label>
                                             <div >
                                                 <input style="width: 120px;" disabled nbInput [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [status]="isInvalidControl(timerangeForm,'startTime')?'danger':'basic'" formControlName="startTime">
                                                 <div *ngIf="isInvalidControl(timerangeForm,'startTime')">
-                                                    <span class="error-text" *ngIf="timerangeForm.get('startTime').errors.required">required</span>
+                                                    <span class="error-text" *ngIf="timerangeForm.get('startTime').errors.required">{{'required' | translate}}</span>
                                                 </div> 
                                                 <owl-date-time [pickerType]="'timer'"  #dt></owl-date-time>              
                                             </div>
                                         </div>                  
                                         <div class="form-group">
-                                            <label class="label"> End Time</label>
+                                            <label class="label"> {{'End Time' | translate}}</label>
                                             <div >
                                                 <input style="width: 120px;" nbInput [owlDateTimeTrigger]="dt2" [owlDateTime]="dt2" [status]="isInvalidControl(timerangeForm,'endTime')?'danger':'basic'" formControlName="endTime">
                                                 <div *ngIf="isInvalidControl(timerangeForm,'endTime')">
-                                                    <span class="error-text" *ngIf="timerangeForm.get('endTime').errors.required">required</span>
-                                                    <span class="error-text" *ngIf="timerangeForm.get('endTime').errors.mustAfter">End Time is not After Start Time</span>
+                                                    <span class="error-text" *ngIf="timerangeForm.get('endTime').errors.required">{{'required' | translate}}</span>
                                                 </div> 
                                                 <owl-date-time [pickerType]="'timer'"  #dt2></owl-date-time>              
                                             </div>                
@@ -65,12 +64,16 @@
                                             <nb-icon icon="close-outline" ></nb-icon>
                                         </button> 
                                     </div>
-                                    
+                                    <div *ngIf="isInvalidControl(timerangeForm,'endTime')">
+                                        <span class="error-text" *ngIf="timerangeForm.get('endTime').errors.mustAfter">{{'End Time is not After Start Time' | translate}}</span>
+                                        
+                                    </div>
                                 </ng-container>
-                                
-                                
+                                <div *ngIf="isInvalidControl(presetItemForm, 'timeranges')">
+                                    <span class="error-text" *ngIf="presetItemForm.get('timeranges').errors.minlength">{{'At least 3 timedata required' | translate}}</span>
+                                </div> 
                                 <div class="form-group ">
-                                    <label class="label mr-4"> Duration</label>
+                                    <label class="label mr-4"> {{'Duration' | translate}}</label>
                                     <nb-select [status]="isInvalidControl(presetItemForm,'duration')?'danger':'basic'"  formControlName="duration">
                                         <nb-option [value]="10">10</nb-option>
                                         <nb-option [value]="15">15</nb-option>
@@ -80,7 +83,7 @@
                                         <nb-option [value]="50">50</nb-option>
                                         <nb-option [value]="60">60</nb-option>                                            
                                     </nb-select>
-                                    minutes
+                                    {{'minutes' | translate}}
                                     <!-- <div *ngIf="isInvalidControl(presetItemForm,'duration')">
                                         <span class="error-text" *ngIf="presetItemForm.get('duration').errors.required">required</span>
                                     </div>  -->
@@ -93,7 +96,7 @@
         </form>
 
     </nb-card-body>
-    <nb-card-footer *ngIf="isStarted">
+    <!-- <nb-card-footer *ngIf="isStarted">
         <button style="float: right;" type="button"  nbTooltip="{{'Update Current Preset Info' | translate}}"  nbButton ghost (click)="updateSubmit()"> {{'Update' | translate}} </button>
-    </nb-card-footer>
+    </nb-card-footer> -->
 </nb-card>

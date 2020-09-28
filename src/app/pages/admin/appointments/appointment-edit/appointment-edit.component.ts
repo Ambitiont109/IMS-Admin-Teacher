@@ -2,14 +2,17 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { AppointmentService } from "../../../../@core/services/appointment.service";
 import { UsersService } from "../../../../@core/services/users.service";
-import { User, USERROLE } from "../../../../@core/models/user";
+import { User } from "../../../../@core/models/user";
 import { isInvalidControl } from "../../../../@core/utils/form.util";
 import { Appointment, AppointmentType } from "../../../../@core/models/appointment";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {  MustAfter } from "../../../../@core/utils/validators.util";
 import * as moment from "moment";
 import { switchMap } from 'rxjs/operators';
-import { NbToastrService } from '@nebular/theme';
+import { ToastService } from '../../../../@core/services/toast.service';
+import { ChildService } from '../../../../@core/services/child.service';
+import { forkJoin } from 'rxjs';
+import { Child } from '../../../../@core/models/child';
 @Component({
   selector: 'ngx-appointment-edit',
   templateUrl: './appointment-edit.component.html',
@@ -23,13 +26,14 @@ export class AppointmentEditComponent implements OnInit {
   appoinment:Appointment;
 
   appointmentForm:FormGroup
-  parents:User[];
+  children:Child[];
   teachers:User[];
   constructor(
     private route:ActivatedRoute,
     private router:Router,
-    private toastrService:NbToastrService,
+    private toastrService:ToastService,
     private appointmentService:AppointmentService,
+    private childService:ChildService,
     private userService:UsersService,
     private fb: FormBuilder
   ) { 
@@ -37,22 +41,19 @@ export class AppointmentEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getAllUsers().subscribe((users:User[])=>{
-      this.teachers=[];
-      this.parents=[]
-      users.forEach((user:User)=>{
-        if(user.role == USERROLE.Teacher){
-          this.teachers.push(user)
-        }
-        if(user.role == USERROLE.Parent){
-          this.parents.push(user)
-        }
-      })
+    forkJoin({
+      teachers:this.userService.getTeachers(),
+      children:this.childService.getAllChildren(),
+    }).subscribe(ret=>{
+      this.teachers = ret.teachers;
+      this.children = ret.children;
     })
+
+   
     this.appointmentForm = this.fb.group({
       title:['',Validators.required],
-      teacher:['', [Validators.required]],
-      parent:['', Validators.required],
+      teacher:[{value:'', disabled:this.isEditmode}, [Validators.required]],
+      child:[{value:undefined, disabled:this.isEditmode}, [Validators.required, Validators.minLength(1)]],
       start:[moment().toDate(),Validators.required],
       end:[moment().toDate(),Validators.required]
     },{validators:[MustAfter('start','end')]})
@@ -67,6 +68,7 @@ export class AppointmentEditComponent implements OnInit {
           }
         )
       ).subscribe((res:Appointment)=>{
+        console.log(res);
         this.appoinment = res;
         this.InitForm(res);
       })  
@@ -86,10 +88,11 @@ export class AppointmentEditComponent implements OnInit {
         this.toastrService.success('Updated the Appointment Info',"Success");
       }else{
         this.appoinment = Object.assign({}, this.appointmentForm.value);
+        this.appoinment.parent = this.appoinment.child.parent;
         this.appoinment.type = AppointmentType.FREE;
-        this.appointmentService.CreateEvent(this.appoinment).subscribe(_ => {
+        this.appointmentService.CreateEvent(this.appoinment).subscribe(data => {
           this.toastrService.success('Registered the New Appointment',"Success");
-          this.router.navigate([`/appointment/${this.appoinment.parent.id}`]);
+          this.router.navigate([`/appointment/${data.parent}`]);
         })
       }
     }
