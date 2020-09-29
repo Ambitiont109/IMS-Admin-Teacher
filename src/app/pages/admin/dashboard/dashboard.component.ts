@@ -1,5 +1,4 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { Student } from '../../../student';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CONSTANTS } from "../../../constants";

@@ -110,5 +110,13 @@
     "Done" : "Terminé",
     "Reply" : "Répondre",
     "Decline" : "Déclin",
-    "Send Request" : "Envoyer une demande"
+    "Send Request" : "Envoyer une demande",
+    "Profile" : "Profil",
+    "Log out" : "Déconnexion",
+    "Are you sure?" : "Êtes-vous sûr?",
+    "Are you going to close?" : "Allez-vous fermer?",
+    "CLOSE" : "FERMER",
+    "START" : "DÉBUT",
+    "This child will be removed from sibling. Are you going to continue?" : "Cet enfant sera supprimé de son frère. Allez-vous continuer?",
+    "Are you going to delete?" : "Allez-vous supprimer?"
 }

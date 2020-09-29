@@ -56,7 +56,7 @@ export class ChildService {
       data.menu = childDailyInformation.menu.id;
     if(childDailyInformation.child)
       data.child = childDailyInformation.child.id;
-    return this.httpClient.put(`${this.api_url}/dailyinformations/`, data);
+    return this.httpClient.put(`${this.api_url}/dailyinformations/${childDailyInformation.id}/`, data);
   }
   getLatestChildDailyInformation(childId:number):Observable<ChildDailyInformation>{
     return this.httpClient.get<ChildDailyInformation>(`${this.api_url}/child/${childId}/latest_dailyinfo/`)

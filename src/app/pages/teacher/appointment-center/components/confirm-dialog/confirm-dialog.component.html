@@ -8,8 +8,8 @@
       </nb-card-header>
     <nb-card-body>
         <div class="row justify-content-around">
-            <nb-user [picture]="apnt.parent.picture" [name]="apnt.parent.first_name + ' ' + apnt.parent.last_name" title="Parent"></nb-user>
-            <nb-user [picture]="apnt.child.photo" [name]="apnt.child.first_name + ' ' + apnt.child.last_name" title="Desire Child"></nb-user>
+            <nb-user [picture]="apnt.parent.picture" [name]="apnt.parent.first_name + ' ' + apnt.parent.last_name" title="{{'Parent' | translate}}"></nb-user>
+            <nb-user [picture]="apnt.child.photo" [name]="apnt.child.first_name + ' ' + apnt.child.last_name" title="{{'Desire Child' | translate}}"></nb-user>
         </div>
         <div class="row mt-2">
             <textarea rows="5" fullWidth nbInput shape="round"  placeholder="{{'Write comment' | translate}}" [(ngModel)]="comment"></textarea>

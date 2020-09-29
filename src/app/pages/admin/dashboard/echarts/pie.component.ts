@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, Input, OnChanges, SimpleChanges, OnInit } from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
-import { Student } from "../../../../student";
+// import { Student } from "../../../../student";
 import { CONSTANTS } from "../../../../constants";
 @Component({
   selector: 'ngx-echarts-pie',
@@ -9,7 +9,7 @@ import { CONSTANTS } from "../../../../constants";
   `,
 })
 export class EchartsPieComponent implements  OnDestroy, OnInit, OnChanges {
-  @Input() students:Student[]
+  // @Input() students:Student[]
   @Input() seriesData:[]
   @Input() seriesName:string
   options: any;
@@ -101,7 +101,7 @@ export class EchartsPieComponent implements  OnDestroy, OnInit, OnChanges {
 
   PieByTypeOfHighSchool(){
     
-    if(! this.students)return;
+    // if(! this.students)return;
     let typeListOfHighSchool = CONSTANTS.typeListOfHighSchool;
     let data={}    
     typeListOfHighSchool.forEach(type=>{
@@ -118,12 +118,12 @@ export class EchartsPieComponent implements  OnDestroy, OnInit, OnChanges {
       }
     })
     
-    this.students.forEach((student:Student)=>{
-      if(typeListOfHighSchool.lastIndexOf(student.typeOfHighSchool)>=0)
-        data[student.typeOfHighSchool].value ++;
-      else
-        data['unknown'].value ++;
-    });
+    // this.students.forEach((student:Student)=>{
+    //   if(typeListOfHighSchool.lastIndexOf(student.typeOfHighSchool)>=0)
+    //     data[student.typeOfHighSchool].value ++;
+    //   else
+    //     data['unknown'].value ++;
+    // });
     this.options.legend.data = Object.keys(data);
     this.options.series[0].data = Object.values(data);
     this.options = Object.assign({}, this.options);

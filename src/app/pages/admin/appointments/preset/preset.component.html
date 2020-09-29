@@ -4,7 +4,7 @@
         {{'Preset' | translate}}
         <button class="ml-2" *ngIf="isFinished" type="button"  nbTooltip="Start New"  nbButton ghost (click)="startNew()"> {{'New' | translate}} </button>
         <nb-badge text="{{'Finished' | translate}}" status="danger" position="top right" *ngIf="isFinished && currentPresetRecord"></nb-badge>
-        <nb-toggle *ngIf="!isFinished" class="ml-auto" status="basic" labelPosition="start" [(checked)]="isStarted" (checkedChange)="onToogleChange($event)">{{actionText}}</nb-toggle>
+        <nb-toggle *ngIf="!isFinished" class="ml-auto" status="basic" labelPosition="start" [(checked)]="isStarted" (checkedChange)="onToogleChange($event)">{{actionText | translate}}</nb-toggle>
       </div>
       
     </nb-card-header>

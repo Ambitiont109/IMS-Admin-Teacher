@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnChanges, SimpleChanges, Input, OnInit } from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
-import { Student } from "../../../../student";
+// import { Student } from "../../../../student";
 @Component({
   selector: 'ngx-echarts-bar',
   template: `
@@ -8,7 +8,7 @@ import { Student } from "../../../../student";
   `,
 })
 export class EchartsBarComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() students:Student[]
+  // @Input() students:Student[]
   options: any;
   themeSubscription: any;
 
@@ -98,20 +98,20 @@ export class EchartsBarComponent implements OnInit, OnDestroy, OnChanges {
       'HighSchool':0,
       'College':0
     }
-    if(this.students){
-      this.students.forEach((student:Student)=>{
-        if(student.isgrduateWJA == 'yes')
-          data['WJA']++;
-        if(student.isGraduated) data['HighSchool']++;
-        if(student.isGraduatedCollege) data['College']++;
-      })
-      if(this.options)
-      {
-        this.options.series[0].data=Object.values(data);
-        this.options = Object.assign({}, this.options);
-      }
+    // if(this.students){
+    //   this.students.forEach((student:Student)=>{
+    //     if(student.isgrduateWJA == 'yes')
+    //       data['WJA']++;
+    //     if(student.isGraduated) data['HighSchool']++;
+    //     if(student.isGraduatedCollege) data['College']++;
+    //   })
+    //   if(this.options)
+    //   {
+    //     this.options.series[0].data=Object.values(data);
+    //     this.options = Object.assign({}, this.options);
+    //   }
         
-    }
+    // }
   }
   ngOnDestroy(): void {
     this.themeSubscription.unsubscribe();

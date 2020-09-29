@@ -92,14 +92,19 @@
                                 <div class="mr-4">
                                     <span class="text-hint mr-4"> {{'Where' | translate}}:</span>
                                     <input class="mt-2" nbInput formControlName="place">
-                                    
+                                    <div *ngIf="isInvalidControl(injureForm,'place')" class="ml-1">
+                                        <span class="error-text" *ngIf="injureForm.get('place').errors.required">{{'required' | translate}}</span>
+                                    </div>
                                 </div>
                                 <div>
                                     <span class="text-hint mr-4"> {{'When' | translate}}:</span>
                                     <input class="mt-2"  nbInput [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" formControlName="taken_time">
                                     <owl-date-time [pickerType]="'timer'" #dt3></owl-date-time>  
+                                    <div *ngIf="isInvalidControl(injureForm,'taken_time')" class="ml-1">
+                                        <span class="error-text" *ngIf="injureForm.get('taken_time').errors.required">{{'required' | translate}}</span>
+                                    </div>
                                 </div>
-                                <button (click)="removeInjureForm(i)" nbButton ghost style="position: absolute;right: 0px; top: -5px;z-index:99;">
+                                <button (click)="removeInjureForm(i)" type="button" nbButton ghost style="position: absolute;right: 0px; top: -5px;z-index:99;">
                                     <nb-icon icon="close-outline" ></nb-icon>
                                 </button>                   
                             </div>

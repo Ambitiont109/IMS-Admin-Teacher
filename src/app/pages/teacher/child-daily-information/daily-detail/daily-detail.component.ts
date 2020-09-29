@@ -10,12 +10,13 @@ import * as moment from "moment";
 import {  } from "module";
 import { MustAfter } from '../../../../@core/utils/validators.util';
 import { MenuItem } from '../../../../@core/models/meal-menu';
-import { NbMenuService, NbToastrService } from '@nebular/theme';
+import { NbDialogService, NbMenuService, NbToastrService } from '@nebular/theme';
 import { MealMenuService } from '../../../../@core/services/meal-menu.service';
 import { forkJoin } from 'rxjs';
 import { DateTimeAdapter } from "@danielmoncada/angular-datetime-picker";
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { ToastService } from '../../../../@core/services/toast.service';
+import { YesNoDialogComponent } from '../../../../components/yes-no-dialog/yes-no-dialog.component';
 @Component({
   selector: 'ngx-daily-detail',
   templateUrl: './daily-detail.component.html',
@@ -39,7 +40,9 @@ export class DailyDetailComponent implements OnInit {
     private toastrService:ToastService,
     private translateService:TranslateService,
     private dateAdapter:DateTimeAdapter<any>,
-    private fb:FormBuilder
+    private fb:FormBuilder,
+    private dialogService:NbDialogService,
+    
     ) { 
       this.weekNameList = WeekNameList;
       this.dayNameList = DayNameListForMenu
@@ -89,13 +92,20 @@ export class DailyDetailComponent implements OnInit {
     console.log(data);
     if(data){
       this.formGroup.reset(data);
-      this.formGroup.get('week').setValue(data.menu.weekName);
-      this.formGroup.get('day').setValue(data.menu.dayName);
+      if(data.menu){
+        this.formGroup.get('week').setValue(data.menu.weekName);
+        this.formGroup.get('day').setValue(data.menu.dayName);
+        this.selectedMenu = data.menu;
+      }
+      
       if(data.injures.length >0){
         // this.formGroup.get('injureForms').setValue(data.injures.map((x:InjureRecord)=>{return this.buildInjureForm(x)}))    
         let formArray:FormArray = this.formGroup.get('injureForms') as FormArray;
         formArray.clear();
-        formArray.reset(data.injures)
+        data.injures.forEach(injure=>{
+          formArray.push(this.buildInjureForm(injure))
+        })
+        
         this.formGroup.get('injureComment').setValue(data.injures[0].comment);
       }  
     }
@@ -104,8 +114,8 @@ export class DailyDetailComponent implements OnInit {
   buildInjureForm(data?){
     let injureForm = this.fb.group({
       id:['',Validators.nullValidator],
-      place:['', Validators.nullValidator],
-      taken_time:['',Validators.nullValidator],
+      place:['', Validators.required],
+      taken_time:['',Validators.required],
       comment:['', Validators.nullValidator]
     })
     if(data)
@@ -140,7 +150,13 @@ export class DailyDetailComponent implements OnInit {
     this.injureForms.push(this.buildInjureForm())
   }
   removeInjureForm(index){
-    this.injureForms.removeAt(index);
+    this.dialogService.open(YesNoDialogComponent,{context:{
+      title:'Are you sure?'
+    }}).onClose.subscribe(ret=>{
+      if(ret==true)
+        this.injureForms.removeAt(index);
+    })
+    
   }
 
   onMenuChange(data){    
@@ -165,6 +181,9 @@ export class DailyDetailComponent implements OnInit {
         this.childDailyInformation.menu = this.selectedMenu;
         this.childDailyInformation.child = this.child;
         this.childDailyInformation.injures = this.formGroup.get('injureForms').value;
+        this.childDailyInformation.injures.forEach(injure=>{
+          injure.comment = this.formGroup.get('injureComment').value;
+        })
         if(today.isAfter(latest_date,'days') || !this.childDailyInformation.id){
           this.childService.createChildDailyInformation(this.childDailyInformation).subscribe(data => {
             this.childDailyInformation = data;
@@ -182,6 +201,9 @@ export class DailyDetailComponent implements OnInit {
         this.childDailyInformation.child = this.child;
         this.childDailyInformation.menu = this.selectedMenu;
         this.childDailyInformation.injures = this.formGroup.get('injureForms').value;
+        this.childDailyInformation.injures.forEach(injure=>{
+          injure.comment = this.formGroup.get('injureComment').value;
+        })
         this.childService.createChildDailyInformation(this.childDailyInformation).subscribe(data => {
           this.childDailyInformation = data;
           this.toastrService.success("Submitted First Today's Daily Information",'success')

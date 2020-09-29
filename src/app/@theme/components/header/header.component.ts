@@ -37,7 +37,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   userMenu = [ 
                {title:'Profile', url:'/profile', icon:{icon:'address-card', pack:'fa'}},
-               { title: 'Log out', icon:'log-out-outline' }
+               { title: 'Log out', icon:'log-out-outline', tagname:'logout' }
              ];
 
   public constructor(
@@ -80,10 +80,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.menuService.onItemClick
     this.menuService.onItemClick().pipe(
       filter(({ tag }) => tag === 'my-profile-tag'),
-      map(({ item: { title } }) => title),
-    ).subscribe(title=>{
-      console.log(title);
-      if(title == 'Log out'){
+      map(({ item }) => item),
+    ).subscribe((item:any)=>{
+      if(item.tagname == 'logout'){
         this.authService.logout();
       }
     })
@@ -95,7 +94,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // this.userService.getUsers()
     //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((users: any) => this.user = users.nick);
+    this._translateMenu();
  
+  }
+  _translateMenu(){
+    for (const each of this.userMenu ) {
+      this.translateSerivce.stream(each.title).subscribe(res => {
+        each.title = res;
+      });
+     
+    }
   }
   changeSelectedCountryCode(value: string): void {
     this.selectedCountryCode = value;
