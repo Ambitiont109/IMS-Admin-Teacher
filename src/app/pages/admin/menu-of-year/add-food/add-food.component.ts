@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MealMenuService } from "../../../../@core/services/meal-menu.service";
 import { NbToastrService } from '@nebular/theme';
+import { ToastService } from '../../../../@core/services/toast.service';
 
 @Component({
   selector: 'ngx-add-food',
@@ -13,7 +14,7 @@ export class AddFoodComponent implements OnInit {
   constructor(
     private route:ActivatedRoute,
     private router:Router,
-    private toastrService:NbToastrService,
+    private toastrService:ToastService,
     private mealMenuService:MealMenuService
   ) { }
 

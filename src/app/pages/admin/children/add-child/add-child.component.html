@@ -30,7 +30,7 @@
                                 <label class="label"> {{'First Name' | translate}}</label>
                                 <input nbInput type="text" placeholder="{{'First Name'|translate}}" fullWidth [status]="isInvalidControl(childForm,'first_name')?'danger':'basic'" formControlName="first_name">
                                 <div *ngIf="isInvalidControl(childForm,'first_name')">
-                                    <span class="error-text" *ngIf="childForm.get('first_name').errors.required">required</span>
+                                    <span class="error-text" *ngIf="childForm.get('first_name').errors.required">{{'required' | translate}}</span>
                                 </div>
                             </div>
                         </div>
@@ -39,7 +39,7 @@
                                 <label class="label">{{'Last Name' | translate}}</label>
                                 <input nbInput type="text" placeholder="{{'Last Name' | translate}}" fullWidth [status]="isInvalidControl(childForm,'last_name')?'danger':'basic'" formControlName="last_name">
                                 <div *ngIf="isInvalidControl(childForm,'last_name')">
-                                    <span class="error-text" *ngIf="childForm.get('last_name').errors.required">required</span>
+                                    <span class="error-text" *ngIf="childForm.get('last_name').errors.required">{{'required' | translate}}</span>
                                 </div>
                             </div>
                         </div>
@@ -50,7 +50,7 @@
                                 <label class="label"> {{'Birth' | translate}}</label>
                                 <input  nbInput [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [status]="isInvalidControl(childForm,'start')?'danger':'basic'" formControlName="birth">
                                     <div *ngIf="isInvalidControl(childForm,'birth')">
-                                        <span class="error-text" *ngIf="childForm.get('birth').errors.required">required</span>
+                                        <span class="error-text" *ngIf="childForm.get('birth').errors.required">{{'required' | translate}}</span>
                                     </div> 
                                 <owl-date-time #dt></owl-date-time>             
                             </div>
@@ -63,7 +63,7 @@
                                     <nb-option  value="female"> {{'female' |translate |titlecase}} </nb-option>
                                 </nb-select>
                                 <div *ngIf="isInvalidControl(childForm,'gender')">
-                                    <span class="error-text" *ngIf="childForm.get('gender').errors.required">required</span>
+                                    <span class="error-text" *ngIf="childForm.get('gender').errors.required">{{'required' | translate}}</span>
                                 </div>
                             </div>                            
                         </div>

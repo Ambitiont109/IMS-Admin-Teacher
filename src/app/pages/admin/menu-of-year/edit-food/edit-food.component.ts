@@ -4,6 +4,7 @@ import { MealMenuService } from "../../../../@core/services/meal-menu.service";
 import { NbToastrService } from '@nebular/theme';
 import { switchMap } from 'rxjs/operators';
 import { Food } from '../../../../@core/models/meal-menu';
+import { ToastService } from '../../../../@core/services/toast.service';
 
 @Component({
   selector: 'ngx-edit-food',
@@ -17,7 +18,7 @@ export class EditFoodComponent implements OnInit {
   constructor(
     private route:ActivatedRoute,
     private router:Router,
-    private toastrService:NbToastrService,
+    private toastrService:ToastService,
     private mealMenuService:MealMenuService
   ) { }
 

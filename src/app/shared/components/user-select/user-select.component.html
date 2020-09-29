@@ -22,7 +22,7 @@
       <nb-card-body style="min-height: 300px;">
         <div class="search-box">
             <div style="display: flex;">
-              <input [(ngModel)]="searchWord" type="text" nbInput fullWidth placeholder="Search by name" (ngModelChange)="onSearchWordChange($event)"/>
+              <input [(ngModel)]="searchWord" type="text" nbInput fullWidth placeholder="{{'Search by name'| translate}}" (ngModelChange)="onSearchWordChange($event)"/>
               <button type="button" nbButton status="primary"><nb-icon class="action-icon" icon="search-outline"></nb-icon></button>
             </div>
           </div>

@@ -41,7 +41,8 @@ export class AppointmentService {
     return this.httpClient.get<Appointment[]>(`${this.api_url}/appointments/user/${userId}/`);
   }
   getEventsOfCurrentUser():Observable<Appointment[]>{
-    return of(appointmentsOfOneUser);
+    return this.httpClient.get<Appointment[]>(`${this.api_url}/appointments/`);
+    // return of(appointmentsOfOneUser);
   }
   patchEvent(apnt:Appointment, patch):Observable<any>{
     Object.assign(apnt,patch);

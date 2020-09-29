@@ -16,6 +16,7 @@ import { forkJoin } from 'rxjs';
 import { ChildService } from '../../../../@core/services/child.service';
 import { Child, NameOfClass } from '../../../../@core/models/child';
 import { children } from '../../../../@core/dummy';
+import { ToastService } from '../../../../@core/services/toast.service';
 interface SlotInfo{
   start: Date,
   end: Date,
@@ -53,7 +54,7 @@ export class AppointmentPresetEditComponent implements OnInit {
     private childService:ChildService,
     private appointmentService:AppointmentService,
     private dialogService: NbDialogService,
-    private toastrService:NbToastrService,
+    private toastrService:ToastService,
     private router:Router,
     private userService:UsersService
 

@@ -12,6 +12,7 @@ import { FoodComponent } from './food/food.component';
 import { FoodListComponent } from './food-list/food-list.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FoodCellComponent } from './food-list/food-cell/food-cell.component';
+import { SharedTranslateModule } from '../../../shared-translate/shared-translate.module';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { FoodCellComponent } from './food-list/food-cell/food-cell.component';
     NbSelectModule,
     Ng2SmartTableModule,
     ReactiveFormsModule,
+    SharedTranslateModule,
     FormsModule
   ],
 })

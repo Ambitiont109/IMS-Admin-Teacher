@@ -5,18 +5,18 @@
           class="btn btn-primary"
           (click)="onPrevious()"
         >
-          Previous
+          {{'Previous' | translate}}
         </div>
         <div
           class="btn btn-outline-secondary" (click)="onToday()"
         >
-          Today
+          {{'Today' | translate}}
         </div>
         <div
           class="btn btn-primary"
           (click)="onNext()"
         >
-          Next
+          {{'Next' | translate}}
         </div>
       </div>
     </div>
@@ -35,9 +35,9 @@
     <div class="col-md-4 text-left ">
         <div class="row justify-content-center">
             <div class="d-flex text-left" style="flex-direction:column;width: 96px;">
-                <nb-checkbox value="true" (valueChange)="onCheckBoxChange('confirm')">Confirmed</nb-checkbox>
-                <nb-checkbox value="true" (valueChange)="onCheckBoxChange('decline')">Declined</nb-checkbox>
-                <nb-checkbox value="true" (valueChange)="onCheckBoxChange('pending')">Pending</nb-checkbox>
+                <nb-checkbox value="true" (valueChange)="onCheckBoxChange('confirm')">{{'Confirmed' | translate}}</nb-checkbox>
+                <nb-checkbox value="true" (valueChange)="onCheckBoxChange('decline')">{{'Declined' | translate}}</nb-checkbox>
+                <nb-checkbox value="true" (valueChange)="onCheckBoxChange('pending')">{{'Pending' | translate}}</nb-checkbox>
             </div>
         </div>
     </div>
@@ -70,10 +70,10 @@
                     </nb-card-header>
                     <nb-card-body>
                         <h6 class="text-center" *ngIf="!isPreset(apnt)">{{apnt.title}}</h6>
-                        <h6 class="text-center" *ngIf="isPreset(apnt)"> PRESET </h6>
+                        <h6 class="text-center" *ngIf="isPreset(apnt)"> {{'PRESET' | translate}} </h6>
                         <div class="row justify-content-around">
-                            <nb-user [picture]="apnt.parent.picture" [name]="apnt.parent.first_name + ' ' + apnt.parent.last_name" title="Parent"></nb-user>
-                            <nb-user [picture]="apnt.child.photo" [name]="apnt.child.first_name + ' ' + apnt.child.last_name" title="Desire Child"></nb-user>
+                            <nb-user [picture]="apnt.parent.picture" [name]="apnt.parent.first_name + ' ' + apnt.parent.last_name" title="{{'Parent' | translate}}"></nb-user>
+                            <nb-user [picture]="apnt.child.photo" [name]="apnt.child.first_name + ' ' + apnt.child.last_name" title="{{'Desire Child' | translate}}"></nb-user>
                         </div>
                         
                     </nb-card-body>
@@ -81,5 +81,7 @@
             </div>
             
         </ng-container>
-
   </div>
+  <ng-container *ngIf="!filteredapnts || filteredapnts?.length == 0">
+    <h5 class="text-center"> {{'There is not any appointments' | translate}} !</h5>
+  </ng-container>

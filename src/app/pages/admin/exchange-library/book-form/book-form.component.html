@@ -23,7 +23,7 @@
                         <label class="label mr-4"> {{'Title' | translate}} </label>
                         <input nbInput type="text" placeholder="{{'Title' | translate }}" [status]="isInvalidControl(bookForm,'title')?'danger':'basic'" formControlName="title">
                         <div *ngIf="isInvalidControl(bookForm,'title')">
-                            <span class="error-text" *ngIf="bookForm.get('title').errors.required">required</span>
+                            <span class="error-text" *ngIf="bookForm.get('title').errors.required">{{'required' | translate}}</span>
                         </div>
                       </div>                  
   

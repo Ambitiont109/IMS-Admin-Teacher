@@ -4,6 +4,7 @@ import { NbToastrService } from '@nebular/theme';
 import { switchMap } from 'rxjs/operators';
 import { Child, NameOfClass, SiblingChild } from '../../../../@core/models/child';
 import { ChildService } from '../../../../@core/services/child.service';
+import { ToastService } from '../../../../@core/services/toast.service';
 
 @Component({
   selector: 'ngx-add-sibling',
@@ -21,7 +22,7 @@ export class AddSiblingComponent implements OnInit {
     private childService:ChildService,
     private router:Router,
     private route:ActivatedRoute,
-    private toastrService:NbToastrService
+    private toastrService:ToastService
     ) {
   }
 

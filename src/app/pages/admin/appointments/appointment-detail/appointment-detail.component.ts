@@ -17,6 +17,7 @@ import { CalendarEventActionsComponent } from 'angular-calendar/modules/common/c
 import { fork } from 'cluster';
 import { NbDialogService, NbToastrService } from '@nebular/theme';
 import { YesNoDialogComponent } from '../../../../components/yes-no-dialog/yes-no-dialog.component';
+import { ToastService } from '../../../../@core/services/toast.service';
 
 @Component({
   selector: 'ngx-appointment-detail',
@@ -55,7 +56,7 @@ export class AppointmentDetailComponent implements OnInit, OnDestroy {
     private route:ActivatedRoute,
     private router:Router,
     private dialogService:NbDialogService,
-    private toastrService:NbToastrService
+    private toastrService:ToastService
   ) { }
 
   ngOnInit(): void {

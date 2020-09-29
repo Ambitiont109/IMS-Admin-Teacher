@@ -26,7 +26,7 @@ export class PicturesComponent implements OnInit {
     })
   }
   onSelect(selectedChild:Child){
-    this.router.navigate([selectedChild.id-1],{relativeTo:this.route})
+    this.router.navigate([selectedChild.id],{relativeTo:this.route})
   }
 
 }

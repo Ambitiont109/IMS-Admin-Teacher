@@ -71,7 +71,7 @@ export class AppointmentCenterComponent implements OnInit {
     })
   }
   get_time_text(apnt:Appointment):string{    
-    return moment(apnt.start).format("h:mm a") + " - " + moment(apnt.end).format("h:mm a");
+    return moment(apnt.start).format("HH:mm") + " - " + moment(apnt.end).format("HH:mm");
   }
   isPreset(apnt:Appointment):boolean{
     return apnt.type === AppointmentType.PRESET;

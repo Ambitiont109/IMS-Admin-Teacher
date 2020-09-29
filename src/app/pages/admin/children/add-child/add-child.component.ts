@@ -6,6 +6,7 @@ import { NbToastrService } from '@nebular/theme';
 import { AtleastOneValidator } from '../../../../@core/utils/validators.util';
 import { NameOfClass } from '../../../../@core/models/child';
 import { isInvalidControl } from "../../../../@core/utils/form.util";
+import { ToastService } from '../../../../@core/services/toast.service';
 
 @Component({
   selector: 'ngx-add-child',
@@ -17,7 +18,7 @@ export class AddChildComponent implements OnInit {
   classNameList:NameOfClass[];
   constructor(private location:Location,
     private childService:ChildService,
-    private toastService:NbToastrService,
+    private toastService:ToastService,
     private fb:FormBuilder
     ) {
       this.classNameList = this.childService.classNameList;

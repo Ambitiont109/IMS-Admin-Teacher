@@ -31,11 +31,11 @@
             </div>
             <div class="col-lg-6">
                 <nb-card >
-                    <nb-card-header> Change Password </nb-card-header>
+                    <nb-card-header>{{'Change Password' | translate}}</nb-card-header>
                     <nb-card-body>
                         <form [formGroup]="passwordForm" (ngSubmit)="onPasswordSubmit()">              
                             <div class="form-group">
-                                <label class="label"> New Password</label>
+                                <label class="label">{{'New Password' | translate}}</label>
                                 
                                 <input [nbPopover]="card" nbPopoverPlacement="bottom" nbInput type="password"  fullWidth [status]="isInvalidControl(passwordForm,'pwd')?'danger':'basic'" formControlName="pwd">
                                 <div *ngIf="isInvalidControl(passwordForm,'pwd')">
@@ -53,7 +53,7 @@
                             </div>
         
                             <div class="form-group">
-                                <label class="label"> Confirm Password</label>
+                                <label class="label">{{'Confirm Password' | translate}}</label>
                                 <input nbInput type="password"  fullWidth [status]="isInvalidControl(passwordForm,'confirm_pwd')?'danger':'basic'" formControlName="confirm_pwd">
                                 <div *ngIf="isInvalidControl(passwordForm,'confirm_pwd')">
                                     <span class="error-text" *ngIf="passwordForm.get('confirm_pwd').errors.mustMatch">{{"Passwords doesn't match" | translate}}</span>

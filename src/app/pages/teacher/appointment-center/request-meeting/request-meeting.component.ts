@@ -3,6 +3,7 @@ import { Child } from '../../../../@core/models/child';
 import { User } from '../../../../@core/models/user';
 import { AppointmentService } from '../../../../@core/services/appointment.service';
 import { ChildService } from '../../../../@core/services/child.service';
+import { ToastService } from '../../../../@core/services/toast.service';
 import { UsersService } from '../../../../@core/services/users.service';
 
 @Component({
@@ -16,6 +17,7 @@ export class RequestMeetingComponent implements OnInit {
   selectedChildren:Child[];
   constructor(
     private appointmentService:AppointmentService,
+    private toastService:ToastService,
     private childService:ChildService,
     private userService:UsersService,
   ) {
@@ -32,6 +34,6 @@ export class RequestMeetingComponent implements OnInit {
     })
   }
   onSubmit(){
-
+    this.toastService.success('Request has been sent succesfully', 'success');
   }
 }
