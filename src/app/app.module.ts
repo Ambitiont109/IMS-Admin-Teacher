@@ -6,7 +6,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpBackend, HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CoreModule } from './@core/core.module';
 import { ThemeModule } from './@theme/theme.module';
 import { AppComponent } from './app.component';
@@ -76,7 +76,7 @@ export function momentAdapterFactory() {
       loader: {
           provide: TranslateLoader,
           useFactory: TranslationLoaderFactory,
-          deps: [HttpClient]
+          deps: [HttpBackend]
       },
       defaultLanguage:'en',
       useDefaultLang:true
@@ -96,6 +96,6 @@ export function momentAdapterFactory() {
 export class AppModule {
 }
 
-export function TranslationLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+export function TranslationLoaderFactory(httpBackend: HttpBackend) {
+  return new TranslateHttpLoader(new HttpClient(httpBackend), './assets/i18n/', '.json');
 }

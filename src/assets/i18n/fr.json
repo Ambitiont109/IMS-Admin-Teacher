@@ -207,6 +207,14 @@
     "Updated Today's Daily Information" : "Informations quotidiennes mises à jour aujourd'hui",
     "User has been deleted" : "L'utilisateur a été supprimé",
     "User Info updated Succesfully" : "Informations utilisateur mises à jour avec succès",
-    "Username has been updated succesfully" : "Le nom d'utilisateur a été mis à jour avec succès"
+    "Username has been updated succesfully" : "Le nom d'utilisateur a été mis à jour avec succès",
+
+    "Basic Information" : "Informations de base",
+    "Emergency Contacts" : "Contacts d'urgence",
+    "Authorization Person" : "Personne autorisée",
+    "Child Health Details" : "Détails sur la santé de l'enfant",
+    "Siblings" : "Fratrie",
+    "Empty" : "Vide"
+
 
 }

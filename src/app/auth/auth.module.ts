@@ -13,6 +13,7 @@ import {
   NbIconModule,
 } from '@nebular/theme';
 import { NbAuthModule } from '@nebular/auth';
+import { SharedTranslateModule } from '../shared-translate/shared-translate.module';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { NbAuthModule } from '@nebular/auth';
     NbInputModule,
     NbAuthModule,
     NbLayoutModule,
+    SharedTranslateModule,
     NbIconModule
   ]
 })
