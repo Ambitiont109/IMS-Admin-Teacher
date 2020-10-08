@@ -12,6 +12,7 @@ import { ChildService } from '../../../../@core/services/child.service';
 import { ToastService } from '../../../../@core/services/toast.service';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { DateTimeAdapter } from '@danielmoncada/angular-datetime-picker';
+import { presetItems } from '../../../../@core/dummy';
 @Component({
   selector: 'ngx-preset',
   templateUrl: './preset.component.html',
@@ -136,7 +137,7 @@ export class PresetComponent implements OnInit {
       startTime:[moment().startOf('hours').toDate(), Validators.required],
       endTime:[moment().startOf('hours').add(4,'hours').toDate(), Validators.required],
       date:[moment().startOf('days').toDate(),Validators.required]
-    }, {validators:[MustAfter('startTime','endTime')]})
+    }, {validators:[MustAfter('startTime','endTime','date')]})
     if(data)
       formGroup.reset(data);
     return formGroup
@@ -158,7 +159,15 @@ export class PresetComponent implements OnInit {
     console.log(this.presetRecordForm);
     if(this.presetRecordForm.valid){
       // let presetInfo:PresetRecord = Object.assign({}, this.presetRecordForm.value);      
-      let presetInfo = Object.assign(this.currentPresetRecord,this.presetRecordForm.value);
+      
+      let formValue = this.presetRecordForm.value;
+      formValue['presetItems'].forEach((item:PresetItem) => {
+        item.timeranges.forEach(timerange=>{
+          timerange.startTime = moment(timerange.date).hour(moment(timerange.startTime).hour()).minute(moment(timerange.startTime).minute()).toDate();
+          timerange.endTime = moment(timerange.date).hour(moment(timerange.endTime).hour()).minute(moment(timerange.endTime).minute()).toDate();
+        })        
+      });
+      let presetInfo = Object.assign(this.currentPresetRecord,formValue);
       if(this.isNewStarted){
         this.appointmentService.StartNewPreset(presetInfo).subscribe(_=>{
             this.toastService.success('New PresetAppointment has been started', 'success')
@@ -169,7 +178,9 @@ export class PresetComponent implements OnInit {
         );
       } else if(this.isStarted){        
         console.log(presetInfo);
-        // this.appointmentService.UpdatePresetRecord(presetInfo).subscribe(_=>{});
+        this.appointmentService.UpdatePresetRecord(presetInfo).subscribe(_=>{
+          this.toastService.success('Current PresetAppointment has been updated', 'success')
+        });
       }
 
     }

@@ -218,7 +218,7 @@ export const TEACHER_MENU_ITEMS: NbMenuItem[] = [
       {
         title:'List',
         link:'/teacher/appointment'
-      },
+      },      
       {
         title:'Request Meeting',
         link:'/teacher/appointment/request'

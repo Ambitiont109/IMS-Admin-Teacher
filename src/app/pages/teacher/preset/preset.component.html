@@ -4,7 +4,7 @@
     </nb-card-header>
     <nb-card-body>
         <div class="row">
-            <div class="col-sm-4" *ngFor="let timerange of presetItem.timeranges">
+            <div class="col-sm-4" *ngFor="let timerange of presetItem?.timeranges">
                 <nb-card>
                     <nb-card-header>
                         {{ timerange.date | date}}                        

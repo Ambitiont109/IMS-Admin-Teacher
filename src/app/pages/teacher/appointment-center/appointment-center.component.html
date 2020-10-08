@@ -54,6 +54,9 @@
                             <div class="text-hint">
                                 {{get_time_text(apnt)}}                        
                             </div>
+                            <div class="">
+                              {{ get_date_text(apnt) }}
+                            </div>
                             <div *ngIf="isConfirmed(apnt);">
                                 <nb-badge text="Confirmed" position="top right" status="info"></nb-badge>
                             </div>

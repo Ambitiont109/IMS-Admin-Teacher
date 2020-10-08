@@ -60,8 +60,9 @@ export class AppointmentCenterComponent implements OnInit {
       })
       if(findedIndex !=-1){
         let start = moment(item.start);
+        let end = moment(item.end);
         let selected = moment(this.selectedDate);
-        if(selected.isSame(start,'day')){
+        if(selected.isSameOrBefore(end,'day')){
           
           return true;
         }
@@ -72,6 +73,9 @@ export class AppointmentCenterComponent implements OnInit {
   }
   get_time_text(apnt:Appointment):string{    
     return moment(apnt.start).format("HH:mm") + " - " + moment(apnt.end).format("HH:mm");
+  }
+  get_date_text(apnt:Appointment):string{
+    return moment(apnt.start).format("LL");
   }
   isPreset(apnt:Appointment):boolean{
     return apnt.type === AppointmentType.PRESET;
@@ -106,9 +110,12 @@ export class AppointmentCenterComponent implements OnInit {
     this.dialogService.open(ConfirmDialogComponent,{context:{
       apnt:apnt
     }}).onClose.subscribe(ret=>{
+      console.log(ret.status);
       if(ret.status){
-       this.apntService.patchEvent(apnt, {status:ret.status, comment:ret.comment}).subscribe(_ =>{
-       }) 
+        if(ret.status != apnt.status)
+          this.apntService.patchEvent(apnt, {status:ret.status, comment:ret.comment}).subscribe(data =>{         
+            apnt.status = data.status
+          }) 
       }
     })
 

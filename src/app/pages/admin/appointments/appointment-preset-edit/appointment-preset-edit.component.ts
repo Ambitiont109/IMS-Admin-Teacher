@@ -2,15 +2,11 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { YesNoDialogComponent } from '../../../../components/yes-no-dialog/yes-no-dialog.component';
 import { NbDialogService } from '@nebular/theme';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { isInvalidControl } from "../../../../@core/utils/form.util";
-import { PresetAppointment, PresetItem, PresetRecord, PresetType, TimeRangeItem } from "../../../../@core/models/appointment";
+import { PresetAppointment, PresetItem, PresetRecord, PresetStatus, PresetType, TimeRangeItem } from "../../../../@core/models/appointment";
 import { AppointmentService } from "../../../../@core/services/appointment.service";
 import { UsersService } from "../../../../@core/services/users.service";
 import { User, USERROLE } from "../../../../@core/models/user";
-import { Appointment, AppointmentType } from "../../../../@core/models/appointment";
 import { find, switchMap } from 'rxjs/operators';
-import { NbToastrService } from '@nebular/theme';
 import * as moment from "moment";
 import { forkJoin } from 'rxjs';
 import { ChildService } from '../../../../@core/services/child.service';
@@ -84,7 +80,7 @@ export class AppointmentPresetEditComponent implements OnInit {
           }
         )
       ).subscribe((ret)=>{
-        this.currentPresetRecord = ret.currentPreset;
+        this.currentPresetRecord = ret.currentPreset;        
         this.appoinment = ret.presetAppointments.find((item)=>{return item.id == this.appointmentId})
         if(this.appoinment){          
           this.selectedTimeRange = this.appoinment.timerange;
@@ -242,5 +238,9 @@ export class AppointmentPresetEditComponent implements OnInit {
     if(this.slotsInfo)
       return this.slotsInfo[this.selectedTimeRange.id];
     return []
+  }
+  isClosed():boolean{
+    if(!this.currentPresetRecord) return false;
+    return this.currentPresetRecord.status == PresetStatus.Closed;
   }
 }

@@ -60,8 +60,10 @@ export class ChildSelectComponent implements OnInit, ControlValueAccessor, OnCha
   };
   ngOnChanges(changes:SimpleChanges){
     if('childs' in changes){
-      if(this.childs)
+      if(this.childs){
+
         this.childs_src.load(this.childs);
+      }
     }
   }
   onChange = (data: any) => {};
@@ -71,10 +73,11 @@ export class ChildSelectComponent implements OnInit, ControlValueAccessor, OnCha
     this.isDisabled = false;
     this.isMulti = false;
     this.selectedChilds = [];
+    this.childs_src = new LocalDataSource(this.childs);
   }
 
   ngOnInit(): void {    
-    this.childs_src = new LocalDataSource(this.childs);        
+    
     this.isDisabled = this.disabled;
     if(this.initValue){
       this.setSelectedChildData(this.initValue);      

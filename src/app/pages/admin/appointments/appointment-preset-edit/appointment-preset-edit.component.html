@@ -6,7 +6,11 @@
       </div>
       
     </nb-card-header>
-    <nb-card-body>
+    <nb-card-body *ngIf="isClosed()">
+      <h5 class="text-center"> {{'There is not available Preset ' | translate}}</h5>
+    </nb-card-body>
+    <nb-card-body *ngIf="!isClosed()">
+      
       <div class="form-group row align-items-center">
           <label class="label col-sm-3"> {{'Classroom' | translate}}</label>
           <div class="col-sm-9">

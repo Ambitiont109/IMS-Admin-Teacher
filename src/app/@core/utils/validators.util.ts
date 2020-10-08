@@ -19,19 +19,25 @@ export function MustMatch(controlName: string, matchingControlName: string) {
     }
 }
 
-export function MustAfter(controlName: string, matchingControlName: string) {
+export function MustAfter(controlName: string, matchingControlName: string, baseDateControlName?:string) {
     return (formGroup: FormGroup) => {
         const control = formGroup.controls[controlName];
         const matchingControl = formGroup.controls[matchingControlName];
-
+        let controlValue= control.value;
+        let mathValue = matchingControl.value;
         if (matchingControl.errors && !matchingControl.errors.mustMatch) {
             // return if another validator has already found an error on the matchingControl
             return;
         }
+        console.log(mathValue)
 
         // set error on matchingControl if validation fails
-
-        if (moment(control.value).isBefore(moment(matchingControl.value))) {            
+        if(baseDateControlName){
+            const baseDate = formGroup.controls[baseDateControlName].value;            
+            controlValue = moment(baseDate).hour(moment(control.value).hour()).minutes(moment(control.value).minutes());            
+            mathValue= moment(baseDate).hour(moment(matchingControl.value).hour()).minutes(moment(matchingControl.value).minutes());
+        }
+        if (moment(controlValue).isBefore(moment(mathValue))) {            
             matchingControl.setErrors(null);
         } else {
             matchingControl.setErrors({ mustAfter: true });

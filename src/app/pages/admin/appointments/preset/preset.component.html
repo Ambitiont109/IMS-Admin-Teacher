@@ -70,7 +70,10 @@
                                     </div>
                                 </ng-container>
                                 <div *ngIf="isInvalidControl(presetItemForm, 'timeranges')">
-                                    <span class="error-text" *ngIf="presetItemForm.get('timeranges').errors.minlength">{{'At least 3 timedata required' | translate}}</span>
+                                    <ng-container *ngIf="presetItemForm.get('timeranges').errors">
+                                        <span class="error-text" *ngIf="presetItemForm.get('timeranges').errors.minlength">{{'At least 3 timedata required' | translate}}</span>
+                                    </ng-container>
+                                    
                                 </div> 
                                 <div class="form-group ">
                                     <label class="label mr-4"> {{'Duration' | translate}}</label>
@@ -96,7 +99,7 @@
         </form>
 
     </nb-card-body>
-    <!-- <nb-card-footer *ngIf="isStarted">
+    <nb-card-footer *ngIf="isStarted">
         <button style="float: right;" type="button"  nbTooltip="{{'Update Current Preset Info' | translate}}"  nbButton ghost (click)="updateSubmit()"> {{'Update' | translate}} </button>
-    </nb-card-footer> -->
+    </nb-card-footer>
 </nb-card>

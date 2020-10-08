@@ -45,8 +45,7 @@ export class AppointmentService {
     // return of(appointmentsOfOneUser);
   }
   patchEvent(apnt:Appointment, patch):Observable<any>{
-    Object.assign(apnt,patch);
-    return of('')
+    return this.httpClient.patch(`${this.api_url}/appointments/${apnt.id}/`,patch)
   }
   getEventById(eventId):Observable<Appointment>{
     return this.httpClient.get<Appointment>(`${this.api_url}/appointments/${eventId}/`);

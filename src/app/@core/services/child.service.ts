@@ -4,7 +4,7 @@ import { environment } from "../../../environments/environment";
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { User } from '../models/user';
 import { children, childDailyInformations } from "../dummy";
-import { find } from 'rxjs/operators';
+import { find, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
@@ -35,8 +35,9 @@ export class ChildService {
   getAllChildren():Observable<Child[]>{ // Return All Children without considering current Classroom of loggedin user
     return this.httpClient.get<Child[]>(`${this.api_url}/child/`);
   }
-  getChildsOfTeacher(teacher:User):Observable<any>{    
-    return of(children);
+  getChildsOfTeacher(teacher:User):Observable<any>{
+    return this.httpClient.get<Child[]>(`${this.api_url}/child/`);
+    // return of(children);
   }
   getChildById(childId:number):Observable<Child>{    
     return this.httpClient.get<Child>(`${this.api_url}/child/${childId}/`);

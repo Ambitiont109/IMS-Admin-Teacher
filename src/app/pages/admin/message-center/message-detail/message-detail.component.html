@@ -16,8 +16,8 @@
                                 <div class="ml-2 date-text text-right">
                                     {{getFormatDate(msg.created_at)}}                            
                                 </div>
-                                From: <span >{{getSenderName(msg)}}</span>
-                                To:<span >{{getReceiverName(msg)}}</span>
+                                From: <span >{{getSenderName(msg) | translate}}</span>
+                                To:<span >{{getReceiverName(msg) | translate}}</span>
                                 
                             </div>   
                             <div class="avatar ml-2">                            
