@@ -119,6 +119,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
     title:'Exchange Library',
     icon:'book-outline',
     link:'/exchangelibrary'    
+  },
+  {
+    title:'Marketing',
+    icon:'globe-2-outline',
+    link:'/marketing'
   }
   
   // {

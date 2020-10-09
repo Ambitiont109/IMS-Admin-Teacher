@@ -22,7 +22,8 @@ const routes: Routes = [
   { path: 'users/:id', loadChildren: () => import('./user-detail/user-detail.module').then(m => m.UserDetailModule), canActivate:[RoleGuard],data: {role: USERROLE.Admin} },
   { path: 'notification', loadChildren: () => import('./notification/notification.module').then(m => m.NotificationModule), canActivate:[RoleGuard],data: {role: USERROLE.Admin} },
   { path: 'miniclub', loadChildren: () => import('./miniclub/miniclub.module').then(m => m.MiniclubModule) },
-  { path: 'exchangelibrary', loadChildren: () => import('./exchange-library/exchange-library.module').then(m => m.ExchangeLibraryModule) }
+  { path: 'exchangelibrary', loadChildren: () => import('./exchange-library/exchange-library.module').then(m => m.ExchangeLibraryModule) },
+  { path: 'marketing', loadChildren: () => import('./marketing/marketing.module').then(m => m.MarketingModule) }
   
 ];
 

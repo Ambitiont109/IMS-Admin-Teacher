@@ -5,6 +5,7 @@
     "Message Center":"Centre des messages",
     "Send Notifications":"Enviar notificaciones",
     "Teachers/Parents": "Éducateurs/Parents",
+    "Marketing": "Commercialisation",
     "Children": "Enfants",
     "Pictures": "Imágenes",
     "Add": "Añadir",
@@ -214,7 +215,6 @@
     "Authorization Person" : "Personne autorisée",
     "Child Health Details" : "Détails sur la santé de l'enfant",
     "Siblings" : "Fratrie",
-    "Empty" : "Vide"
-
-
+    "Empty" : "Vide",
+    "Marketing data has been removed" : "Les données marketing ont été supprimées"
 }
