@@ -8,6 +8,7 @@ import { User, USERROLE } from '../../../../@core/models/user';
 import { NbDialogService } from '@nebular/theme';
 import { YesNoDialogComponent } from '../../../../components/yes-no-dialog/yes-no-dialog.component';
 import { group } from 'console';
+import { ToastService } from '../../../../@core/services/toast.service';
 
 @Component({
   selector: 'ngx-child-detail',
@@ -23,6 +24,7 @@ export class ChildDetailComponent implements OnInit {
     private router:Router,
     private userService:UsersService,
     private childService:ChildService,
+    private toastService:ToastService,
     private dialogService:NbDialogService
   ) { 
     this.userService.getCurrentUser().subscribe((user:User)=>{this.currentUser = user;})
@@ -50,7 +52,7 @@ export class ChildDetailComponent implements OnInit {
       if(ret==true)
         this.childService.RemoveChildFromSibling(this.child).subscribe( groupId=>{
           this.child.sibling_group = groupId;
-          this.child.siblings=[];
+          this.child.siblings=[];          
         })
     })
   }
@@ -74,6 +76,17 @@ export class ChildDetailComponent implements OnInit {
   }
   isAdmin(user:User){
     return user.role == USERROLE.Admin;
+  }
+  onDelete(){
+    this.dialogService.open(YesNoDialogComponent,{context:{
+      title:'Are you sure?'
+    }}).onClose.subscribe(ret=>{
+      if(ret==true)
+        this.childService.deleteChild(this.childId).subscribe(_=>{
+          this.toastService.warning('Child has been deleted','Delete');
+          this.router.navigate(['..'],{relativeTo:this.route});
+        })
+    })    
   }
 
 }

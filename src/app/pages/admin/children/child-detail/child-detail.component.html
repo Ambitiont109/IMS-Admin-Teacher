@@ -5,7 +5,11 @@
                 <button nbTooltip="{{'Back' | translate}}"  nbButton ghost (click)="back()"> <nb-icon icon="arrow-back-outline"  style="color: white;">arrow-back-outline</nb-icon> </button>
                 {{'Child' | translate}}
             </div>
-            <button  nbButton ghost (click)="onSetPWDClick()" *ngIf="!isTeacher()"> {{'Set Password' | translate}} </button>
+            <div>
+                
+                <button  nbButton ghost (click)="onSetPWDClick()" *ngIf="!isTeacher()"> {{'Set Password' | translate}} </button>
+            </div>
+            
             
         </div>
         
@@ -168,6 +172,7 @@
 
                 </nb-card>
             </div>
+            <button nbButton ghost status="danger" (click)="onDelete()" *ngIf="!isTeacher()">{{'Delete' | translate}} </button>
 
         </div>        
     </nb-card-body>

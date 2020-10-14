@@ -216,5 +216,20 @@
     "Child Health Details" : "Détails sur la santé de l'enfant",
     "Siblings" : "Fratrie",
     "Empty" : "Vide",
-    "Marketing data has been removed" : "Les données marketing ont été supprimées"
+    "Marketing data has been removed" : "Les données marketing ont été supprimées",
+    "Username is required" : "Nom d'utilisateur est nécessaire",
+    "Date of Birth" : "Date de naissance",
+    "3th Capital Street, karachi, Pakistan" : "3th Capital Street, Karachi, Pakistan",
+    "Mother’s first name" : "Prénom de la mère",
+    "Mother’s last name" : "Nom de famille de la mère",
+    "Mother’s phone number" : "Numéro de téléphone de la mère",
+    "Mother’s email" : "Courriel de la mère",
+    "Father’s first name" : "Prénom du père",
+    "Father’s last name" : "Nom de famille du père",
+    "Father’s phone number" : "Numéro de téléphone du père",
+    
+    "Father’s email" : "Courriel du père",
+    "Child has been deleted" : "L'enfant a été supprimé",
+    "Delete" : "Effacer"
+
 }

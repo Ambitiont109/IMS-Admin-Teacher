@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row justify-content-center">
     <div class="col-lg-6">
         <nb-card>
             <nb-card-header>
@@ -47,20 +47,20 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="label"> {{'Birth' | translate}}</label>
-                                <input  nbInput [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [status]="isInvalidControl(childForm,'start')?'danger':'basic'" formControlName="birth">
+                                <label class="label"> {{'Date of Birth' | translate}}</label>
+                                <input  fullWidth nbInput [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [status]="isInvalidControl(childForm,'birth')?'danger':'basic'" formControlName="birth">
                                     <div *ngIf="isInvalidControl(childForm,'birth')">
                                         <span class="error-text" *ngIf="childForm.get('birth').errors.required">{{'required' | translate}}</span>
                                     </div> 
-                                <owl-date-time #dt></owl-date-time>             
+                                <owl-date-time #dt [pickerType]="'calendar'"></owl-date-time>             
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="label">{{'Male' | translate}} </label>
-                                <nb-select fullWidth formControlName="gender">
-                                    <nb-option  value="male"> {{'male' |translate |titlecase}} </nb-option>
-                                    <nb-option  value="female"> {{'female' |translate |titlecase}} </nb-option>
+                                <label class="label">{{'Gender' | translate}} </label>
+                                <nb-select fullWidth formControlName="gender"  [status]="isInvalidControl(childForm,'gender')?'danger':'basic'">
+                                    <nb-option  value="Male"> {{'Male' |translate |titlecase}} </nb-option>
+                                    <nb-option  value="Female"> {{'Female' |translate |titlecase}} </nb-option>
                                 </nb-select>
                                 <div *ngIf="isInvalidControl(childForm,'gender')">
                                     <span class="error-text" *ngIf="childForm.get('gender').errors.required">{{'required' | translate}}</span>
@@ -72,7 +72,15 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="label"> {{'Nationality' | translate}}</label>
-                                <input nbInput type="text" placeholder="{{'Nationality'| translate}}" fullWidth formControlName="nationality">
+                                <nb-select fullWidth formControlName="nationality" [status]="isInvalidControl(childForm,'nationality')?'danger':'basic'">
+                                    <nb-option value="civ">Cote d'ivoire</nb-option>
+                                    <nb-option value="usa">United States of America</nb-option>
+                                    <nb-option value="gbr">United Kingdom</nb-option>
+                                    <nb-option value="fra">France</nb-option>
+                                </nb-select>      
+                                <div *ngIf="isInvalidControl(childForm,'nationality')">
+                                    <span class="error-text" *ngIf="childForm.get('nationality').errors.required">{{'required' | translate}}</span>
+                                </div>                          
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -83,8 +91,91 @@
                                 </nb-select>
                             </div>
                         </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="label mr-4">{{'Address' | translate}}</label>
+                                <input nbInput fullWidth type="text" [status]="isInvalidControl(childForm,'address')?'danger':'basic'" formControlName="address" placeholder="{{'3th Capital Street, karachi, Pakistan' | translate}}">
+                                <div *ngIf="isInvalidControl(childForm,'address')">
+                                    <span class="error-text" *ngIf="childForm.get('address').errors.required">{{'required' | translate}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="label"> {{'Mother’s first name' | translate}}</label>
+                                <input nbInput fullWidth type="text" [status]="isInvalidControl(childForm,'firstNameOfMother')?'danger':'basic'" formControlName="firstNameOfMother" placeholder="{{'Mother’s first name' | translate}}">
+                                <div *ngIf="isInvalidControl(childForm,'firstNameOfMother')">
+                                    <span class="error-text" *ngIf="childForm.get('firstNameOfMother').errors.required">{{'required' | translate}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="label">{{'Mother’s last name' | translate}}</label>
+                                <input nbInput fullWidth type="text" [status]="isInvalidControl(childForm,'lastNameOfMother')?'danger':'basic'" formControlName="lastNameOfMother" placeholder="{{'Mother’s last name' | translate}}">
+                                <div *ngIf="isInvalidControl(childForm,'lastNameOfMother')">
+                                    <span class="error-text" *ngIf="childForm.get('lastNameOfMother').errors.required">{{'required' | translate}}</span>
+                                </div>
+                            </div>
+                        </div>                
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="label"> {{'Mother’s phone number' | translate}}</label>
+                                <input nbInput fullWidth [status]="isInvalidControl(childForm, 'phoneOfMother')?'danger':'basic'" type="text" formControlName="phoneOfMother" placeholder="000-000">
+                                <div *ngIf="isInvalidControl(childForm,'phoneOfMother')">
+                                    <span class="error-text" *ngIf="childForm.get('phoneOfMother').errors.required">{{'required' | translate}}</span>
+                                </div>  
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="label">{{'Mother’s email' | translate}}</label>
+                                <input nbInput fullWidth [status]="isInvalidControl(childForm, 'emailOfMother')?'danger':'basic'" type="email" formControlName="emailOfMother" placeholder="{{'Mother’s email' | translate}}">
+                                <div *ngIf="isInvalidControl(childForm,'emailOfMother')">
+                                    <span class="error-text" *ngIf="childForm.get('emailOfMother').errors.required">{{'required' | translate}}</span>
+                                    <span class="error-text" *ngIf="childForm.get('emailOfMother').errors.email">{{'Incorrect Email Address' | translate}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="label"> {{'Father’s first name' | translate}}</label>
+                                <input nbInput fullWidth [status]="isInvalidControl(childForm, 'firstNameOfFather')?'danger':'basic'" type="text" formControlName="firstNameOfFather" placeholder="{{'Father’s first name' | translate}}">
+                                <div *ngIf="isInvalidControl(childForm,'firstNameOfFather')">
+                                    <span class="error-text" *ngIf="childForm.get('firstNameOfFather').errors.required">{{'required' | translate}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="label">{{'Father’s last name' | translate}}</label>
+                                <input nbInput fullWidth [status]="isInvalidControl(childForm, 'lastNameOfFather')?'danger':'basic'" type="text" formControlName="lastNameOfFather" placeholder="{{'Father’s last name' | translate}}">
+                                <div *ngIf="isInvalidControl(childForm,'lastNameOfFather')">
+                                    <span class="error-text" *ngIf="childForm.get('lastNameOfFather').errors.required">{{'required' | translate}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="label"> {{'Father’s phone number' | translate}}</label>
+                                <input nbInput fullWidth [status]="isInvalidControl(childForm, 'phoneOfFather')?'danger':'basic'" type="tel" formControlName="phoneOfFather" placeholder="000-000">
+                                <div *ngIf="isInvalidControl(childForm,'phoneOfFather')">
+                                    <span class="error-text" *ngIf="childForm.get('phoneOfFather').errors.required">{{'required' | translate}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="label">{{'Father’s email' | translate}}</label>
+                                <input nbInput fullWidth [status]="isInvalidControl(childForm, 'emailOfFather')?'danger':'basic'" type="email"  formControlName="emailOfFather" placeholder="{{'Father’s email' | translate}}">
+                                <div *ngIf="isInvalidControl(childForm,'emailOfFather')">
+                                    <span class="error-text" *ngIf="childForm.get('emailOfFather').errors.required">{{'required' | translate}}</span>
+                                    <span class="error-text" *ngIf="childForm.get('emailOfFather').errors.email">{{'Incorrect Email Address' | translate}}</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <input nbInput type="submit" value="Update" style="float: right;">
+                    <input nbInput type="submit" value="{{'Submit' |  translate}}" style="float: right;" [disabled]="isSubmitting">
                 </form>
             </nb-card-body>
         </nb-card>        

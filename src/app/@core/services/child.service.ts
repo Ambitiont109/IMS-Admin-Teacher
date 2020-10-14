@@ -20,9 +20,12 @@ export class ChildService {
     return Object.keys(NameOfClass).map( item => NameOfClass[item]);
   }
 
-  addNewChild(child:Child):Observable<any>{
-    return of('')
+  addNewChild(submitdata):Observable<any>{
+    return this.httpClient.post(`${this.api_url}/child/`,submitdata);
 
+  }
+  deleteChild(childId:number):Observable<any>{
+    return this.httpClient.delete(`${this.api_url}/child/${childId}/`);
   }
   isChildToddler(child:Child):boolean{
     if (child.nameOfClass == NameOfClass.Bamboo || child.nameOfClass == NameOfClass.Iroko)

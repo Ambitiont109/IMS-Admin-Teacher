@@ -32,11 +32,8 @@
            [attr.aria-invalid]="email.invalid && email.touched ? true : null">
     <ng-container *ngIf="email.invalid && email.touched">
       <p class="error-message" *ngIf="email.errors?.required">
-        Email is required!
-      </p>
-      <p class="error-message" *ngIf="email.errors?.pattern">
-        Email should be the real one!
-      </p>
+        {{'Username is required' | translate}}!
+      </p>      
     </ng-container>
   </div>
 
