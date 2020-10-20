@@ -11,6 +11,7 @@ export interface Message{
     sender:User,
     receiver:User,
     content:string,
+    is_read:boolean,
     attachedFiles:any[]
     msgType:MessageType,
     headerMessage:number,    // -1:HeaderMessage, other: Sequent Message of HeaderMessage

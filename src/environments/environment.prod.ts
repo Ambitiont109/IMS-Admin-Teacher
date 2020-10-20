@@ -5,5 +5,6 @@
  */
 export const environment = {
   production: true,
-  API_URL:'http://3.136.224.87/api'
+  API_URL:'http://3.136.224.87/api',
+  SOCKETURL:'ws://3.136.224.87/ws/notification/'
 };

@@ -1,33 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Message, MessageType } from "../../../../@core/models/message";
 import { User,USERROLE } from "../../../../@core/models/user";
 import { MessageService } from "../../../../@core/services/message.service";
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {Location} from '@angular/common';
 import * as moment from 'moment';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { UsersService } from '../../../../@core/services/users.service';
 import { ReplyData } from '../../../../shared/components/reply/reply.component';
 import { TagInputItem } from '../../../../shared/components/tag-input/tag-input.component';
 import { Child } from '../../../../@core/models/child';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subject } from 'rxjs';
+import { NotificationService } from '../../../../@core/services/notification.service';
+import { IMSNotification, NotificationVerb } from '../../../../@core/models/notification';
 
 @Component({
   selector: 'ngx-message-detail',
   templateUrl: './message-detail.component.html',
   styleUrls: ['./message-detail.component.scss']
 })
-export class MessageDetailComponent implements OnInit {
+export class MessageDetailComponent implements OnInit, OnDestroy {
   public headermsgId:number;
   public messages:Message[];
   public isReplyMode:boolean;
   public currentUser:User;
   public toContact:User;
   public toChild:Child;
+  private destroy$:Subject<void> = new Subject<void>();
 
   constructor(private messageSerivce:MessageService,
               private userSerivce:UsersService,
               private route:ActivatedRoute,
+              private notificationService:NotificationService,
               private router:Router,
               private _location:Location
     ) {
@@ -48,14 +52,31 @@ export class MessageDetailComponent implements OnInit {
     )).subscribe(ret=>{
       this.currentUser = ret.user;
       this.messages = ret.msg;
-      if(this.messages[0].sender.id == this.currentUser.id){
-        this.toContact = this.messages[0].receiver;
-      }else
-        this.toContact = this.messages[0].sender;
-      this.toChild = this.messages[0].child;
+      this._initialize()
+      this.notificationService.onnew.pipe(takeUntil(this.destroy$)).subscribe((notification:IMSNotification) => { 
+        if(notification.data.verb == NotificationVerb.MessageCreate){
+          if(notification.receiver == this.currentUser.id)
+          {
+            this.messageSerivce.getMessageLinked(this.headermsgId).subscribe((msgs)=>{this.messages=msgs;this._initialize()})
+          }          
+        }
+      })
     })
     
     this.isReplyMode = false
+  }
+  _initialize(){
+    if(this.messages[0].sender.id == this.currentUser.id){
+      this.toContact = this.messages[0].receiver;
+    }else
+      this.toContact = this.messages[0].sender;
+    let last_msg= this.messages[this.messages.length-1];
+    if(last_msg.is_read == false){
+      if(last_msg.receiver.id == this.currentUser.id){
+        this.messageSerivce.markAsRead(last_msg).subscribe(_=>{});
+      }
+    }
+    this.toChild = this.messages[0].child;
   }
 
   isUserAdmin(user:User):boolean{
@@ -93,7 +114,13 @@ export class MessageDetailComponent implements OnInit {
     })
     //this.messageSerivce.sendMessage()
   }
-
+  isAdmin(user:User){
+    return user.role == USERROLE.Admin;
+  }
+  ngOnDestroy(){
+    this.destroy$.next()
+    this.destroy$.complete()
+  }
   getSenderName = this.messageSerivce.getSenderName;
   getReceiverName = this.messageSerivce.getReceiverName;
   getSenderPhotoUrl = this.messageSerivce.getSenderPhotoUrl;

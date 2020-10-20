@@ -7,6 +7,7 @@ import { Message, MessageType } from '../../../../@core/models/message';
 import { ReplyData } from '../../../../shared/components/reply/reply.component';
 import { forkJoin } from 'rxjs';
 import { ToastService } from '../../../../@core/services/toast.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -18,6 +19,7 @@ export class ComposeMessageComponent implements OnInit {
   currentUser:User;
   constructor(
     private userService:UsersService,
+    private router:Router,
     private messageSerivce:MessageService,
     private toastService:ToastService
     ) { }
@@ -44,6 +46,7 @@ export class ComposeMessageComponent implements OnInit {
     if(requests.length > 0){
       forkJoin(requests).subscribe(_=>{
         this.toastService.success('Message has been sent successfully', 'success');
+        this.router.navigate(['/messagecenter']);
       })
     }
   }

@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 
 import { MENU_ITEMS, TEACHER_MENU_ITEMS } from './pages-menu';
 import { TranslateService } from '@ngx-translate/core';
 import { UsersService } from '../@core/services/users.service';
 import { User, USERROLE } from '../@core/models/user';
 import { UserService } from '../@core/mock/users.service';
+import { NotificationService } from '../@core/services/notification.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { IMSNotification } from '../@core/models/notification';
 
 @Component({
   selector: 'ngx-pages',
@@ -16,11 +20,19 @@ import { UserService } from '../@core/mock/users.service';
     </ngx-one-column-layout>
   `,
 })
-export class PagesComponent {
+export class PagesComponent implements OnDestroy{
 
   menu;
-  constructor(private translateService: TranslateService, private userService:UsersService) {
+  private destroy$: Subject<void> = new Subject<void>();
+  notifications:IMSNotification[]=[];
+  constructor(
+    private translateService: TranslateService, 
+    private userService:UsersService,
+    private notificationService:NotificationService
+    ) {
+    
     this.menu=[];
+    this.notificationService.connect();
     this.userService.getCurrentUser().subscribe((user:User) => {
       if( user.role === USERROLE.Admin)
         this.menu = MENU_ITEMS;
@@ -28,8 +40,7 @@ export class PagesComponent {
         this.menu = TEACHER_MENU_ITEMS;
       this._TranslateMenu();
     })
-
-
+    
   }
   _TranslateMenu(){
     for (const each of this.menu ) {
@@ -44,5 +55,9 @@ export class PagesComponent {
         }
       }
     }
+  }
+  ngOnDestroy(){
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

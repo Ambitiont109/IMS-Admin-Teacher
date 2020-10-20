@@ -14,6 +14,9 @@ import { NameOfClass } from '../../../@core/models/child';
 import { Router } from '@angular/router';
 import { DateTimeAdapter } from "@danielmoncada/angular-datetime-picker";
 import * as moment from 'moment';
+import { NotificationService } from '../../../@core/services/notification.service';
+import { IMSNotification } from '../../../@core/models/notification';
+import { DateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'ngx-header',
@@ -28,6 +31,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   title:string = "Admin Center";
   userPictureOnly: boolean = false;
   user: User;
+  notifications:IMSNotification[]=[];
   currentClassName:NameOfClass;
   private classNameSubscription:Subscription;
   private currentUserSubscription:Subscription;
@@ -48,6 +52,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private userService: UsersService,
     private childService:ChildService,
     private translateSerivce: TranslateService,
+    private notificationService:NotificationService,
     private router:Router,
     private breakpointService: NbMediaBreakpointsService,
     private rippleService: RippleService,
@@ -94,7 +99,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // this.userService.getUsers()
     //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((users: any) => this.user = users.nick);
+    this.notificationService.notificationSubject.pipe(takeUntil(this.destroy$)).subscribe(data=>{
+      console.log(data);
+      this.notifications = data;
+    })
+    this.notificationService.getNotifications().subscribe(data=>{
+    })
     this._translateMenu();
+    
  
   }
   _translateMenu(){
@@ -139,7 +151,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return false;
   }
   onNotification(){
-    alert("Notificaiton")
+    this.router.navigate(['/notifications']);
   }
   logout(){
     this.authService.logout();

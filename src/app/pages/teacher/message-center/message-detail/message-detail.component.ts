@@ -5,12 +5,14 @@ import { MessageService } from "../../../../@core/services/message.service";
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {Location} from '@angular/common';
 import * as moment from 'moment';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { UsersService } from '../../../../@core/services/users.service';
 import { ReplyData } from '../../../../shared/components/reply/reply.component';
 import { TagInputItem } from '../../../../shared/components/tag-input/tag-input.component';
 import { Child } from '../../../../@core/models/child';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subject } from 'rxjs';
+import { NotificationService } from '../../../../@core/services/notification.service';
+import { IMSNotification, NotificationVerb } from '../../../../@core/models/notification';
 
 @Component({
   selector: 'ngx-message-detail',
@@ -24,9 +26,11 @@ export class MessageDetailComponent implements OnInit {
   public currentUser:User;
   public toContact:User;
   public toChild:Child;
+  public destroy$:Subject<void> = new Subject<void>();
 
   constructor(private messageSerivce:MessageService,
               private userSerivce:UsersService,
+              private notificationService:NotificationService,
               private route:ActivatedRoute,
               private router:Router,
               private _location:Location
@@ -48,15 +52,33 @@ export class MessageDetailComponent implements OnInit {
     )).subscribe(ret=>{
       this.currentUser = ret.user;
       this.messages = ret.msg;
-      if(this.messages[0].sender.id == this.currentUser.id){
-        this.toContact = this.messages[0].receiver;
-      }else
-        this.toContact = this.messages[0].sender;
-      this.toChild = this.messages[0].child;
+      this._initialize()    
+      this.notificationService.onnew.pipe(takeUntil(this.destroy$)).subscribe((notification:IMSNotification) => { 
+        if(notification.data.verb == NotificationVerb.MessageCreate){
+          if(notification.receiver == this.currentUser.id)
+          {
+            this.messageSerivce.getMessageLinked(this.headermsgId).subscribe((msgs)=>{this.messages=msgs;this._initialize()})
+          }
+        }
+      })
     })
     this.isReplyMode = false
   }
+  _initialize(){
+    if(this.messages[0].sender.id == this.currentUser.id){
+      this.toContact = this.messages[0].receiver;
+    }else
+      this.toContact = this.messages[0].sender;
+    
+    let last_msg= this.messages[this.messages.length-1];
+    if(last_msg.is_read == false){
+      if(last_msg.receiver.id == this.currentUser.id){
+        this.messageSerivce.markAsRead(last_msg).subscribe(_=>{});
+      }
+    }
+    this.toChild = this.messages[0].child;
 
+  }
   isUserAdmin(user:User):boolean{
     return user.role == USERROLE.Admin
   }
@@ -75,7 +97,7 @@ export class MessageDetailComponent implements OnInit {
     if(user.id == this.currentUser.id)
       return "me";
     if(user.role == USERROLE.Admin)
-      return "Admin Center";
+      return `${user.first_name} ${user.last_name}`;
     if(user.role == USERROLE.Parent)
       return msg.child.first_name + " " + msg.child.last_name;
     return user.first_name + " "+ user.last_name;
@@ -86,7 +108,7 @@ export class MessageDetailComponent implements OnInit {
     if(user.id == this.currentUser.id)
       return "me";
     if(user.role == USERROLE.Admin)
-      return "Admin Center";
+    return `${user.first_name} ${user.last_name}`;
     if(user.role == USERROLE.Parent)
       return msg.child.first_name + " " + msg.child.last_name;
     return user.first_name + " "+ user.last_name;

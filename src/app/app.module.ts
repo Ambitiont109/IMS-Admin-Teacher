@@ -18,6 +18,9 @@ import {TranslateLoader, TranslateModule, TranslatePipe} from '@ngx-translate/co
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+const config: SocketIoConfig = { url: 'ws://localhost:8000/ws/notification/', options: {autoConnect:false} };
+
 registerLocaleData(localeFr)
 
 import {
@@ -82,6 +85,7 @@ export function momentAdapterFactory() {
       useDefaultLang:true
     }),
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: momentAdapterFactory }),
+    // SocketIoModule.forRoot(config)
   ],
   providers:[
     {

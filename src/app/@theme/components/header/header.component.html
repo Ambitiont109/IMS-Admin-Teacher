@@ -29,7 +29,8 @@
       
     </nb-action>
     
-    <nb-action class="sss" icon="bell-outline" (click)="onNotification()"></nb-action>
+    <nb-action class="badge-notification" icon="bell-outline" (click)="onNotification()" badgePosition="top right" badgeStatus="danger" [badgeText]=" notifications.length>0 ? notifications.length: ''">
+    </nb-action>
     <nb-action class="user-action">
       <nb-user [nbContextMenu]="userMenu"
                [onlyPicture]="userPictureOnly"

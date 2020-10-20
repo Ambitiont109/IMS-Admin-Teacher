@@ -24,9 +24,13 @@ export class MessageService {
       content:undefined,
       attachedFiles:undefined,
       headerMessage:undefined,
+      is_read:false,
       msgType: MessageType.Normal,
       created_at:undefined
     }
+  }
+  check_message_readness():Observable<boolean>{
+    return this.httpClient.get<boolean>(`${this.api_url}/messages/check_unreadness/`);
   }
   getAdminHeaderMessage():Observable<Message[]>{
     return this._getHeaderMessages();
@@ -51,22 +55,32 @@ export class MessageService {
     
   }
 
+  markAsRead(msg:Message):Observable<any>{
+    return this.httpClient.patch(`${this.api_url}/messages/${msg.id}/`,{is_read:true});
+  }
 
 
-  getSenderName(msg:Message){
+
+  getSenderName(msg:Message, user:User){
+    if(!user) return;
     switch(msg.sender.role){
       case USERROLE.Admin:
-        return 'Admin Center';
+        // return "Admin Center";
+        if(user.id == msg.sender.id)
+          return 'me';
+        return msg.sender.first_name + " " + msg.sender.last_name;
       case USERROLE.Parent:
         return msg.child.first_name + " " + msg.child.last_name;
       case USERROLE.Teacher:
         return msg.sender.first_name + " " + msg.sender.last_name;
     }
   }
-  getReceiverName(msg:Message){
+  getReceiverName(msg:Message, user:User){
     switch(msg.receiver.role){
       case USERROLE.Admin:
-        return 'Admin Center';
+        if(user.id == msg.receiver.id)
+          return 'me';
+        return `${msg.receiver.first_name} ${msg.receiver.last_name}`;
       case USERROLE.Parent:
         return msg.child.first_name + " " + msg.child.last_name;
       case USERROLE.Teacher:

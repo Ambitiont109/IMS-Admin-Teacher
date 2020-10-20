@@ -12,12 +12,14 @@
                     </div>
                     <div class="ml-3">
                         <div class="text-1">
-                            From: <span >{{getSenderName(msg) }}</span>
-                            To:<span >{{getReceiverName(msg) }}</span>
+                            {{'From' | translate}}: <span *ngIf=isAdmin(msg.sender)> {{'Admin Center' | translate}} ({{getSenderName(msg, user) | translate}})</span>
+                            <span *ngIf=!isAdmin(msg.sender)> {{getSenderName(msg, user) |translate}}</span>
+                            {{'To' | translate}}:<span *ngIf=isAdmin(msg.receiver)> {{'Admin Center' | translate}} ({{getReceiverName(msg, user) | translate}})</span>
+                            <span *ngIf=!isAdmin(msg.receiver)> {{getReceiverName(msg,user ) | translate}}</span>
                                 
                         </div>                        
-                        <div class="mt-2"> {{msg.subject}} </div>
-                        <div class="mt-2 text-1" style="  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px;">
+                        <div class="mt-2" [ngClass]="{'text-1':isRead(msg)}"> {{msg.subject}} </div>
+                        <div class="mt-2" [ngClass]="{'text-1':isRead(msg)}" style="  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 300px;">
                             {{msg.content}}
                         </div>
                     </div>

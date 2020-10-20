@@ -7,7 +7,9 @@ import { NbMenuModule,
   NbButtonModule,  
   NbTooltipModule,
   NbIconModule,
-  NbDialogModule} from '@nebular/theme';
+  NbDialogModule,
+  NbListModule,
+  NbCheckboxModule} from '@nebular/theme';
 import { ThemeModule } from '../@theme/theme.module';
 import { PagesComponent } from './pages.component';
 import { DashboardModule } from './admin/dashboard/dashboard.module';
@@ -23,6 +25,7 @@ import { DefaultComponent } from './default/default.component';
 import { NotAllowedComponent } from './not-allowed/not-allowed.component';
 import { AdminModule } from './admin/admin.module';
 import { ChooseClassNameComponent } from './choose-class-name/choose-class-name.component';
+import { NotificationComponent } from './notification/notification.component';
 @NgModule({
   imports: [
     PagesRoutingModule,
@@ -33,12 +36,14 @@ import { ChooseClassNameComponent } from './choose-class-name/choose-class-name.
     FormsModule,
     NbStepperModule,
     NbCardModule,
+    NbListModule,
     NbButtonModule,
     NbInputModule,
     NbSelectModule,
     NbTooltipModule,
     NbIconModule,       
     NbDialogModule, 
+    NbCheckboxModule,
     SharedTranslateModule, 
     AdminModule,
     
@@ -49,6 +54,7 @@ import { ChooseClassNameComponent } from './choose-class-name/choose-class-name.
     DefaultComponent,
     NotAllowedComponent,
     ChooseClassNameComponent,
+    NotificationComponent,
   ],
 })
 export class PagesModule {
