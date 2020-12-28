@@ -39,17 +39,23 @@
 
   <div class="form-control-group">
     <label class="label" for="input-password">{{'Password' | translate}}:</label>
-    <input nbInput
-           fullWidth
-           [(ngModel)]="user.password"
-           #password="ngModel"
-           name="password"
-           type="password"
-           id="input-password"
-           placeholder="{{'Password'| translate}}"
-           [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : ''"
-           required
-           [attr.aria-invalid]="password.invalid && password.touched ? true : null">
+    <div class="position-relative addon-form-control">
+      <input nbInput
+        fullWidth
+        [(ngModel)]="user.password"
+        #password="ngModel"
+        name="password"
+        [type]="pwdType"
+        id="input-password"
+        placeholder="{{'Password'| translate}}"
+        [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : ''"
+        required
+        [attr.aria-invalid]="password.invalid && password.touched ? true : null">
+      <div class="input-group-addon d-flex justify-content-center align-items-center" (click)="onEyeClicked()">
+        <nb-icon [icon]="password_icon_name" ></nb-icon>
+      </div>
+    </div>    
+    
     <ng-container *ngIf="password.invalid && password.touched ">
       <p class="error-message" *ngIf="password.errors?.required">
         {{'required' | translate}}!
