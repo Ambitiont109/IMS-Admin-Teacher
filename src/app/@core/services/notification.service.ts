@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from "../../../environments/environment";
 
 import { BehaviorSubject, forkJoin, Observable, of, Subject } from 'rxjs';
-import { IMSNotification, NotificationVerb } from '../models/notification';
+import { IMSNotification, NotificationData, NotificationVerb, ReceiverData } from '../models/notification';
 import { retry, tap } from 'rxjs/operators';
 import { not } from '@angular/compiler/src/output/output_ast';
 import { ToastService } from './toast.service';
@@ -109,13 +109,28 @@ export class NotificationService {
         verb:NotificationVerb.UnreadMessage,
         content:'',
         subject:'',
+        is_child_broadcast:false,
+        created_at:undefined,
         sender:undefined,
       },
       receiver:-1,
       is_read:false,
+      created_at:undefined
     })
     this.notificationSubject.next(notifications);
     this.is_added_new_msg_notfication = true;
   }
-
+  getNotificationData():Observable<NotificationData[]>{
+    return this.httpClient.get<NotificationData[]>(`${this.api_url}/notification/headers/`);
+  }
+  getNotificationReceivers(item:NotificationData):Observable<ReceiverData[]>{
+    return this.httpClient.get<ReceiverData[]>(`${this.api_url}/notification/headers/${item.id}/receivers`);
+  }
+  sendNotification(item:any){
+    let data = item;
+    if (!('verb' in item)){
+      data['verb'] = NotificationVerb.Normal;
+    }
+    return this.httpClient.post(`${this.api_url}/notification/headers/`,data);
+  }
 }

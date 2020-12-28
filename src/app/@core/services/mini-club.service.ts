@@ -18,6 +18,9 @@ export class MiniClubService {
   getAllMiniClub():Observable<MiniClub[]>{    
     return this.httpClient.get<MiniClub[]>(`${this.api_url}/miniclubs/`);
   }
+  getThisWeekMiniClub():Observable<MiniClub[]>{
+    return this.httpClient.get<MiniClub[]>(`${this.api_url}/miniclubs/thisweek/`);
+  }
   addNewMiniClub(data:MiniClub):Observable<any>{
     return this.httpClient.post(`${this.api_url}/miniclubs/`, data);
   }

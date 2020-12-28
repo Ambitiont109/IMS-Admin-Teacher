@@ -24,6 +24,7 @@ export class MiniclubComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // this.miniClubService.getThisWeekMiniClub().subscribe(data => {this.clubInfos = data; this.filteredInfos = this.clubInfos;})
     this.miniClubService.getAllMiniClub().subscribe(data => {this.clubInfos = data; this.filteredInfos = this.clubInfos;})
   }
   onSearchWordChange(data){

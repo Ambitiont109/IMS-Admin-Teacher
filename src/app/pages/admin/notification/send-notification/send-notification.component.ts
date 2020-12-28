@@ -4,6 +4,7 @@ import { NotificationService } from '../../../../@core/services/notification.ser
 import { isInvalidControl } from "../../../../@core/utils/form.util";
 import { UsersService } from '../../../../@core/services/users.service';
 import { User } from "../../../../@core/models/user";
+import { ToastService } from '../../../../@core/services/toast.service';
 @Component({
   selector: 'ngx-send-notification',
   templateUrl: './send-notification.component.html',
@@ -16,12 +17,13 @@ export class SendNotificationComponent implements OnInit {
     private fb:FormBuilder,
     private notificationService:NotificationService,
     private userService:UsersService,
+    private toastService:ToastService,
     ){ 
       this.notificationForm = fb.group({
         to:[[],Validators.minLength(1)],
-        title:['', Validators.required],
+        subject:['', Validators.required],
         content: ['', Validators.required],
-        isBroadCast:[false, Validators.nullValidator],        
+        is_child_broadcast:[false, Validators.nullValidator],        
       })
       this.parents = [];
     }
@@ -33,6 +35,18 @@ export class SendNotificationComponent implements OnInit {
   }
   onSubmit(){
     this.notificationForm.markAllAsTouched();
+    if(this.notificationForm.valid){
+      console.log(this.notificationForm);
+      let data = this.notificationForm.value;
+      data.receivers=[]
+      data.to.forEach(item => {
+        data.receivers.push(item.id);
+      });
+      this.notificationService.sendNotification(data).subscribe(_=>{
+        this.toastService.success('The notification has been sent','success');
+      })
+    }
+    
   }
   isInvalidControl = isInvalidControl
 }

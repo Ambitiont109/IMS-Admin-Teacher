@@ -6,6 +6,7 @@ import { Observable, of } from 'rxjs';
 import { Message, MessageType } from '../models/message';
 import { User, USERROLE } from '../models/user';
 import { DateAdapter } from '@angular/material/core';
+import { tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -57,6 +58,7 @@ export class MessageService {
 
   markAsRead(msg:Message):Observable<any>{
     return this.httpClient.patch(`${this.api_url}/messages/${msg.id}/`,{is_read:true});
+      
   }
 
 

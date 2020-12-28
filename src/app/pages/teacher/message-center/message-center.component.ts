@@ -25,8 +25,7 @@ export class MessageCenterComponent implements OnInit, OnDestroy {
               private route:ActivatedRoute,
               private userService:UsersService,
               private notificationService: NotificationService,
-              private router:Router,
-              private toastService:ToastService
+              private router:Router
     ) { }
 
   ngOnInit(): void {

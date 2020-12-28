@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, TemplateRef, forwardRef, Output, OnChanges, SimpleChanges } from '@angular/core';
-import { User } from "../../../@core/models/user";
+import { User, USERROLE } from "../../../@core/models/user";
 import { unknown_picture } from "../../../@core/services/users.service";
 import { LocalDataSource } from 'ng2-smart-table';
 import { users } from '../../../@core/dummy';
@@ -164,4 +164,17 @@ export class UserSelectComponent implements OnInit, ControlValueAccessor, OnChan
   setDisabledState(isDisabled: boolean): void {
     this.isDisabled = isDisabled;
   } 
+  getPicture(user:User){
+    let url='';
+    if(user.role == USERROLE.Parent)
+      url = user.child.photo
+    else
+      url = user.picture
+    return url;
+  }
+  getName(user:User){
+    if(user.role == USERROLE.Parent)
+      return user.child.first_name + ' ' + user.child.last_name;
+    return user.first_name + ' ' + user.last_name;
+  }
 }

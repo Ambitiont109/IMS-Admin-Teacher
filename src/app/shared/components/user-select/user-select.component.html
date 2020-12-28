@@ -1,22 +1,22 @@
 <ng-container *ngIf="selectedUsers?.length>0; else unknown">
   <ng-container *ngIf="!isMulti; else multi">
-    <nb-user [ngClass]="{'disabled': isDisabled}" [picture]="selectedUsers[0].picture" [name]="selectedUsers[0].first_name + ' ' + selectedUsers[0].last_name" size="large" (click)="open(dialog)"></nb-user>
+    <nb-user [ngClass]="{'disabled': isDisabled}" [picture]="getPicture(selectedUsers[0])" [name]="getName(selectedUsers[0])" size="large" (click)="open(dialog)"></nb-user>
   </ng-container>
   <ng-template #multi>
     <div class="d-flex align-items-center flex-wrap">
       <ng-container *ngFor="let user of selectedUsers">
-        <nb-user [ngClass]="{'disabled': isDisabled}" class="mr-2" [picture]="user.picture" [name]="user.first_name + ' ' + user.last_name" size="large" (click)="open(dialog)"></nb-user>
+        <nb-user [ngClass]="{'disabled': isDisabled}" class="mr-2" [picture]="getPicture(user)" [name]="getName(user)" size="large" (click)="open(dialog)"></nb-user>
       </ng-container>
     </div>
   </ng-template>  
 </ng-container>
 <ng-template #unknown>
-    <nb-user [ngClass]="{'disabled': isDisabled}" [picture]="unknown_picture" [name]="'Select User'" size="large" (click)="open(dialog)"></nb-user>    
+    <nb-user [ngClass]="{'disabled': isDisabled}" [picture]="unknown_picture" name="{{title | translate}}" size="large" (click)="open(dialog)"></nb-user>    
 </ng-template>
 <ng-template #dialog let-data let-ref="dialogRef">
     <nb-card>
       <nb-card-header>
-          {{title}}
+          {{title | translate}}
           <button nbTooltip="Back"  nbButton ghost (click)="ref.close()" style="float:right"> <nb-icon icon="close-outline"  style="color: white;">arrow-back-outline</nb-icon> </button>
       </nb-card-header>
       <nb-card-body style="min-height: 300px;">

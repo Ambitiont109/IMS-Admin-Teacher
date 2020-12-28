@@ -105,9 +105,13 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon:'bell-outline',
     children:[
       {
-        title:'Send',
+        title:'New',
         link:'/notification/send'
-      }      
+      },
+      {
+        title:'Sent Notifications',
+        link:'/notification'
+      }
     ]
   },
   {

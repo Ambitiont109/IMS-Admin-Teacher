@@ -11,5 +11,6 @@ export interface ExchangeLibrary{
     picture: string;
     child?:Child,
     comment?:string,
+    donator?:string,
     status:BookStatus;
 }

@@ -22,6 +22,7 @@ export class BookFormComponent implements OnInit {
   ngOnInit(): void {
     this.bookForm = this.fb.group({
       title:['', Validators.required],
+      donator:['', Validators.nullValidator],
       picture:['', Validators.required],
       pictureFile:undefined,
       comment:['', Validators.nullValidator],
@@ -32,6 +33,7 @@ export class BookFormComponent implements OnInit {
       this.initdata = {
         id:undefined,
         title:undefined,
+        donator:undefined,
         picture:undefined,
         status:BookStatus.PRESENT
       }

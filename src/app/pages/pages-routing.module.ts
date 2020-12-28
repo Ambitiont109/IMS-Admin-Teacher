@@ -11,7 +11,7 @@ import { DefaultComponent } from './default/default.component';
 import { NotAllowedComponent } from './not-allowed/not-allowed.component';
 import { ChooseClassNameComponent } from './choose-class-name/choose-class-name.component';
 import { ClassRoomGuard } from '../@core/guards/class-room.guard';
-import { NotificationComponent } from './admin/notification/notification.component';
+import { NotificationComponent } from './notification/notification.component';
 const routes: Routes = [
   {
     path: '',
@@ -29,11 +29,9 @@ const routes: Routes = [
         canActivate:[RoleGuard, ClassRoomGuard],data: {role: USERROLE.Teacher} 
       },
       { path: '404', component:NotFoundComponent},
-      { path: 'notifications', component:NotificationComponent},
+      { path: 'live/notifications', component:NotificationComponent},
       { path: 'notallowed', component:NotAllowedComponent},
-      { path: 'default', component:DefaultComponent}    
-
-
+      { path: 'default', component:DefaultComponent}
     ]
   },
 ];

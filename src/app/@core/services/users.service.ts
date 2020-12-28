@@ -46,10 +46,7 @@ export class UsersService {
     return this.httpClient.post(`${this.api_url}/user/${userId}/set_password/`,{new_pwd:new_pwd});
   }
   getParents():Observable<User[]>{
-    let ret_user = dummyUsers.filter((user:User)=>{
-      return user.role == USERROLE.Parent;
-    });
-    return of(ret_user);
+    return this.httpClient.get<User[]>(`${this.api_url}/user/?role=${USERROLE.Parent}`);
   }
   getTeachers():Observable<User[]>{
     return this.httpClient.get<User[]>(`${this.api_url}/user/?role=Teacher`);

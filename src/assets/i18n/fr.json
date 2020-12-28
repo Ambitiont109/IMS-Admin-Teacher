@@ -142,7 +142,7 @@
     "Friday" : "Vendredi",
     "Gender" : "Le genre",
     "Health Issue" : "Problème de santé",
-    "Hello! Log in with your email" : "Bonjour! Connectez-vous avec votre e-mail",
+    "Hello! Log in with your User ID" : "salut! Connectez-vous avec votre ID utilisateur",
     "Hooray" : "Hourra",
     "Incorrect Email Address" : "Adresse e-mail incorrecte",
     "Input Correct Number" : "Entrer le numéro correct",
@@ -230,6 +230,16 @@
     
     "Father’s email" : "Courriel du père",
     "Child has been deleted" : "L'enfant a été supprimé",
-    "Delete" : "Effacer"
-
+    "Delete" : "Effacer",
+    "Read" : "Lis",
+    "There are unread messages" : "Il y a des messages non lus",
+    "New Message has been arrived" : "Un nouveau message est arrivé",
+    "The notification has been sent" : "La notification a été envoyée",
+    "Sent Notifications" : "Notifications envoyées",
+    "Receivers" : "Récepteurs",
+    "not read":"pas lu",
+    "Search":"Chercher",
+    "New Notification":"Nouvelle notification",
+    "Notifications Sent":"Notifications envoyées",
+    "Donator":"Donateur"
 }
