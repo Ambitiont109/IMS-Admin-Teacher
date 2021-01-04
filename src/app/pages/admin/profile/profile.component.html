@@ -44,15 +44,23 @@
                       </div>
 
           
-                      <div class="form-group">
+                    <div class="form-group">
                         <label class="label">{{'User ID' | translate}}</label>
                         <input nbInput type="text" placeholder="{{'UserID'| translate}}" [status]="isInvalidControl(profileForm,'username')?'danger':'basic'" fullWidth formControlName="username">
                         <div *ngIf="isInvalidControl(profileForm,'username')">
                             <span class="error-text" *ngIf="profileForm.get('username').errors.required">{{'required' | translate}}</span>
                             <span class="error-text" *ngIf="profileForm.get('username').errors.hostError">{{errors['username'][0] | translate}}</span>
                         </div>
-                      </div>
-                      <input nbInput type="submit" value="Update" style="float: right;">
+                    </div>
+                    <div class="form-group">
+                        <label class="label">{{'Phone Number' | translate}}</label>
+                        <input nbInput type="text" placeholder="{{'Phone Number'| translate}}" [status]="isInvalidControl(profileForm,'phoneNumber')?'danger':'basic'" fullWidth formControlName="phoneNumber">                        
+                    </div>
+                    <div class="form-group">
+                        <label class="label">{{'Address' | translate}}</label>
+                        <input nbInput type="text" placeholder="{{'Address'| translate}}" [status]="isInvalidControl(profileForm,'address')?'danger':'basic'" fullWidth formControlName="address">                        
+                    </div>
+                    <input nbInput type="submit" value="Update" style="float: right;">
                 </form>
             </nb-card-body>
         </nb-card>
@@ -64,7 +72,10 @@
                 <form [formGroup]="passwordForm" (ngSubmit)="onPasswordSubmit()">
                     <div class="form-group">
                         <label class="label">{{'Current Password' | translate}}</label>
-                        <input nbInput type="password"  fullWidth [status]="isInvalidControl(passwordForm,'current_pwd')?'danger':'basic'" formControlName="current_pwd">
+                        <ngx-password-wrapper>
+                            <input nbInput type="password"  fullWidth [status]="isInvalidControl(passwordForm,'current_pwd')?'danger':'basic'" formControlName="current_pwd">
+                        </ngx-password-wrapper>
+                        
                         <div *ngIf="isInvalidControl(passwordForm,'current_pwd')">
                             <span class="error-text" *ngIf="passwordForm.get('current_pwd').errors.required">{{'required' | translate}}</span>
                             <span class="error-text" *ngIf="passwordForm.get('current_pwd').errors.incorrect">{{'Incorrect' | translate}}</span>
@@ -73,8 +84,10 @@
                     </div>                  
                     <div class="form-group">
                         <label class="label">{{'New Password' | translate}}</label>
+                        <ngx-password-wrapper>      
+                            <input [nbPopover]="card" nbPopoverPlacement="bottom" nbInput type="password"  fullWidth [status]="isInvalidControl(passwordForm,'pwd')?'danger':'basic'" formControlName="pwd">
+                        </ngx-password-wrapper>
                         
-                        <input [nbPopover]="card" nbPopoverPlacement="bottom" nbInput type="password"  fullWidth [status]="isInvalidControl(passwordForm,'pwd')?'danger':'basic'" formControlName="pwd">
                         <div *ngIf="isInvalidControl(passwordForm,'pwd')">
                             <span class="error-text" *ngIf="passwordForm.get('pwd').errors.required">{{'required' | translate}}</span>
                         </div>
@@ -91,7 +104,9 @@
 
                     <div class="form-group">
                         <label class="label">{{'Confirm Password' | translate}}</label>
-                        <input nbInput type="password"  fullWidth [status]="isInvalidControl(passwordForm,'confirm_pwd')?'danger':'basic'" formControlName="confirm_pwd">
+                        <ngx-password-wrapper>
+                            <input nbInput type="password"  fullWidth [status]="isInvalidControl(passwordForm,'confirm_pwd')?'danger':'basic'" formControlName="confirm_pwd">
+                        </ngx-password-wrapper>                        
                         <div *ngIf="isInvalidControl(passwordForm,'confirm_pwd')">
                             <span class="error-text" *ngIf="passwordForm.get('confirm_pwd').errors.mustMatch">Passwords doesn't match</span>
                         </div>

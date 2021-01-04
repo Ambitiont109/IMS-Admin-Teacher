@@ -15,4 +15,7 @@ export interface User{
     classNames?:NameOfClass[],
     picture:string,
     child?:any;
+    phoneNumber?:string,
+    address?:string
+    
 }

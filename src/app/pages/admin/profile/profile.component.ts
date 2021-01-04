@@ -28,6 +28,8 @@ export class ProfileComponent implements OnInit {
       last_name:['', Validators.required],
       email:['', [Validators.email, Validators.required]],
       username:['',Validators.required],
+      phoneNumber:'',
+      address:'',
       picture:[''],
       pictureFile:['']
     });

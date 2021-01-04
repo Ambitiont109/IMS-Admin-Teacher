@@ -11,8 +11,9 @@ import { UserSelectComponent } from './components/user-select/user-select.compon
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CellAvatarWithCheckBoxComponent } from './components/user-select/cell-avatar-with-check-box/cell-avatar-with-check-box.component';
 import { SharedTranslateModule } from '../shared-translate/shared-translate.module';
+import { PasswordWrapperComponent } from './components/password-wrapper/password-wrapper.component';
 @NgModule({
-  declarations: [ReplyComponent, TagInputComponent, UserSelectComponent, CellAvatarWithCheckBoxComponent],
+  declarations: [ReplyComponent, TagInputComponent, UserSelectComponent, CellAvatarWithCheckBoxComponent, PasswordWrapperComponent],
   imports: [
     CommonModule,
     NbCardModule,
@@ -34,6 +35,7 @@ import { SharedTranslateModule } from '../shared-translate/shared-translate.modu
     NbDialogModule.forChild()
   ],
   exports: [
+    PasswordWrapperComponent,
     ReplyComponent, 
     TagInputComponent,
     UserSelectComponent

@@ -14,6 +14,7 @@ import {
 } from '@nebular/theme';
 import { NbAuthModule } from '@nebular/auth';
 import { SharedTranslateModule } from '../shared-translate/shared-translate.module';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { SharedTranslateModule } from '../shared-translate/shared-translate.modu
     NbAuthModule,
     NbLayoutModule,
     SharedTranslateModule,
-    NbIconModule
+    NbIconModule,
+    SharedModule
   ]
 })
 export class AuthModule { }
